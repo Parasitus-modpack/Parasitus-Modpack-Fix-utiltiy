@@ -1,0 +1,16 @@
+[
+{
+  "modid": "parasitusfix",
+  "name": "ParasitusFix",
+  "description": "A mod to fix Bugs in the Parasitus Modpack",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Toomda"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
