@@ -7,49 +7,48 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
-        
+
 apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = '1.0'
-group = 'com.toomda.parasitusfix' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'com.toomda.parasitusfix'
 archivesBaseName = 'parasitusfix'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    //mappings channel: 'snapshot', version: '20171003-1.12'
     mappings channel: 'snapshot', version: '20171003-1.12'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
 
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            // This is the key fix - these arguments prevent the NetworkRegistry crash
+            args '--tweakClass', 'net.minecraftforge.fml.common.launcher.FMLTweaker'
 
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+
+            mods {
+                parasitusfix {
+                    source sourceSets.main
+                }
+            }
         }
 
         server {
+            workingDirectory project.file('run')
 
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+
+            mods {
+                parasitusfix {
+                    source sourceSets.main
+                }
+            }
         }
     }
 }
@@ -60,38 +59,39 @@ configurations {
 }
 
 dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
     compile files('libs/sevendaystomine-1.12.2-1.0.2.10.jar')
     compile files('libs/techguns-1.12.2-2.0.2.0.jar')
     compile files('libs/malisisdoors-1.12.2-7.3.0.jar')
     compile files('libs/ProjectVibrantJourneys-1.12.2-1.6.4.jar')
     compile files('libs/malisiscore-1.12.2-6.5.1.jar')
-
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
+// Fix ASM version conflicts
+configurations.all {
+    resolutionStrategy {
+        force 'org.ow2.asm:asm-debug-all:5.2'
+    }
+    exclude group: 'org.ow2.asm', module: 'asm-util'
+    exclude group: 'org.ow2.asm', module: 'asm-tree'
+    exclude group: 'org.ow2.asm', module: 'asm-analysis'
+    exclude group: 'org.ow2.asm', module: 'asm-commons'
+}
+
 jar {
     manifest {
         attributes([
-            "Specification-Title": "ParasitusFix",
-            "Specification-Vendor": "Toomda",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"Toomda",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "Specification-Title": "ParasitusFix",
+                "Specification-Vendor": "Toomda",
+                "Specification-Version": "1",
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"Toomda"
         ])
     }
 }
 
-// Example configuration to allow publishing using the maven-publish task
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
+jar.finalizedBy('reobfJar')
 
 publishing {
     publications {

@@ -1,6 +1,7 @@
 package com.toomda.parasitusfix.sevendaystomine;
 
 import com.toomda.parasitusfix.ParasitusFix;
+import com.toomda.parasitusfix.config.ParasitusFixConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -20,27 +21,17 @@ public final class BleedingTamer {
 
     private static final String MODID = "sevendaystomine";
 
-    private static final float SINGLE_HIT_ABS   = 6.0F;
-    private static final float SINGLE_HIT_RATIO = 0.22F;
-    private static final double SINGLE_HIT_CHANCE = 0.25;
-
-    private static final int   WINDOW_TICKS   = 40;
-    private static final float SUM_THRESHOLD  = 6.0F;
-    private static final int   HITS_THRESHOLD = 3;
-    private static final double PRESSURE_CHANCE = 0.60;
-
-    private static final int DURATION_TICKS = 20 * 10;
-    private static final int AMPLIFIER      = 1;
-
     private static final Map<Integer, Window> ACC = new HashMap<>();
 
     private static final class Window {
         int lastTick;
         int hits;
         float sum;
+
         void decayTo(int now) {
-            if (now - lastTick > WINDOW_TICKS) {
-                hits = 0; sum = 0F;
+            if (now - lastTick > ParasitusFixConfig.bleeding.windowTicks) {
+                hits = 0;
+                sum = 0F;
             }
             lastTick = now;
         }
@@ -60,29 +51,42 @@ public final class BleedingTamer {
         if (!isBleedEligible(e.getSource())) return;
 
         boolean bigSingle =
-                finalAmt >= SINGLE_HIT_ABS ||
-                        finalAmt >= target.getMaxHealth() * SINGLE_HIT_RATIO;
+                finalAmt >= ParasitusFixConfig.bleeding.singleHitAbs ||
+                        finalAmt >= target.getMaxHealth() * ParasitusFixConfig.bleeding.singleHitRatio;
 
         boolean trigger = false;
-        if (bigSingle && chance(SINGLE_HIT_CHANCE)) {
+
+        if (bigSingle && chance(ParasitusFixConfig.bleeding.singleHitChance)) {
             trigger = true;
-        } else {
+        }
+        else {
             WorldServer ws = (WorldServer) target.world;
             int now = ws.getMinecraftServer().getTickCounter();
 
             Window w = ACC.computeIfAbsent(target.getEntityId(), k -> new Window());
             w.decayTo(now);
+
             w.hits++;
             w.sum += finalAmt;
 
-            if ((w.hits >= HITS_THRESHOLD || w.sum >= SUM_THRESHOLD) && chance(PRESSURE_CHANCE)) {
+            if ((w.hits >= ParasitusFixConfig.bleeding.hitsThreshold ||
+                    w.sum >= ParasitusFixConfig.bleeding.sumThreshold)
+                    && chance(ParasitusFixConfig.bleeding.pressureChance)) {
+
                 trigger = true;
-                w.hits = 0; w.sum = 0F;
+                w.hits = 0;
+                w.sum = 0F;
             }
         }
 
         if (trigger) {
-            PotionEffect pe = new PotionEffect(Potions.bleeding, DURATION_TICKS, AMPLIFIER, true, true);
+            PotionEffect pe = new PotionEffect(
+                    Potions.bleeding,
+                    ParasitusFixConfig.bleeding.durationTicks,
+                    ParasitusFixConfig.bleeding.amplifier,
+                    true,
+                    true
+            );
             target.addPotionEffect(pe);
         }
     }
@@ -93,7 +97,9 @@ public final class BleedingTamer {
 
         String t = src.getDamageType();
         if ("player".equals(t) || "mob".equals(t) || "arrow".equals(t) ||
-                "generic".equals(t) || "cactus".equals(t) || "thorns".equals(t)) return true;
+                "generic".equals(t) || "cactus".equals(t) || "thorns".equals(t)) {
+            return true;
+        }
 
         return src.getTrueSource() != null;
     }
