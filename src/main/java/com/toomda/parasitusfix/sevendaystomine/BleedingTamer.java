@@ -1,14 +1,11 @@
 package com.toomda.parasitusfix.sevendaystomine;
 
-import com.toomda.parasitusfix.ParasitusFix;
 import com.toomda.parasitusfix.config.ParasitusFixConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import nuparu.sevendaystomine.potions.Potions;
@@ -17,11 +14,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = ParasitusFix.MODID)
 public final class BleedingTamer {
-
-    private static final String MODID = "sevendaystomine";
     private static final Map<Integer, Window> ACC = new HashMap<>();
+
+    public BleedingTamer() {}
 
     private static final class Window {
         int lastTick;
@@ -38,7 +34,7 @@ public final class BleedingTamer {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onFinalDamage(LivingDamageEvent e) {
+    public void onFinalDamage(LivingDamageEvent e) {
         if (!shouldProcessDamageEvent(e.getAmount(), e.isCanceled())) return;
 
         EntityLivingBase target = e.getEntityLiving();
@@ -128,11 +124,7 @@ public final class BleedingTamer {
     }
 
     private static boolean shouldProcessDamageEvent(float amount, boolean canceled) {
-        return isModLoaded() && !canceled && amount > 0;
-    }
-
-    private static boolean isModLoaded() {
-        return Loader.isModLoaded(MODID);
+        return !canceled && amount > 0;
     }
 
     private static boolean chance(double p) {

@@ -1,6 +1,5 @@
 package com.toomda.parasitusfix.sevendaystomine;
 
-import com.toomda.parasitusfix.ParasitusFix;
 import com.toomda.parasitusfix.config.ParasitusFixConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,8 +10,6 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import nuparu.sevendaystomine.potions.Potions;
@@ -23,39 +20,35 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = ParasitusFix.MODID)
 public final class BleedDamageLimiter {
-    private static final String MODID = "sevendaystomine";
     private static final Map<UUID, Integer> NEXT_BLEED_TICK = new HashMap<>();
     private static final Map<UUID, Integer> ALLOW_BLEED_TICK = new HashMap<>();
 
-    private BleedDamageLimiter() {}
+    public BleedDamageLimiter() {}
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onBleedAttack(LivingAttackEvent e) {
+    public void onBleedAttack(LivingAttackEvent e) {
         if (shouldCancelBleedEvent(e.getEntityLiving(), e.getSource(), e.getAmount(), e.isCanceled())) {
             e.setCanceled(true);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onBleedHurt(LivingHurtEvent e) {
+    public void onBleedHurt(LivingHurtEvent e) {
         if (shouldCancelBleedEvent(e.getEntityLiving(), e.getSource(), e.getAmount(), e.isCanceled())) {
             e.setCanceled(true);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onBleedDamage(LivingDamageEvent e) {
+    public void onBleedDamage(LivingDamageEvent e) {
         if (shouldCancelBleedEvent(e.getEntityLiving(), e.getSource(), e.getAmount(), e.isCanceled())) {
             e.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void onBleedTick(LivingEvent.LivingUpdateEvent e) {
-        if (!isModLoaded()) return;
-
+    public void onBleedTick(LivingEvent.LivingUpdateEvent e) {
         EntityLivingBase target = e.getEntityLiving();
         WorldServer ws = getServerWorld(target);
         if (ws == null || !(target instanceof EntityPlayer)) return;
@@ -84,7 +77,7 @@ public final class BleedDamageLimiter {
     }
 
     @SubscribeEvent
-    public static void onDeath(LivingDeathEvent e) {
+    public void onDeath(LivingDeathEvent e) {
         EntityLivingBase target = e.getEntityLiving();
         if (target instanceof EntityPlayer) {
             clearBleedState(target.getUniqueID());
@@ -164,11 +157,7 @@ public final class BleedDamageLimiter {
     }
 
     private static boolean shouldProcessDamageEvent(float amount, boolean canceled) {
-        return isModLoaded() && !canceled && amount > 0;
-    }
-
-    private static boolean isModLoaded() {
-        return Loader.isModLoaded(MODID);
+        return !canceled && amount > 0;
     }
 
     private static final class IntervalRange {

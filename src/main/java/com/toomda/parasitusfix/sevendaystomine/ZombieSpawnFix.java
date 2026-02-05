@@ -1,7 +1,6 @@
 package com.toomda.parasitusfix.sevendaystomine;
 
 
-import com.toomda.parasitusfix.ParasitusFix;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
@@ -10,20 +9,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import nuparu.sevendaystomine.entity.EntityZombieBase;
 
-@Mod.EventBusSubscriber(modid = ParasitusFix.MODID)
 public class ZombieSpawnFix {
     private static final int MAX_BLOCK_LIGHT = 7;
 
-    private ZombieSpawnFix(){}
+    public ZombieSpawnFix() {}
 
     @SubscribeEvent
-    public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn e) {
-        if (!Loader.isModLoaded("sevendaystomine")) return;
+    public void onCheckSpawn(LivingSpawnEvent.CheckSpawn e) {
         if (!(e.getEntityLiving() instanceof EntityZombieBase)) return;
 
         if (!isValidSpawn(e.getWorld(), new BlockPos(e.getX(), e.getY(), e.getZ()))) {
@@ -32,8 +27,7 @@ public class ZombieSpawnFix {
     }
 
     @SubscribeEvent
-    public static void onSpecialSpawn(LivingSpawnEvent.SpecialSpawn e) {
-        if (!Loader.isModLoaded("sevendaystomine")) return;
+    public void onSpecialSpawn(LivingSpawnEvent.SpecialSpawn e) {
         if (!(e.getEntityLiving() instanceof EntityZombieBase)) return;
 
         if (!isValidSpawn(e.getWorld(), e.getEntity().getPosition())) {

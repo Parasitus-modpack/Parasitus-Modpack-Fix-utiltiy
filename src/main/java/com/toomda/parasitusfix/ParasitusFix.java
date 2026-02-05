@@ -1,11 +1,19 @@
 package com.toomda.parasitusfix;
 
 import com.toomda.parasitusfix.Doors.ParasitusDoors;
+import com.toomda.parasitusfix.sevendaystomine.BandageInstantUse;
+import com.toomda.parasitusfix.sevendaystomine.BarbedWireDurabilityFix;
+import com.toomda.parasitusfix.sevendaystomine.BleedDamageLimiter;
+import com.toomda.parasitusfix.sevendaystomine.BleedingTamer;
 import com.toomda.parasitusfix.sevendaystomine.CrawlerArmorFix;
+import com.toomda.parasitusfix.sevendaystomine.EnchantItemFix;
+import com.toomda.parasitusfix.sevendaystomine.SevenDaysBlockPatches;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysChanceConfigGuard;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysDamagePatches;
+import com.toomda.parasitusfix.sevendaystomine.ZombieSpawnFix;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -35,6 +43,15 @@ public class ParasitusFix
     public void init(FMLInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new CrawlerArmorFix());
+
+        if (Loader.isModLoaded("sevendaystomine")) {
+            MinecraftForge.EVENT_BUS.register(new BleedingTamer());
+            MinecraftForge.EVENT_BUS.register(new BleedDamageLimiter());
+            MinecraftForge.EVENT_BUS.register(new BandageInstantUse());
+            MinecraftForge.EVENT_BUS.register(new ZombieSpawnFix());
+            MinecraftForge.EVENT_BUS.register(new BarbedWireDurabilityFix());
+            MinecraftForge.EVENT_BUS.register(new EnchantItemFix());
+        }
         logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
     }
 
@@ -42,6 +59,7 @@ public class ParasitusFix
     public void postInit(FMLPostInitializationEvent event) {
         SevenDaysChanceConfigGuard.apply();
         SevenDaysDamagePatches.apply();
+        SevenDaysBlockPatches.apply();
     }
 
 

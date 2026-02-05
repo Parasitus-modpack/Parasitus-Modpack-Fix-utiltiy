@@ -5,21 +5,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.enchanting.EnchantmentLevelSetEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = ParasitusFix.MODID)
 public class EnchantItemFix {
     private static final String MOD_7DTM = "sevendaystomine";
 
     private static final String CANNED_PREFIX = "canned";
 
-    private EnchantItemFix() {}
+    public EnchantItemFix() {}
 
     @SubscribeEvent
-    public static void onEnchantmentLevelSet(EnchantmentLevelSetEvent e) {
-        if (!Loader.isModLoaded(MOD_7DTM)) return;
+    public void onEnchantmentLevelSet(EnchantmentLevelSetEvent e) {
         ItemStack stack = e.getItem();
         if (isBlocked(stack)) {
             e.setLevel(0);
@@ -28,8 +24,7 @@ public class EnchantItemFix {
     }
 
     @SubscribeEvent
-    public static void onAnvil(AnvilUpdateEvent e) {
-        if (!Loader.isModLoaded(MOD_7DTM)) return;
+    public void onAnvil(AnvilUpdateEvent e) {
         if (isBlocked(e.getLeft()) || isBlocked(e.getRight())) {
             e.setCanceled(true);
             ParasitusFix.getLogger().info("[EnchantBlock] Blocked anvil op: left={}, right={}", idOf(e.getLeft()), idOf(e.getRight()));
