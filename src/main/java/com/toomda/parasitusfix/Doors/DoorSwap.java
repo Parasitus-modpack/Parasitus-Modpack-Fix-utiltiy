@@ -51,6 +51,7 @@ public class DoorSwap {
     }
 
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void onPlace(BlockEvent.PlaceEvent e) {
         if (e.getWorld().isRemote) return;
@@ -168,14 +169,12 @@ public class DoorSwap {
         w.notifyNeighborsOfStateChange(top,    mdBlock, false);
     }
 
-    @SuppressWarnings({"unchecked","rawtypes"})
     private static IBlockState copyPropIfPresent(IBlockState from, IBlockState to, String name) {
-        IProperty pFrom = from.getPropertyKeys().stream().filter(p -> p.getName().equals(name)).findFirst().orElse(null);
-        IProperty pTo   = to.getPropertyKeys().stream().filter(p -> p.getName().equals(name)).findFirst().orElse(null);
+        IProperty<?> pFrom = getPropertyByName(from, name);
+        IProperty<?> pTo   = getPropertyByName(to, name);
         if (pFrom == null || pTo == null) return to;
         if (!pFrom.getValueClass().equals(pTo.getValueClass())) return to;
-        Comparable val = from.getValue(pFrom);
-        return to.withProperty(pTo, val);
+        return copyPropUnchecked(from, to, pFrom, pTo);
     }
 
     private static IBlockState mapStateToMd(
@@ -190,15 +189,7 @@ public class DoorSwap {
         md = copyPropIfPresent(src, md, "half");
         for (IProperty<?> p : md.getPropertyKeys()) {
             if (p.getName().equals("half") || p.getName().equals("part")) {
-                for (Object o : p.getAllowedValues()) {
-                    String n = String.valueOf(o).toLowerCase();
-                    boolean isUpper = n.contains("upper") || n.contains("top");
-                    boolean isLower = n.contains("lower") || n.contains("bottom");
-                    if ((upper && isUpper) || (!upper && isLower)) {
-                        md = setProp(md, p, (Comparable) o);
-                        break;
-                    }
-                }
+                md = applyHalfProp(md, p, upper);
             }
         }
 
@@ -206,9 +197,48 @@ public class DoorSwap {
         return md;
     }
 
-    @SuppressWarnings({"rawtypes","unchecked"})
-    private static IBlockState setProp(IBlockState state, IProperty prop, Comparable value) {
-        return state.withProperty(prop, value);
+    private static IBlockState applyHalfProp(IBlockState state, IProperty<?> prop, boolean upper) {
+        if (!Comparable.class.isAssignableFrom(prop.getValueClass())) return state;
+        return applyHalfPropUnchecked(state, prop, upper);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> IBlockState applyHalfPropUnchecked(
+            IBlockState state,
+            IProperty<?> rawProp,
+            boolean upper
+    ) {
+        IProperty<T> prop = (IProperty<T>) rawProp;
+        for (T val : prop.getAllowedValues()) {
+            String n = String.valueOf(val).toLowerCase();
+            boolean isUpper = n.contains("upper") || n.contains("top");
+            boolean isLower = n.contains("lower") || n.contains("bottom");
+            if ((upper && isUpper) || (!upper && isLower)) {
+                return state.withProperty(prop, val);
+            }
+        }
+        return state;
+    }
+
+    private static IProperty<?> getPropertyByName(IBlockState state, String name) {
+        for (IProperty<?> p : state.getPropertyKeys()) {
+            if (p.getName().equals(name)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> IBlockState copyPropUnchecked(
+            IBlockState from,
+            IBlockState to,
+            IProperty<?> rawFrom,
+            IProperty<?> rawTo
+    ) {
+        IProperty<T> pFrom = (IProperty<T>) rawFrom;
+        IProperty<T> pTo = (IProperty<T>) rawTo;
+        return to.withProperty(pTo, from.getValue(pFrom));
     }
 
     private static BlockDoor.EnumHingePosition computeHinge(World w, BlockPos lowerPos, EnumFacing facing, Block mdBlock) {
@@ -224,25 +254,26 @@ public class DoorSwap {
         return BlockDoor.EnumHingePosition.LEFT;
     }
 
-    @SuppressWarnings("unchecked")
     private static boolean sameFacing(IBlockState st, EnumFacing facing) {
-        for (IProperty<?> p : st.getPropertyKeys()) {
-            if (p.getName().equals("facing") && EnumFacing.class.isAssignableFrom(p.getValueClass())) {
-                return facing == st.getValue((IProperty<EnumFacing>) p);
-            }
-        }
-        return false;
+        IProperty<EnumFacing> p = getFacingProperty(st);
+        return p != null && facing == st.getValue(p);
     }
 
 
     private static EnumFacing getFacingFrom(IBlockState src) {
-        IProperty<?> p = src.getPropertyKeys().stream()
-                .filter(pp -> pp.getName().equals("facing"))
-                .findFirst().orElse(null);
-        if (p != null && EnumFacing.class.isAssignableFrom(p.getValueClass())) {
-            return src.getValue((IProperty<EnumFacing>) p);
-        }
+        IProperty<EnumFacing> p = getFacingProperty(src);
+        if (p != null) return src.getValue(p);
         return EnumFacing.NORTH;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static IProperty<EnumFacing> getFacingProperty(IBlockState state) {
+        for (IProperty<?> p : state.getPropertyKeys()) {
+            if (p.getName().equals("facing") && EnumFacing.class.isAssignableFrom(p.getValueClass())) {
+                return (IProperty<EnumFacing>) p;
+            }
+        }
+        return null;
     }
 
     private static IBlockState setHinge(IBlockState state, BlockDoor.EnumHingePosition hinge) {

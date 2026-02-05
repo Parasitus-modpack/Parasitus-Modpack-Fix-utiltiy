@@ -14,13 +14,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import nuparu.sevendaystomine.potions.Potions;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = ParasitusFix.MODID)
 public final class BleedingTamer {
 
     private static final String MODID = "sevendaystomine";
-
     private static final Map<Integer, Window> ACC = new HashMap<>();
 
     private static final class Window {
@@ -28,8 +28,8 @@ public final class BleedingTamer {
         int hits;
         float sum;
 
-        void decayTo(int now) {
-            if (now - lastTick > ParasitusFixConfig.bleeding.windowTicks) {
+        void decayTo(int now, int windowTicks) {
+            if (now - lastTick > windowTicks) {
                 hits = 0;
                 sum = 0F;
             }
@@ -46,33 +46,34 @@ public final class BleedingTamer {
         if (target.world.isRemote) return;
         if (!(target.world instanceof WorldServer)) return;
 
-        final float finalAmt = e.getAmount();
-        if (finalAmt <= 0) return;
+        float damage = e.getAmount();
+        if (damage <= 0) return;
         if (!isBleedEligible(e.getSource())) return;
 
+        ParasitusFixConfig.Bleeding cfg = ParasitusFixConfig.BLEEDING;
+
         boolean bigSingle =
-                finalAmt >= ParasitusFixConfig.bleeding.singleHitAbs ||
-                        finalAmt >= target.getMaxHealth() * ParasitusFixConfig.bleeding.singleHitRatio;
+                damage >= cfg.singleHitAbs ||
+                        damage >= target.getMaxHealth() * cfg.singleHitRatio;
 
         boolean trigger = false;
+        float effectiveDamage = damage;
 
-        if (bigSingle && chance(ParasitusFixConfig.bleeding.singleHitChance)) {
+        if (bigSingle && chance(cfg.singleHitChance)) {
             trigger = true;
-        }
-        else {
+        } else {
             WorldServer ws = (WorldServer) target.world;
             int now = ws.getMinecraftServer().getTickCounter();
 
             Window w = ACC.computeIfAbsent(target.getEntityId(), k -> new Window());
-            w.decayTo(now);
+            w.decayTo(now, cfg.windowTicks);
 
             w.hits++;
-            w.sum += finalAmt;
+            w.sum += damage;
+            effectiveDamage = w.sum;
 
-            if ((w.hits >= ParasitusFixConfig.bleeding.hitsThreshold ||
-                    w.sum >= ParasitusFixConfig.bleeding.sumThreshold)
-                    && chance(ParasitusFixConfig.bleeding.pressureChance)) {
-
+            if ((w.hits >= cfg.hitsThreshold || w.sum >= cfg.sumThreshold)
+                    && chance(cfg.pressureChance)) {
                 trigger = true;
                 w.hits = 0;
                 w.sum = 0F;
@@ -80,10 +81,11 @@ public final class BleedingTamer {
         }
 
         if (trigger) {
+            int durationTicks = calculateDurationTicks(effectiveDamage, cfg);
             PotionEffect pe = new PotionEffect(
                     Potions.bleeding,
-                    ParasitusFixConfig.bleeding.durationTicks,
-                    ParasitusFixConfig.bleeding.amplifier,
+                    durationTicks,
+                    cfg.amplifier,
                     true,
                     true
             );
@@ -91,17 +93,34 @@ public final class BleedingTamer {
         }
     }
 
+    private static int calculateDurationTicks(float damage, ParasitusFixConfig.Bleeding cfg) {
+        float t = Math.min(damage / cfg.maxDurationDamage, 1.0F);
+
+        int seconds = Math.round(
+                cfg.minDurationSeconds +
+                        t * (cfg.maxDurationSeconds - cfg.minDurationSeconds)
+        );
+
+        return seconds * 20;
+    }
+
     private static boolean isBleedEligible(DamageSource src) {
         if (src == null) return false;
+        if (isBleedDamageSource(src)) return false;
         if (src.isFireDamage() || src.isExplosion() || src.isMagicDamage()) return false;
 
         String t = src.getDamageType();
         if ("player".equals(t) || "mob".equals(t) || "arrow".equals(t) ||
-                "generic".equals(t) || "cactus".equals(t) || "thorns".equals(t)) {
+                "generic".equals(t) || "cactus".equals(t) || "thorns".equals(t))
             return true;
-        }
 
         return src.getTrueSource() != null;
+    }
+
+    private static boolean isBleedDamageSource(DamageSource src) {
+        String t = src.getDamageType();
+        if (t == null) return false;
+        return t.toLowerCase(Locale.ROOT).contains("bleed");
     }
 
     private static boolean chance(double p) {

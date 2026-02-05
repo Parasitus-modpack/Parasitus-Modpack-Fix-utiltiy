@@ -67,7 +67,6 @@ dependencies {
     compile files('libs/malisiscore-1.12.2-6.5.1.jar')
 }
 
-// Fix ASM version conflicts
 configurations.all {
     resolutionStrategy {
         force 'org.ow2.asm:asm-debug-all:5.2'

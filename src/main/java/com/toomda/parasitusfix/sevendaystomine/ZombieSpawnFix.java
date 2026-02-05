@@ -5,6 +5,7 @@ import com.toomda.parasitusfix.ParasitusFix;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -48,7 +49,7 @@ public class ZombieSpawnFix {
         IBlockState below = w.getBlockState(belowPos);
         Block belowBlock = below.getBlock();
 
-        if (!below.isOpaqueCube() || !below.isFullCube() || !below.isTopSolid()) return false;
+        if (!below.isOpaqueCube() || !below.isFullCube() || !below.isSideSolid(w, belowPos, EnumFacing.UP)) return false;
         if (belowBlock instanceof BlockSlab && !below.isFullCube()) return false;
 
         IBlockState at = w.getBlockState(pos);

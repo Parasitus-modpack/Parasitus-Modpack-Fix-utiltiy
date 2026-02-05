@@ -3,49 +3,45 @@ package com.toomda.parasitusfix.config;
 import com.toomda.parasitusfix.ParasitusFix;
 import net.minecraftforge.common.config.Config;
 
-@Config(
-        modid = ParasitusFix.MODID,
-        name = "parasitusfix"
-)
-public class ParasitusFixConfig {
+@Config(modid = ParasitusFix.MODID)
+public final class ParasitusFixConfig {
 
-    @Config.Comment("Bleeding behavior tuning")
-    public static Bleeding bleeding = new Bleeding();
+    @Config.Name("Bleeding")
+    public static final Bleeding BLEEDING = new Bleeding();
 
-    public static class Bleeding {
+    public static final class Bleeding {
 
-        @Config.Comment("Absolute damage required for a single hit to qualify as 'big'")
+        @Config.Comment("Absolute damage needed for a single hit to possibly cause bleeding")
         public float singleHitAbs = 6.0F;
 
-        @Config.Comment("Percentage of max health required for a single hit to qualify as 'big'")
-        @Config.RangeDouble(min = 0.0, max = 1.0)
+        @Config.Comment("Ratio of max health needed for a single hit to possibly cause bleeding")
         public float singleHitRatio = 0.22F;
 
-        @Config.Comment("Chance to apply bleeding from a big single hit")
-        @Config.RangeDouble(min = 0.0, max = 1.0)
-        public double singleHitChance = 0.25;
+        @Config.Comment("Chance for bleeding on a big single hit (0.0 - 1.0)")
+        public double singleHitChance = 0.25D;
 
-        @Config.Comment("Time window (in ticks) for sustained damage accumulation")
-        @Config.RangeInt(min = 1)
+        @Config.Comment("Time window (in ticks) to accumulate damage pressure")
         public int windowTicks = 40;
 
-        @Config.Comment("Total damage required within the window to trigger pressure bleeding")
+        @Config.Comment("Total accumulated damage needed to trigger bleeding")
         public float sumThreshold = 6.0F;
 
-        @Config.Comment("Number of hits required within the window to trigger pressure bleeding")
-        @Config.RangeInt(min = 1)
+        @Config.Comment("Number of hits in window needed to trigger bleeding")
         public int hitsThreshold = 3;
 
-        @Config.Comment("Chance to apply bleeding once pressure thresholds are met")
-        @Config.RangeDouble(min = 0.0, max = 1.0)
-        public double pressureChance = 0.60;
+        @Config.Comment("Chance for bleeding when pressure threshold is met (0.0 - 1.0)")
+        public double pressureChance = 0.60D;
 
-        @Config.Comment("Bleeding duration in ticks")
-        @Config.RangeInt(min = 1)
-        public int durationTicks = 20 * 10;
+        @Config.Comment("Minimum bleed duration in seconds")
+        public int minDurationSeconds = 3;
 
-        @Config.Comment("Bleeding amplifier level (0 = level 1)")
-        @Config.RangeInt(min = 0)
-        public int amplifier = 1;
+        @Config.Comment("Maximum bleed duration in seconds")
+        public int maxDurationSeconds = 7;
+
+        @Config.Comment("Damage value that maps to maximum bleeding duration")
+        public float maxDurationDamage = 10.0F;
+
+        @Config.Comment("Bleeding potion amplifier")
+        public int amplifier = 0;
     }
 }

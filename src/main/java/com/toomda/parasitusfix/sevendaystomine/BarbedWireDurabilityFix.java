@@ -23,6 +23,7 @@ public class BarbedWireDurabilityFix {
 
     private BarbedWireDurabilityFix() {}
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void onPlace(BlockEvent.PlaceEvent e) {
         if (!Loader.isModLoaded(MODID)) return;
