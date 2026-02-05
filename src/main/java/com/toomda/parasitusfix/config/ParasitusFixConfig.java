@@ -41,6 +41,9 @@ public final class ParasitusFixConfig {
         @Config.Comment("Damage value that maps to maximum bleeding duration")
         public float maxDurationDamage = 10.0F;
 
+        @Config.Comment("Minimum ticks between bleeding damage applications (1 = no throttling)")
+        public int damageIntervalTicks = 20;
+
         @Config.Comment("Bleeding potion amplifier")
         public int amplifier = 0;
     }
