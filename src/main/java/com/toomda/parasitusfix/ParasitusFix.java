@@ -4,6 +4,7 @@ import com.toomda.parasitusfix.Doors.ParasitusDoors;
 import com.toomda.parasitusfix.sevendaystomine.BandageInstantUse;
 import com.toomda.parasitusfix.sevendaystomine.BarbedWireDurabilityFix;
 import com.toomda.parasitusfix.sevendaystomine.BleedDamageLimiter;
+import com.toomda.parasitusfix.sevendaystomine.BleedEffectClamp;
 import com.toomda.parasitusfix.sevendaystomine.BleedingTamer;
 import com.toomda.parasitusfix.sevendaystomine.CrawlerArmorFix;
 import com.toomda.parasitusfix.sevendaystomine.EnchantItemFix;
@@ -47,6 +48,7 @@ public class ParasitusFix
         if (Loader.isModLoaded("sevendaystomine")) {
             MinecraftForge.EVENT_BUS.register(new BleedingTamer());
             MinecraftForge.EVENT_BUS.register(new BleedDamageLimiter());
+            MinecraftForge.EVENT_BUS.register(new BleedEffectClamp());
             MinecraftForge.EVENT_BUS.register(new BandageInstantUse());
             MinecraftForge.EVENT_BUS.register(new ZombieSpawnFix());
             MinecraftForge.EVENT_BUS.register(new BarbedWireDurabilityFix());
