@@ -15,6 +15,7 @@ import com.toomda.parasitusfix.sevendaystomine.ZombieSpawnFix;
 import com.toomda.parasitusfix.techguns.TechgunsAttackHelicopterTargetFix;
 import com.toomda.parasitusfix.techguns.TechgunsAttackHelicopterNoDespawn;
 import com.toomda.parasitusfix.techguns.TechgunsSoldierZombieTargetFix;
+import com.toomda.parasitusfix.techguns.TechgunsGrinderDurabilityFix;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -70,6 +71,9 @@ public class ParasitusFix
         SevenDaysChanceConfigGuard.apply();
         SevenDaysDamagePatches.apply();
         SevenDaysBlockPatches.apply();
+        if (Loader.isModLoaded("techguns")) {
+            TechgunsGrinderDurabilityFix.apply();
+        }
     }
 
 
