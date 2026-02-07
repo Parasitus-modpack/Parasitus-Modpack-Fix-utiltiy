@@ -29,10 +29,6 @@ public class ParasitusDoors {
         }
     }
     private static final List<DoorSpec> SPECS = Arrays.asList(
-            new DoorSpec("techguns", "bunkerdoor",
-                    "bunker_door", "parasitusfix", "bunker_door",
-                    "rotating_door", "iron_door"),
-
             new DoorSpec("pvj", "fir_door",
                     "door_fir", "parasitusfix", "door_fir",
                     "rotating_door", "vanilla_door"),
@@ -77,7 +73,7 @@ public class ParasitusDoors {
     public static void registerAll() {
         for (DoorSpec s : SPECS) {
             DoorDescriptor d = new DoorDescriptor();
-            d.setRegistryName(s.regPath);
+            d.setName(s.regPath);
 
             d.setMovement(DoorRegistry.getMovement(s.movementId));
             d.setSound(DoorRegistry.getSound(s.soundId));

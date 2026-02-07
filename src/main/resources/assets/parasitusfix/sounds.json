@@ -1,0 +1,14 @@
+{
+  "bunkerdoor_open": {
+    "category": "block",
+    "sounds": [
+      "bunkerdoor_open_a"
+    ]
+  },
+  "bunkerdoor_close": {
+    "category": "block",
+    "sounds": [
+      "bunkerdoor_close_b"
+    ]
+  }
+}
