@@ -20,12 +20,16 @@ import techguns.entities.npcs.ZombiePoliceman;
 import techguns.entities.npcs.ZombieSoldier;
 
 public class TechgunsSoldierZombieTargetFix {
-    private static final String NBT_KEY = "parasitusfix:tgsoldierZombieTarget";
+    private static final String NBT_KEY_SOLDIER = "parasitusfix:tgsoldierZombieTarget";
+    private static final String NBT_KEY_ZOMBIE = "parasitusfix:tgzombieSoldierTarget";
     private static final int TARGET_PRIORITY = 3;
     private static final int TARGET_CHANCE = 5;
 
     private static final Predicate<EntityLivingBase> ZOMBIE_TARGET = target ->
             target != null && isZombieTarget(target);
+
+    private static final Predicate<EntityLivingBase> SOLDIER_TARGET = target ->
+            target != null && isTechgunSoldier(target);
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
@@ -33,17 +37,31 @@ public class TechgunsSoldierZombieTargetFix {
 
         Entity entity = event.getEntity();
         if (!(entity instanceof EntityCreature)) return;
-        if (!isTechgunSoldier(entity)) return;
 
-        NBTTagCompound data = entity.getEntityData();
-        if (data.getBoolean(NBT_KEY)) return;
-        data.setBoolean(NBT_KEY, true);
+        if (isTechgunSoldier(entity)) {
+            NBTTagCompound data = entity.getEntityData();
+            if (data.getBoolean(NBT_KEY_SOLDIER)) return;
+            data.setBoolean(NBT_KEY_SOLDIER, true);
 
-        EntityCreature creature = (EntityCreature) entity;
-        creature.targetTasks.addTask(
-                TARGET_PRIORITY,
-                new EntityAINearestAttackableTarget<>(creature, EntityLivingBase.class, TARGET_CHANCE, true, false, ZOMBIE_TARGET)
-        );
+            EntityCreature creature = (EntityCreature) entity;
+            creature.targetTasks.addTask(
+                    TARGET_PRIORITY,
+                    new EntityAINearestAttackableTarget<>(creature, EntityLivingBase.class, TARGET_CHANCE, true, false, ZOMBIE_TARGET)
+            );
+            return;
+        }
+
+        if (isZombieSource(entity)) {
+            NBTTagCompound data = entity.getEntityData();
+            if (data.getBoolean(NBT_KEY_ZOMBIE)) return;
+            data.setBoolean(NBT_KEY_ZOMBIE, true);
+
+            EntityCreature creature = (EntityCreature) entity;
+            creature.targetTasks.addTask(
+                    TARGET_PRIORITY,
+                    new EntityAINearestAttackableTarget<>(creature, EntityLivingBase.class, TARGET_CHANCE, true, false, SOLDIER_TARGET)
+            );
+        }
     }
 
     private static boolean isTechgunSoldier(Entity entity) {
@@ -53,6 +71,17 @@ public class TechgunsSoldierZombieTargetFix {
     }
 
     private static boolean isZombieTarget(EntityLivingBase entity) {
+        if (entity instanceof EntityZombie && !(entity instanceof EntityPigZombie)) {
+            return true;
+        }
+        return entity instanceof ZombieSoldier
+                || entity instanceof ZombiePoliceman
+                || entity instanceof ZombieFarmer
+                || entity instanceof ZombieMiner
+                || entity instanceof ZombiePigmanSoldier;
+    }
+
+    private static boolean isZombieSource(Entity entity) {
         if (entity instanceof EntityZombie && !(entity instanceof EntityPigZombie)) {
             return true;
         }
