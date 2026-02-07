@@ -21,7 +21,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.HashSet;
 import java.util.Set;
 
-@Mod.EventBusSubscriber(modid = ParasitusFix.MODID, value = Side.CLIENT)
+// TODO: Temporarily disabled (bunkerdoor sound override).
+// @Mod.EventBusSubscriber(modid = ParasitusFix.MODID, value = Side.CLIENT)
+@Deprecated
 public class TechgunsBunkerDoorSoundSuppressor {
     private static final ResourceLocation BUNKER_DOOR_ID = new ResourceLocation("techguns", "bunkerdoor");
     private static final ResourceLocation PF_OPEN = new ResourceLocation(ParasitusFix.MODID, "bunkerdoor_open");
@@ -38,6 +40,8 @@ public class TechgunsBunkerDoorSoundSuppressor {
 
     @SubscribeEvent
     public static void onPlaySound(PlaySoundEvent event) {
+        // Disabled for now.
+        if (true) return;
         ISound sound = event.getSound();
         if (sound == null) return;
         ResourceLocation soundId = sound.getSoundLocation();
