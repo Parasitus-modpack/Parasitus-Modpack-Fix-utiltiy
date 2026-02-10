@@ -10,6 +10,7 @@ import com.toomda.parasitusfix.sevendaystomine.BleedingTamer;
 import com.toomda.parasitusfix.sevendaystomine.CrawlerArmorFix;
 import com.toomda.parasitusfix.sevendaystomine.EnchantItemFix;
 import com.toomda.parasitusfix.sevendaystomine.FlamethrowerTrapFuelSwap;
+import com.toomda.parasitusfix.sevendaystomine.SevenDaysCoalBurnTimeFix;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysBlockPatches;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysChanceConfigGuard;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysDamagePatches;
@@ -71,6 +72,7 @@ public class ParasitusFix
             MinecraftForge.EVENT_BUS.register(new BandageInstantUse());
             MinecraftForge.EVENT_BUS.register(new BarbedWireDurabilityFix());
             MinecraftForge.EVENT_BUS.register(new EnchantItemFix());
+            MinecraftForge.EVENT_BUS.register(new SevenDaysCoalBurnTimeFix());
             MinecraftForge.EVENT_BUS.register(new SevenDaysZombieEndSpawnRestrict());
             if (Loader.isModLoaded("buildcraftenergy")) {
                 MinecraftForge.EVENT_BUS.register(new FlamethrowerTrapFuelSwap());
