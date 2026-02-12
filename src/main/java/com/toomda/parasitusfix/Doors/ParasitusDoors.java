@@ -13,9 +13,11 @@ import java.util.*;
 
 public class ParasitusDoors {
     public static final Map<ResourceLocation, Block> SRC2MD_BLOCK = new HashMap<>();
+    public static final Map<ResourceLocation, Block> SRC_ITEM2MD_BLOCK = new HashMap<>();
     public static final Map<Block, Item> MD2SRC_ITEM = new HashMap<>();
     public static class DoorSpec {
         public final ResourceLocation sourceId;
+        public final ResourceLocation sourceItemId;
         public final String regPath;
         public final String texMod;
         public final String texBase;
@@ -25,7 +27,14 @@ public class ParasitusDoors {
         public DoorSpec(String srcMod, String srcPath,
                         String regPath, String texMod, String texBase,
                         String movementId, String soundId) {
+            this(srcMod, srcPath, srcPath, regPath, texMod, texBase, movementId, soundId);
+        }
+
+        public DoorSpec(String srcMod, String srcPath, String srcItemPath,
+                        String regPath, String texMod, String texBase,
+                        String movementId, String soundId) {
             this.sourceId = new ResourceLocation(srcMod, srcPath);
+            this.sourceItemId = new ResourceLocation(srcMod, srcItemPath);
             this.regPath = regPath;
             this.texMod = texMod;
             this.texBase = texBase;
@@ -34,6 +43,9 @@ public class ParasitusDoors {
         }
     }
     private static final List<DoorSpec> SPECS = Arrays.asList(
+            new DoorSpec("techguns", "bunkerdoor", "item_bunkerdoor",
+                    "door_bunker", "parasitusfix", "bunker_door",
+                    "rotating_door", "vanilla_door"),
             new DoorSpec("pvj", "fir_door",
                     "door_fir", "parasitusfix", "door_fir",
                     "rotating_door", "vanilla_door"),
@@ -97,9 +109,17 @@ public class ParasitusDoors {
             SRC2MD_BLOCK.put(s.sourceId, mdBlock);
 
             Block srcBlock = ForgeRegistries.BLOCKS.getValue(s.sourceId);
-            Item srcItem = srcBlock != null ? Item.getItemFromBlock(srcBlock) : Items.AIR;
+            Item srcItem = ForgeRegistries.ITEMS.getValue(s.sourceItemId);
+            if (srcItem == null || srcItem == Items.AIR) {
+                srcItem = srcBlock != null ? Item.getItemFromBlock(srcBlock) : Items.AIR;
+            }
+
             if (srcItem != null && srcItem != Items.AIR) {
                 MD2SRC_ITEM.put(mdBlock, srcItem);
+                ResourceLocation srcItemId = srcItem.getRegistryName();
+                if (srcItemId != null) {
+                    SRC_ITEM2MD_BLOCK.put(srcItemId, mdBlock);
+                }
             }
         }
     }

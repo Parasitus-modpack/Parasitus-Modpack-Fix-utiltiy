@@ -62,6 +62,22 @@ public class SevenDaysCoalBurnTimeFix {
             return CHARCOAL_BLOCK_BURN_TICKS;
         }
 
+        if ("sevendaystomine".equals(registryName.getResourceDomain())) {
+            String path = registryName.getResourcePath();
+            if ("coal_block".equals(path) || path.endsWith("_coal_block")) {
+                return COAL_BLOCK_BURN_TICKS;
+            }
+            if ("coal".equals(path) || path.endsWith("_coal")) {
+                return COAL_BURN_TICKS;
+            }
+            if ("charcoal_block".equals(path) || path.endsWith("_charcoal_block")) {
+                return CHARCOAL_BLOCK_BURN_TICKS;
+            }
+            if ("charcoal".equals(path) || path.endsWith("_charcoal")) {
+                return CHARCOAL_BURN_TICKS;
+            }
+        }
+
         return 0;
     }
 }

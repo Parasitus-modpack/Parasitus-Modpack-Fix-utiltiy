@@ -84,14 +84,20 @@ public class DoorSwap {
         ResourceLocation itemId = item.getRegistryName();
         if (itemId == null) return;
 
-        // Check if this is a PVJ door item that needs swapping
-        Block pvjDoor = Block.getBlockFromItem(item);
-        if (pvjDoor == null) return;
+        // Check if this is a source door item that needs swapping.
+        Block replacement = ParasitusDoors.SRC_ITEM2MD_BLOCK.get(itemId);
 
-        ResourceLocation blockId = pvjDoor.getRegistryName();
-        if (blockId == null) return;
+        // Fallback for standard ItemBlock doors.
+        if (replacement == null) {
+            Block srcDoor = Block.getBlockFromItem(item);
+            if (srcDoor != null) {
+                ResourceLocation blockId = srcDoor.getRegistryName();
+                if (blockId != null) {
+                    replacement = ParasitusDoors.SRC2MD_BLOCK.get(blockId);
+                }
+            }
+        }
 
-        Block replacement = ParasitusDoors.SRC2MD_BLOCK.get(blockId);
         if (replacement == null) return;
 
         PLACEMENT_COOLDOWN.put(player.getUniqueID(), w.getTotalWorldTime());
@@ -201,6 +207,14 @@ public class DoorSwap {
 
         World w = e.getWorld();
         if (w.isRemote) return;
+
+        if (e.getState().getBlock() instanceof BlockDoor) {
+            BlockDoor.EnumDoorHalf half = e.getState().getValue(BlockDoor.HALF);
+            if (half == BlockDoor.EnumDoorHalf.UPPER) {
+                e.getDrops().clear();
+                return;
+            }
+        }
 
         Block block = e.getState().getBlock();
         Item correctItem = ParasitusDoors.MD2SRC_ITEM.get(block);

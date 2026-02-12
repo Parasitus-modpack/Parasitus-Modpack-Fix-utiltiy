@@ -64,21 +64,21 @@ public final class ParasitusFixConfig {
         @Config.Comment({
             "Enable automatic scanning and replacement of existing doors in loaded chunks.",
             "FALSE = Existing doors in world are never touched (safe for existing structures)",
-            "TRUE = All PVJ doors will be replaced with MalisisDoors when chunks load"
+            "TRUE = PVJ and Techguns bunker doors will be replaced with MalisisDoors when chunks load"
         })
         @Config.RequiresMcRestart
         public boolean enableWorldDoorReplacement = false;
 
         @Config.Comment({
-            "Enable door replacement when players place PVJ doors.",
-            "TRUE = Newly placed PVJ doors will automatically become MalisisDoors",
+            "Enable door replacement when players place PVJ/Techguns bunker doors.",
+            "TRUE = Newly placed source doors will automatically become MalisisDoors",
             "FALSE = Doors remain as originally placed"
         })
         public boolean enablePlayerPlacementSwap = true;
 
         @Config.Comment({
             "Enable corrected item drops when MalisisDoors are broken.",
-            "TRUE = Breaking a MalisisDoor drops the original PVJ door item",
+            "TRUE = Breaking a MalisisDoor drops the original source door item",
             "FALSE = Normal drop behavior"
         })
         public boolean enableDropSwap = true;
