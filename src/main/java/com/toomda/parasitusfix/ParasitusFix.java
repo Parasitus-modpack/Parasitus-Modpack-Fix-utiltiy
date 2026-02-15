@@ -1,6 +1,5 @@
 package com.toomda.parasitusfix;
 
-import com.toomda.parasitusfix.Doors.ParasitusDoors;
 import com.toomda.parasitusfix.commands.ParasitusFixCommand;
 import com.toomda.parasitusfix.sevendaystomine.BandageInstantUse;
 import com.toomda.parasitusfix.sevendaystomine.BarbedWireDurabilityFix;
@@ -10,7 +9,6 @@ import com.toomda.parasitusfix.sevendaystomine.BleedingTamer;
 import com.toomda.parasitusfix.sevendaystomine.CrawlerArmorFix;
 import com.toomda.parasitusfix.sevendaystomine.EnchantItemFix;
 import com.toomda.parasitusfix.sevendaystomine.FlamethrowerTrapFuelSwap;
-import com.toomda.parasitusfix.sevendaystomine.SevenDaysCoalBurnTimeFix;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysBlockPatches;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysChanceConfigGuard;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysDamagePatches;
@@ -57,7 +55,6 @@ public class ParasitusFix
     public void preInit(FMLPreInitializationEvent event)
     {
         logger = event.getModLog();
-        ParasitusDoors.registerAll();
     }
 
     @EventHandler
@@ -90,8 +87,6 @@ public class ParasitusFix
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         if (Loader.isModLoaded("sevendaystomine")) {
-            // Register after most mods finish init so our LOWEST fuel override wins.
-            MinecraftForge.EVENT_BUS.register(new SevenDaysCoalBurnTimeFix());
         }
         SevenDaysChanceConfigGuard.apply();
         SevenDaysDamagePatches.apply();
