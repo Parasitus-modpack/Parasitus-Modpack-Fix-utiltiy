@@ -15,7 +15,7 @@ jobs:
           ACTOR: ${{ github.actor }}
           BRANCH: ${{ github.ref_name }}
           SHA: ${{ github.sha }}
-          COMMIT_URL: ${{ github.event.head_commit.url || format('{0}/{1}/commit/{2}', github.server_url, github.repository, github.sha) }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Manual workflow run' }}
           DOWNLOAD_URL: https://github.com/Parasitus-modpack/Parasitus-Modpack-Fix-utiltiy/releases/tag/latest
         run: |
           if [ -z "$DISCORD_WEBHOOK" ]; then
@@ -30,9 +30,9 @@ jobs:
             --arg actor "$ACTOR" \
             --arg branch "$BRANCH" \
             --arg sha "$SHORT_SHA" \
-            --arg commit_url "$COMMIT_URL" \
+            --arg commit_message "$COMMIT_MESSAGE" \
             --arg download_url "$DOWNLOAD_URL" \
-            '"New push in **\($repo)** (\($branch)) by **\($actor)**\nLinks: [commit](\($commit_url)) | [download](\($download_url)) | `\($sha)`"')
+            '"New push in **\($repo)** (\($branch)) by **\($actor)**\nCommit message: \($commit_message)\nLinks: [download](\($download_url)) | `\($sha)`"')
 
           curl -sS -X POST \
             -H "Content-Type: application/json" \
