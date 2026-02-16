@@ -1,4 +1,4 @@
-name: Discord Test
+name: Discord Notifications
 
 on:
   push:
@@ -8,8 +8,35 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send test message
+      - name: Send push notification to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+          BRANCH: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Manual workflow run' }}
+          COMMIT_URL: ${{ github.event.head_commit.url || format('{0}/{1}/commit/{2}', github.server_url, github.repository, github.sha) }}
+          RUN_URL: ${{ format('{0}/{1}/actions/runs/{2}', github.server_url, github.repository, github.run_id) }}
         run: |
-          curl -H "Content-Type: application/json" \
-          -d '{"content":"✅ Discord webhook test from GitHub Actions"}' \
-          ${{ secrets.DISCORD_WEBHOOK }}
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK secret is not set"
+            exit 1
+          fi
+
+          SHORT_SHA="${SHA:0:7}"
+
+          CONTENT=$(jq -n \
+            --arg repo "$REPO" \
+            --arg actor "$ACTOR" \
+            --arg branch "$BRANCH" \
+            --arg sha "$SHORT_SHA" \
+            --arg commit_message "$COMMIT_MESSAGE" \
+            --arg commit_url "$COMMIT_URL" \
+            --arg run_url "$RUN_URL" \
+            '"New push in **\($repo)** (\($branch)) by **\($actor)**\nCommit message: \($commit_message)\nLinks: [commit](\($commit_url)) | [download](\($run_url)) | `\($sha)`"')
+
+          curl -sS -X POST \
+            -H "Content-Type: application/json" \
+            -d "{\"content\":$CONTENT}" \
+            "$DISCORD_WEBHOOK"
