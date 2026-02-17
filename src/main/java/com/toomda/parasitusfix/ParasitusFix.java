@@ -25,11 +25,9 @@ import com.toomda.parasitusfix.techguns.TechgunsBlockHardnessCap;
 import com.toomda.parasitusfix.Doors.ParasitusDoors;
 import com.toomda.parasitusfix.buildcraft.BuildCraftOreProcessing;
 import com.toomda.parasitusfix.buildcraft.QuartzKinesisPipeCapRemoval;
-import net.minecraft.entity.Entity;
+import com.toomda.parasitusfix.techguns.TechgunsZombieEndSpawnRestrict;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -37,14 +35,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
-import techguns.entities.npcs.ZombieFarmer;
-import techguns.entities.npcs.ZombieMiner;
-import techguns.entities.npcs.ZombiePigmanSoldier;
-import techguns.entities.npcs.ZombiePoliceman;
-import techguns.entities.npcs.ZombieSoldier;
 
 @Mod(modid = ParasitusFix.MODID, name = ParasitusFix.NAME, version = ParasitusFix.VERSION, dependencies = "required-after:sevendaystomine")
 public class ParasitusFix
@@ -125,39 +116,5 @@ public class ParasitusFix
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new ParasitusFixCommand());
         logger.info("ParasitusFix commands registered");
-    }
-
-    private static final class TechgunsZombieEndSpawnRestrict {
-        private static final int END_DIMENSION_ID = 1;
-
-        @SubscribeEvent
-        public void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-            if (!isTechgunsZombie(event.getEntity())) return;
-
-            World world = event.getWorld();
-            if (world.provider.getDimension() == END_DIMENSION_ID) {
-                event.setResult(Event.Result.DENY);
-                ParasitusFix.getLogger().debug("Blocked Techguns zombie spawn in The End");
-            }
-        }
-
-        @SubscribeEvent
-        public void onSpecialSpawn(LivingSpawnEvent.SpecialSpawn event) {
-            if (!isTechgunsZombie(event.getEntity())) return;
-
-            World world = event.getWorld();
-            if (world.provider.getDimension() == END_DIMENSION_ID) {
-                event.setCanceled(true);
-                ParasitusFix.getLogger().debug("Blocked Techguns zombie special spawn in The End");
-            }
-        }
-
-        private static boolean isTechgunsZombie(Entity entity) {
-            return entity instanceof ZombieSoldier
-                || entity instanceof ZombiePoliceman
-                || entity instanceof ZombieFarmer
-                || entity instanceof ZombieMiner
-                || entity instanceof ZombiePigmanSoldier;
-        }
     }
 }
