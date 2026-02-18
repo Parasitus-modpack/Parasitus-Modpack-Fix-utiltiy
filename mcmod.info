@@ -1,0 +1,16 @@
+[
+{
+  "modid": "hw_inv",
+  "name": "Hostile Worlds Invasions",
+  "description": "",
+  "version": "1.12.1-1.1.13",
+  "mcversion": "1.12.1",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Corosus"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

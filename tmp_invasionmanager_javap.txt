@@ -1,0 +1,2203 @@
+Compiled from "InvasionManager.java"
+public class com.corosus.inv.InvasionManager {
+  public static boolean invasionOnThisNight_Last;
+
+  public static boolean isDayLast;
+
+  public com.corosus.inv.InvasionManager();
+    Code:
+       0: aload_0
+       1: invokespecial #12                 // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static boolean canPlayerSkipInvasion(net.minecraft.entity.player.EntityPlayer);
+    Code:
+       0: aload_0
+       1: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+       4: astore_1
+       5: aload_0
+       6: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+       9: getstatic     #32                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipping:Ljava/lang/String;
+      12: invokevirtual #38                 // Method net/minecraft/nbt/NBTTagCompound.func_74767_n:(Ljava/lang/String;)Z
+      15: istore_2
+      16: iload_2
+      17: ifne          61
+      20: aload_1
+      21: invokestatic  #42                 // Method isInvasionTonight:(Lnet/minecraft/world/World;)Z
+      24: ifeq          61
+      27: aload_1
+      28: invokestatic  #47                 // Method CoroUtil/util/CoroUtilWorldTime.isNightPadded:(Lnet/minecraft/world/World;)Z
+      31: ifne          61
+      34: aload_0
+      35: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      38: getstatic     #50                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipCount:Ljava/lang/String;
+      41: invokevirtual #54                 // Method net/minecraft/nbt/NBTTagCompound.func_74762_e:(Ljava/lang/String;)I
+      44: istore_3
+      45: getstatic     #60                 // Field com/corosus/inv/config/ConfigInvasion.maxConsecutiveInvasionSkips:I
+      48: iconst_m1
+      49: if_icmpeq     59
+      52: iload_3
+      53: getstatic     #60                 // Field com/corosus/inv/config/ConfigInvasion.maxConsecutiveInvasionSkips:I
+      56: if_icmpge     61
+      59: iconst_1
+      60: ireturn
+      61: iconst_0
+      62: ireturn
+
+  public static boolean skipNextInvasionForPlayer(net.minecraft.entity.player.EntityPlayer);
+    Code:
+       0: aload_0
+       1: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+       4: astore_1
+       5: aload_0
+       6: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+       9: getstatic     #32                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipping:Ljava/lang/String;
+      12: invokevirtual #38                 // Method net/minecraft/nbt/NBTTagCompound.func_74767_n:(Ljava/lang/String;)Z
+      15: istore_2
+      16: iload_2
+      17: ifne          207
+      20: aload_1
+      21: invokestatic  #42                 // Method isInvasionTonight:(Lnet/minecraft/world/World;)Z
+      24: ifeq          190
+      27: aload_1
+      28: invokestatic  #47                 // Method CoroUtil/util/CoroUtilWorldTime.isNightPadded:(Lnet/minecraft/world/World;)Z
+      31: ifne          173
+      34: aload_0
+      35: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      38: getstatic     #50                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipCount:Ljava/lang/String;
+      41: invokevirtual #54                 // Method net/minecraft/nbt/NBTTagCompound.func_74762_e:(Ljava/lang/String;)I
+      44: istore_3
+      45: getstatic     #60                 // Field com/corosus/inv/config/ConfigInvasion.maxConsecutiveInvasionSkips:I
+      48: iconst_m1
+      49: if_icmpeq     59
+      52: iload_3
+      53: getstatic     #60                 // Field com/corosus/inv/config/ConfigInvasion.maxConsecutiveInvasionSkips:I
+      56: if_icmpge     140
+      59: iinc          3, 1
+      62: aload_0
+      63: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      66: getstatic     #32                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipping:Ljava/lang/String;
+      69: iconst_1
+      70: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+      73: aload_0
+      74: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      77: getstatic     #50                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipCount:Ljava/lang/String;
+      80: iload_3
+      81: invokevirtual #76                 // Method net/minecraft/nbt/NBTTagCompound.func_74768_a:(Ljava/lang/String;I)V
+      84: aload_0
+      85: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      88: getstatic     #79                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipCountForMultiplier:Ljava/lang/String;
+      91: invokevirtual #54                 // Method net/minecraft/nbt/NBTTagCompound.func_74762_e:(Ljava/lang/String;)I
+      94: iconst_1
+      95: iadd
+      96: istore        4
+      98: aload_0
+      99: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     102: getstatic     #79                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipCountForMultiplier:Ljava/lang/String;
+     105: iload         4
+     107: invokevirtual #76                 // Method net/minecraft/nbt/NBTTagCompound.func_74768_a:(Ljava/lang/String;I)V
+     110: aload_0
+     111: new           #81                 // class net/minecraft/util/text/TextComponentString
+     114: dup
+     115: getstatic     #84                 // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_skipping:Ljava/lang/String;
+     118: iconst_1
+     119: anewarray     #4                  // class java/lang/Object
+     122: dup
+     123: iconst_0
+     124: iload_3
+     125: invokestatic  #90                 // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     128: aastore
+     129: invokestatic  #96                 // Method java/lang/String.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+     132: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     135: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     138: iconst_1
+     139: ireturn
+     140: aload_0
+     141: new           #81                 // class net/minecraft/util/text/TextComponentString
+     144: dup
+     145: getstatic     #106                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_skippedTooMany:Ljava/lang/String;
+     148: iconst_1
+     149: anewarray     #4                  // class java/lang/Object
+     152: dup
+     153: iconst_0
+     154: getstatic     #60                 // Field com/corosus/inv/config/ConfigInvasion.maxConsecutiveInvasionSkips:I
+     157: invokestatic  #90                 // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     160: aastore
+     161: invokestatic  #96                 // Method java/lang/String.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+     164: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     167: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     170: goto          221
+     173: aload_0
+     174: new           #81                 // class net/minecraft/util/text/TextComponentString
+     177: dup
+     178: getstatic     #109                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_tooLate:Ljava/lang/String;
+     181: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     184: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     187: goto          221
+     190: aload_0
+     191: new           #81                 // class net/minecraft/util/text/TextComponentString
+     194: dup
+     195: getstatic     #112                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_notInvasionNight:Ljava/lang/String;
+     198: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     201: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     204: goto          221
+     207: aload_0
+     208: new           #81                 // class net/minecraft/util/text/TextComponentString
+     211: dup
+     212: getstatic     #115                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_alreadySkipping:Ljava/lang/String;
+     215: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     218: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     221: iconst_0
+     222: ireturn
+
+  public static void tickPlayer(net.minecraft.entity.player.EntityPlayer);
+    Code:
+       0: getstatic     #121                // Field com/corosus/inv/config/ConfigInvasion.preventSleepDuringInvasions:Z
+       3: ifeq          44
+       6: aload_0
+       7: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+      10: invokestatic  #124                // Method shouldLockOutFeaturesForPossibleActiveInvasion:(Lnet/minecraft/world/World;)Z
+      13: ifeq          44
+      16: aload_0
+      17: invokevirtual #128                // Method net/minecraft/entity/player/EntityPlayer.func_70608_bn:()Z
+      20: ifeq          44
+      23: aload_0
+      24: iconst_1
+      25: iconst_1
+      26: iconst_0
+      27: invokevirtual #132                // Method net/minecraft/entity/player/EntityPlayer.func_70999_a:(ZZZ)V
+      30: aload_0
+      31: new           #81                 // class net/minecraft/util/text/TextComponentString
+      34: dup
+      35: getstatic     #135                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_cantSleep:Ljava/lang/String;
+      38: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+      41: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+      44: return
+
+  public static void tickPlayerEverywhere(net.minecraft.entity.player.EntityPlayer);
+    Code:
+       0: getstatic     #139                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion:Z
+       3: ifeq          382
+       6: aload_0
+       7: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+      10: invokestatic  #47                 // Method CoroUtil/util/CoroUtilWorldTime.isNightPadded:(Lnet/minecraft/world/World;)Z
+      13: ifeq          382
+      16: aload_0
+      17: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+      20: invokestatic  #42                 // Method isInvasionTonight:(Lnet/minecraft/world/World;)Z
+      23: ifeq          382
+      26: aload_0
+      27: invokestatic  #142                // Method isPlayerSkippingInvasion:(Lnet/minecraft/entity/player/EntityPlayer;)Z
+      30: ifne          382
+      33: aload_0
+      34: getstatic     #148                // Field com/corosus/inv/Invasion.PLAYER_DATA_INSTANCE:Lnet/minecraftforge/common/capabilities/Capability;
+      37: aconst_null
+      38: invokevirtual #152                // Method net/minecraft/entity/player/EntityPlayer.getCapability:(Lnet/minecraftforge/common/capabilities/Capability;Lnet/minecraft/util/EnumFacing;)Ljava/lang/Object;
+      41: checkcast     #154                // class com/corosus/inv/capabilities/PlayerDataInstance
+      44: astore_1
+      45: aload_0
+      46: getfield      #157                // Field net/minecraft/entity/player/EntityPlayer.field_71093_bK:I
+      49: ifne          60
+      52: aload_1
+      53: iconst_0
+      54: putfield      #160                // Field com/corosus/inv/capabilities/PlayerDataInstance.ticksNotInOverworld:I
+      57: goto          382
+      60: getstatic     #163                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_TickDelay:I
+      63: ifle          156
+      66: aload_1
+      67: getfield      #160                // Field com/corosus/inv/capabilities/PlayerDataInstance.ticksNotInOverworld:I
+      70: ifne          117
+      73: getstatic     #166                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_FirstWarningMessage:Ljava/lang/String;
+      76: ldc           #168                // String
+      78: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+      81: ifne          117
+      84: aload_0
+      85: new           #81                 // class net/minecraft/util/text/TextComponentString
+      88: dup
+      89: getstatic     #166                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_FirstWarningMessage:Ljava/lang/String;
+      92: iconst_1
+      93: anewarray     #4                  // class java/lang/Object
+      96: dup
+      97: iconst_0
+      98: getstatic     #163                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_TickDelay:I
+     101: bipush        20
+     103: idiv
+     104: invokestatic  #90                 // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     107: aastore
+     108: invokestatic  #96                 // Method java/lang/String.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+     111: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     114: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     117: getstatic     #163                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_TickDelay:I
+     120: aload_1
+     121: getfield      #160                // Field com/corosus/inv/capabilities/PlayerDataInstance.ticksNotInOverworld:I
+     124: isub
+     125: sipush        200
+     128: if_icmpne     156
+     131: getstatic     #175                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_FinalWarningMessage:Ljava/lang/String;
+     134: ldc           #168                // String
+     136: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     139: ifne          156
+     142: aload_0
+     143: new           #81                 // class net/minecraft/util/text/TextComponentString
+     146: dup
+     147: getstatic     #175                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_FinalWarningMessage:Ljava/lang/String;
+     150: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     153: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     156: new           #177                // class java/lang/StringBuilder
+     159: dup
+     160: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     163: ldc           #180                // String time:
+     165: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     168: aload_0
+     169: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+     172: invokevirtual #188                // Method net/minecraft/world/World.func_82737_E:()J
+     175: invokevirtual #191                // Method java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+     178: ldc           #193                // String  -
+     180: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     183: aload_1
+     184: getfield      #160                // Field com/corosus/inv/capabilities/PlayerDataInstance.ticksNotInOverworld:I
+     187: invokevirtual #196                // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     190: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     193: invokestatic  #205                // Method CoroUtil/forge/CULog.dbg:(Ljava/lang/String;)V
+     196: aload_1
+     197: dup
+     198: getfield      #160                // Field com/corosus/inv/capabilities/PlayerDataInstance.ticksNotInOverworld:I
+     201: iconst_1
+     202: iadd
+     203: putfield      #160                // Field com/corosus/inv/capabilities/PlayerDataInstance.ticksNotInOverworld:I
+     206: aload_1
+     207: getfield      #160                // Field com/corosus/inv/capabilities/PlayerDataInstance.ticksNotInOverworld:I
+     210: getstatic     #163                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_TickDelay:I
+     213: if_icmplt     382
+     216: aload_0
+     217: instanceof    #207                // class net/minecraft/entity/player/EntityPlayerMP
+     220: ifeq          382
+     223: aload_0
+     224: iconst_0
+     225: invokevirtual #211                // Method net/minecraft/entity/player/EntityPlayer.func_184204_a:(I)Lnet/minecraft/entity/Entity;
+     228: checkcast     #18                 // class net/minecraft/entity/player/EntityPlayer
+     231: astore_0
+     232: aload_0
+     233: ifnull        382
+     236: aload_0
+     237: iconst_0
+     238: invokevirtual #215                // Method net/minecraft/entity/player/EntityPlayer.getBedLocation:(I)Lnet/minecraft/util/math/BlockPos;
+     241: astore_2
+     242: aload_2
+     243: ifnull        282
+     246: aload_0
+     247: checkcast     #207                // class net/minecraft/entity/player/EntityPlayerMP
+     250: getfield      #216                // Field net/minecraft/entity/player/EntityPlayerMP.field_70170_p:Lnet/minecraft/world/World;
+     253: aload_2
+     254: iconst_0
+     255: invokestatic  #220                // Method net/minecraft/entity/player/EntityPlayer.func_180467_a:(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Z)Lnet/minecraft/util/math/BlockPos;
+     258: astore_2
+     259: aload_2
+     260: ifnonnull     282
+     263: aload_0
+     264: checkcast     #207                // class net/minecraft/entity/player/EntityPlayerMP
+     267: getfield      #224                // Field net/minecraft/entity/player/EntityPlayerMP.field_71135_a:Lnet/minecraft/network/NetHandlerPlayServer;
+     270: new           #226                // class net/minecraft/network/play/server/SPacketChangeGameState
+     273: dup
+     274: iconst_0
+     275: fconst_0
+     276: invokespecial #229                // Method net/minecraft/network/play/server/SPacketChangeGameState."<init>":(IF)V
+     279: invokevirtual #235                // Method net/minecraft/network/NetHandlerPlayServer.func_147359_a:(Lnet/minecraft/network/Packet;)V
+     282: aload_2
+     283: ifnonnull     302
+     286: ldc           #239                // String force tp, no bed location found, reverting to world spawn
+     288: invokestatic  #205                // Method CoroUtil/forge/CULog.dbg:(Ljava/lang/String;)V
+     291: aload_0
+     292: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+     295: getfield      #243                // Field net/minecraft/world/World.field_73011_w:Lnet/minecraft/world/WorldProvider;
+     298: invokevirtual #249                // Method net/minecraft/world/WorldProvider.getRandomizedSpawnPoint:()Lnet/minecraft/util/math/BlockPos;
+     301: astore_2
+     302: new           #177                // class java/lang/StringBuilder
+     305: dup
+     306: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     309: ldc           #251                // String spawnpoint to use:
+     311: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     314: aload_2
+     315: invokevirtual #254                // Method java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+     318: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     321: invokestatic  #205                // Method CoroUtil/forge/CULog.dbg:(Ljava/lang/String;)V
+     324: aload_0
+     325: checkcast     #207                // class net/minecraft/entity/player/EntityPlayerMP
+     328: getfield      #224                // Field net/minecraft/entity/player/EntityPlayerMP.field_71135_a:Lnet/minecraft/network/NetHandlerPlayServer;
+     331: aload_2
+     332: invokevirtual #258                // Method net/minecraft/util/math/BlockPos.func_177958_n:()I
+     335: i2d
+     336: aload_2
+     337: invokevirtual #261                // Method net/minecraft/util/math/BlockPos.func_177956_o:()I
+     340: i2d
+     341: aload_2
+     342: invokevirtual #264                // Method net/minecraft/util/math/BlockPos.func_177952_p:()I
+     345: i2d
+     346: aload_0
+     347: getfield      #268                // Field net/minecraft/entity/player/EntityPlayer.field_70177_z:F
+     350: aload_0
+     351: getfield      #271                // Field net/minecraft/entity/player/EntityPlayer.field_70125_A:F
+     354: invokevirtual #275                // Method net/minecraft/network/NetHandlerPlayServer.func_147364_a:(DDDFF)V
+     357: getstatic     #278                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_TPMessage:Ljava/lang/String;
+     360: ldc           #168                // String
+     362: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     365: ifne          382
+     368: aload_0
+     369: new           #81                 // class net/minecraft/util/text/TextComponentString
+     372: dup
+     373: getstatic     #278                // Field com/corosus/inv/config/ConfigInvasion.forcePlayersToOverworldDuringInvasion_TPMessage:Ljava/lang/String;
+     376: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     379: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     382: return
+
+  public static void tickPlayerSlowPre(net.minecraft.entity.player.EntityPlayer);
+    Code:
+       0: getstatic     #286                // Field com/corosus/inv/config/ConfigInvasion.invasionCountingPerPlayer:Z
+       3: ifeq          45
+       6: aload_0
+       7: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      10: getstatic     #289                // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerServerTicks:Ljava/lang/String;
+      13: invokevirtual #293                // Method net/minecraft/nbt/NBTTagCompound.func_74763_f:(Ljava/lang/String;)J
+      16: lstore_1
+      17: lload_1
+      18: invokestatic  #296                // Method CoroUtil/util/CoroUtilWorldTime.getDayLength:()I
+      21: i2l
+      22: ldiv
+      23: l2i
+      24: iconst_1
+      25: iadd
+      26: istore_3
+      27: iload_3
+      28: getstatic     #299                // Field com/corosus/inv/config/ConfigInvasion.firstInvasionNight:I
+      31: if_icmpge     45
+      34: aload_0
+      35: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      38: getstatic     #302                // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkippingTooSoon:Ljava/lang/String;
+      41: iconst_1
+      42: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+      45: return
+
+  public static void tickPlayerSlow(net.minecraft.entity.player.EntityPlayer);
+    Code:
+       0: aload_0
+       1: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+       4: astore_1
+       5: new           #310                // class net/minecraft/util/math/Vec3d
+       8: dup
+       9: aload_0
+      10: getfield      #314                // Field net/minecraft/entity/player/EntityPlayer.field_70165_t:D
+      13: aload_0
+      14: getfield      #317                // Field net/minecraft/entity/player/EntityPlayer.field_70163_u:D
+      17: aload_0
+      18: invokevirtual #321                // Method net/minecraft/entity/player/EntityPlayer.func_70047_e:()F
+      21: aload_0
+      22: invokevirtual #324                // Method net/minecraft/entity/player/EntityPlayer.getDefaultEyeHeight:()F
+      25: fsub
+      26: f2d
+      27: dadd
+      28: aload_0
+      29: getfield      #327                // Field net/minecraft/entity/player/EntityPlayer.field_70161_v:D
+      32: invokespecial #330                // Method net/minecraft/util/math/Vec3d."<init>":(DDD)V
+      35: astore_2
+      36: new           #332                // class CoroUtil/util/BlockCoord
+      39: dup
+      40: aload_2
+      41: getfield      #335                // Field net/minecraft/util/math/Vec3d.field_72450_a:D
+      44: invokestatic  #341                // Method net/minecraft/util/math/MathHelper.func_76128_c:(D)I
+      47: aload_2
+      48: getfield      #344                // Field net/minecraft/util/math/Vec3d.field_72448_b:D
+      51: invokestatic  #341                // Method net/minecraft/util/math/MathHelper.func_76128_c:(D)I
+      54: aload_2
+      55: getfield      #347                // Field net/minecraft/util/math/Vec3d.field_72449_c:D
+      58: invokestatic  #341                // Method net/minecraft/util/math/MathHelper.func_76128_c:(D)I
+      61: invokespecial #350                // Method CoroUtil/util/BlockCoord."<init>":(III)V
+      64: astore_3
+      65: aload_1
+      66: aload_0
+      67: aload_3
+      68: invokestatic  #354                // Method CoroUtil/difficulty/DynamicDifficulty.getDifficultyScaleAverage:(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;LCoroUtil/util/BlockCoord;)F
+      71: fstore        4
+      73: aload_0
+      74: getstatic     #148                // Field com/corosus/inv/Invasion.PLAYER_DATA_INSTANCE:Lnet/minecraftforge/common/capabilities/Capability;
+      77: aconst_null
+      78: invokevirtual #152                // Method net/minecraft/entity/player/EntityPlayer.getCapability:(Lnet/minecraftforge/common/capabilities/Capability;Lnet/minecraft/util/EnumFacing;)Ljava/lang/Object;
+      81: checkcast     #154                // class com/corosus/inv/capabilities/PlayerDataInstance
+      84: astore        5
+      86: aload_1
+      87: invokevirtual #357                // Method net/minecraft/world/World.func_72820_D:()J
+      90: invokestatic  #296                // Method CoroUtil/util/CoroUtilWorldTime.getDayLength:()I
+      93: i2l
+      94: ldiv
+      95: lconst_1
+      96: ladd
+      97: lstore        6
+      99: iconst_0
+     100: istore        8
+     102: aload         5
+     104: getfield      #360                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionActive:Z
+     107: istore        9
+     109: aload_0
+     110: invokestatic  #142                // Method isPlayerSkippingInvasion:(Lnet/minecraft/entity/player/EntityPlayer;)Z
+     113: istore        10
+     115: aload_1
+     116: invokestatic  #42                 // Method isInvasionTonight:(Lnet/minecraft/world/World;)Z
+     119: istore        11
+     121: iload         11
+     123: getstatic     #362                // Field invasionOnThisNight_Last:Z
+     126: if_icmpeq     158
+     129: new           #177                // class java/lang/StringBuilder
+     132: dup
+     133: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     136: ldc_w         #364                // String invasionOnThisNight:
+     139: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     142: iload         11
+     144: invokevirtual #367                // Method java/lang/StringBuilder.append:(Z)Ljava/lang/StringBuilder;
+     147: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     150: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     153: iload         11
+     155: putstatic     #362                // Field invasionOnThisNight_Last:Z
+     158: aload_1
+     159: invokestatic  #47                 // Method CoroUtil/util/CoroUtilWorldTime.isNightPadded:(Lnet/minecraft/world/World;)Z
+     162: ifne          169
+     165: iconst_1
+     166: goto          170
+     169: iconst_0
+     170: istore        12
+     172: iload         12
+     174: getstatic     #372                // Field isDayLast:Z
+     177: if_icmpeq     240
+     180: new           #177                // class java/lang/StringBuilder
+     183: dup
+     184: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     187: ldc_w         #374                // String world.isDaytime():
+     190: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     193: iload         12
+     195: invokevirtual #367                // Method java/lang/StringBuilder.append:(Z)Ljava/lang/StringBuilder;
+     198: ldc_w         #376                // String , time:
+     201: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     204: aload_1
+     205: invokevirtual #357                // Method net/minecraft/world/World.func_72820_D:()J
+     208: invokevirtual #191                // Method java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+     211: ldc_w         #378                // String , timemod:
+     214: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     217: aload_1
+     218: invokevirtual #357                // Method net/minecraft/world/World.func_72820_D:()J
+     221: invokestatic  #296                // Method CoroUtil/util/CoroUtilWorldTime.getDayLength:()I
+     224: i2l
+     225: lrem
+     226: invokevirtual #191                // Method java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+     229: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     232: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     235: iload         12
+     237: putstatic     #372                // Field isDayLast:Z
+     240: iload         11
+     242: ifeq          364
+     245: iload         12
+     247: ifeq          364
+     250: aload         5
+     252: getfield      #381                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionWarned:Z
+     255: ifne          364
+     258: aload         5
+     260: getfield      #384                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionHappenedThisDay:Z
+     263: ifne          364
+     266: aload_0
+     267: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     270: getstatic     #302                // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkippingTooSoon:Ljava/lang/String;
+     273: invokevirtual #38                 // Method net/minecraft/nbt/NBTTagCompound.func_74767_n:(Ljava/lang/String;)Z
+     276: ifeq          333
+     279: aload_0
+     280: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+     283: invokestatic  #387                // Method isAnyoneBeingInvadedTonight:(Lnet/minecraft/world/World;)Z
+     286: ifeq          358
+     289: getstatic     #390                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_startsTonightButNotYou:Ljava/lang/String;
+     292: ldc           #168                // String
+     294: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     297: ifne          358
+     300: aload_0
+     301: new           #81                 // class net/minecraft/util/text/TextComponentString
+     304: dup
+     305: getstatic     #390                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_startsTonightButNotYou:Ljava/lang/String;
+     308: iconst_1
+     309: anewarray     #4                  // class java/lang/Object
+     312: dup
+     313: iconst_0
+     314: getstatic     #299                // Field com/corosus/inv/config/ConfigInvasion.firstInvasionNight:I
+     317: invokestatic  #90                 // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     320: aastore
+     321: invokestatic  #96                 // Method java/lang/String.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+     324: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     327: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     330: goto          358
+     333: getstatic     #393                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_startsTonight:Ljava/lang/String;
+     336: ldc           #168                // String
+     338: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     341: ifne          358
+     344: aload_0
+     345: new           #81                 // class net/minecraft/util/text/TextComponentString
+     348: dup
+     349: getstatic     #393                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_startsTonight:Ljava/lang/String;
+     352: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     355: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     358: aload         5
+     360: iconst_1
+     361: putfield      #381                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionWarned:Z
+     364: iload         11
+     366: ifne          375
+     369: aload         5
+     371: iconst_0
+     372: putfield      #384                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionHappenedThisDay:Z
+     375: iload         11
+     377: ifeq          553
+     380: iload         12
+     382: ifne          553
+     385: aload         5
+     387: iconst_1
+     388: putfield      #384                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionHappenedThisDay:Z
+     391: iconst_1
+     392: istore        8
+     394: iload         9
+     396: ifne          598
+     399: iload         10
+     401: ifne          439
+     404: new           #177                // class java/lang/StringBuilder
+     407: dup
+     408: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     411: ldc_w         #395                // String attempting to start invasion for player:
+     414: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     417: aload_0
+     418: invokevirtual #398                // Method net/minecraft/entity/player/EntityPlayer.func_70005_c_:()Ljava/lang/String;
+     421: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     424: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     427: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     430: aload_0
+     431: fload         4
+     433: invokestatic  #402                // Method invasionStart:(Lnet/minecraft/entity/player/EntityPlayer;F)V
+     436: goto          598
+     439: aload         5
+     441: iconst_1
+     442: putfield      #360                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionActive:Z
+     445: aload_0
+     446: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     449: getstatic     #32                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipping:Ljava/lang/String;
+     452: invokevirtual #38                 // Method net/minecraft/nbt/NBTTagCompound.func_74767_n:(Ljava/lang/String;)Z
+     455: ifeq          486
+     458: getstatic     #405                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_startedButSkippedForYou:Ljava/lang/String;
+     461: ldc           #168                // String
+     463: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     466: ifne          598
+     469: aload_0
+     470: new           #81                 // class net/minecraft/util/text/TextComponentString
+     473: dup
+     474: getstatic     #405                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_startedButSkippedForYou:Ljava/lang/String;
+     477: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     480: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     483: goto          598
+     486: aload_0
+     487: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     490: getstatic     #302                // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkippingTooSoon:Ljava/lang/String;
+     493: invokevirtual #38                 // Method net/minecraft/nbt/NBTTagCompound.func_74767_n:(Ljava/lang/String;)Z
+     496: ifeq          598
+     499: aload_0
+     500: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+     503: invokestatic  #387                // Method isAnyoneBeingInvadedTonight:(Lnet/minecraft/world/World;)Z
+     506: ifeq          598
+     509: getstatic     #408                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_startedButSkippedForYouTooSoon:Ljava/lang/String;
+     512: ldc           #168                // String
+     514: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     517: ifne          598
+     520: aload_0
+     521: new           #81                 // class net/minecraft/util/text/TextComponentString
+     524: dup
+     525: getstatic     #408                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_startedButSkippedForYouTooSoon:Ljava/lang/String;
+     528: iconst_1
+     529: anewarray     #4                  // class java/lang/Object
+     532: dup
+     533: iconst_0
+     534: getstatic     #299                // Field com/corosus/inv/config/ConfigInvasion.firstInvasionNight:I
+     537: invokestatic  #90                 // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     540: aastore
+     541: invokestatic  #96                 // Method java/lang/String.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+     544: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     547: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     550: goto          598
+     553: iconst_0
+     554: istore        8
+     556: iload         9
+     558: ifeq          598
+     561: iload         10
+     563: ifne          594
+     566: aload_0
+     567: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     570: getstatic     #50                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipCount:Ljava/lang/String;
+     573: iconst_0
+     574: invokevirtual #76                 // Method net/minecraft/nbt/NBTTagCompound.func_74768_a:(Ljava/lang/String;I)V
+     577: getstatic     #411                // Field com/corosus/inv/config/ConfigInvasion.Sacrifice_CountNeeded_Multiplier_ResetOnInvasionNoSkip:Z
+     580: ifeq          594
+     583: aload_0
+     584: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     587: getstatic     #79                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipCountForMultiplier:Ljava/lang/String;
+     590: iconst_0
+     591: invokevirtual #76                 // Method net/minecraft/nbt/NBTTagCompound.func_74768_a:(Ljava/lang/String;I)V
+     594: aload_0
+     595: invokestatic  #414                // Method invasionStopReset:(Lnet/minecraft/entity/player/EntityPlayer;)V
+     598: iload         11
+     600: ifne          631
+     603: aload         5
+     605: iconst_0
+     606: putfield      #381                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionWarned:Z
+     609: aload_0
+     610: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     613: getstatic     #32                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipping:Ljava/lang/String;
+     616: iconst_0
+     617: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+     620: aload_0
+     621: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     624: getstatic     #302                // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkippingTooSoon:Ljava/lang/String;
+     627: iconst_0
+     628: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+     631: iload         8
+     633: ifeq          949
+     636: iload         10
+     638: ifne          949
+     641: aload_1
+     642: invokevirtual #188                // Method net/minecraft/world/World.func_82737_E:()J
+     645: getstatic     #419                // Field com/corosus/inv/config/ConfigAdvancedOptions.aiTickRateEnhance:I
+     648: i2l
+     649: lrem
+     650: lconst_0
+     651: lcmp
+     652: ifne          928
+     655: getstatic     #422                // Field com/corosus/inv/config/ConfigAdvancedOptions.enhanceAllMobsOfSpawnedTypesForOmniscience:Z
+     658: ifeq          928
+     661: iconst_0
+     662: istore        13
+     664: iload         13
+     666: ifeq          689
+     669: aload_0
+     670: new           #81                 // class net/minecraft/util/text/TextComponentString
+     673: dup
+     674: ldc_w         #424                // String enhancing extra mobs with omniscience
+     677: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     680: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     683: ldc_w         #424                // String enhancing extra mobs with omniscience
+     686: invokestatic  #205                // Method CoroUtil/forge/CULog.dbg:(Ljava/lang/String;)V
+     689: getstatic     #427                // Field com/corosus/inv/config/ConfigAdvancedOptions.aiOmniscienceRange:I
+     692: istore        14
+     694: aload_1
+     695: ldc_w         #429                // class net/minecraft/entity/EntityCreature
+     698: new           #431                // class net/minecraft/util/math/AxisAlignedBB
+     701: dup
+     702: aload_3
+     703: getfield      #434                // Field CoroUtil/util/BlockCoord.posX:I
+     706: i2d
+     707: aload_3
+     708: getfield      #437                // Field CoroUtil/util/BlockCoord.posY:I
+     711: i2d
+     712: aload_3
+     713: getfield      #440                // Field CoroUtil/util/BlockCoord.posZ:I
+     716: i2d
+     717: aload_3
+     718: getfield      #434                // Field CoroUtil/util/BlockCoord.posX:I
+     721: i2d
+     722: aload_3
+     723: getfield      #437                // Field CoroUtil/util/BlockCoord.posY:I
+     726: i2d
+     727: aload_3
+     728: getfield      #440                // Field CoroUtil/util/BlockCoord.posZ:I
+     731: i2d
+     732: invokespecial #443                // Method net/minecraft/util/math/AxisAlignedBB."<init>":(DDDDDD)V
+     735: iload         14
+     737: i2d
+     738: iload         14
+     740: i2d
+     741: iload         14
+     743: i2d
+     744: invokevirtual #447                // Method net/minecraft/util/math/AxisAlignedBB.func_72314_b:(DDD)Lnet/minecraft/util/math/AxisAlignedBB;
+     747: invokevirtual #451                // Method net/minecraft/world/World.func_72872_a:(Ljava/lang/Class;Lnet/minecraft/util/math/AxisAlignedBB;)Ljava/util/List;
+     750: astore        15
+     752: aload         5
+     754: invokevirtual #455                // Method com/corosus/inv/capabilities/PlayerDataInstance.getSpawnableClasses:()Ljava/util/List;
+     757: astore        16
+     759: aload         15
+     761: invokeinterface #461,  1          // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+     766: astore        17
+     768: aload         17
+     770: invokeinterface #466,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     775: ifeq          928
+     778: aload         17
+     780: invokeinterface #470,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     785: checkcast     #429                // class net/minecraft/entity/EntityCreature
+     788: astore        18
+     790: aload         16
+     792: aload         18
+     794: invokevirtual #474                // Method java/lang/Object.getClass:()Ljava/lang/Class;
+     797: invokeinterface #477,  2          // InterfaceMethod java/util/List.contains:(Ljava/lang/Object;)Z
+     802: istore        19
+     804: iconst_1
+     805: istore        20
+     807: iload         19
+     809: ifeq          925
+     812: iload         20
+     814: ifeq          825
+     817: aload         18
+     819: instanceof    #479                // class net/minecraft/entity/monster/EntityMob
+     822: ifeq          925
+     825: aload         18
+     827: invokevirtual #480                // Method net/minecraft/entity/EntityCreature.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     830: getstatic     #485                // Field CoroUtil/difficulty/UtilEntityBuffs.dataEntityBuffed:Ljava/lang/String;
+     833: iconst_1
+     834: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+     837: aload         18
+     839: invokevirtual #480                // Method net/minecraft/entity/EntityCreature.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     842: getstatic     #488                // Field CoroUtil/difficulty/UtilEntityBuffs.dataEntityBuffed_AI_Omniscience:Ljava/lang/String;
+     845: iconst_1
+     846: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+     849: aload         18
+     851: invokevirtual #480                // Method net/minecraft/entity/EntityCreature.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     854: getstatic     #491                // Field CoroUtil/difficulty/UtilEntityBuffs.dataEntityBuffed_LastTimePathfindLongDist:Ljava/lang/String;
+     857: aload         18
+     859: getfield      #492                // Field net/minecraft/entity/EntityCreature.field_70170_p:Lnet/minecraft/world/World;
+     862: invokevirtual #188                // Method net/minecraft/world/World.func_82737_E:()J
+     865: aload         18
+     867: invokevirtual #495                // Method net/minecraft/entity/EntityCreature.func_145782_y:()I
+     870: bipush        20
+     872: irem
+     873: i2l
+     874: ladd
+     875: invokevirtual #499                // Method net/minecraft/nbt/NBTTagCompound.func_74772_a:(Ljava/lang/String;J)V
+     878: aload         18
+     880: ldc_w         #501                // class CoroUtil/ai/tasks/EntityAINearestAttackablePlayerOmniscience
+     883: iconst_1
+     884: invokestatic  #505                // Method CoroUtil/difficulty/UtilEntityBuffs.hasTask:(Lnet/minecraft/entity/EntityCreature;Ljava/lang/Class;Z)Z
+     887: ifne          902
+     890: aload         18
+     892: ldc_w         #501                // class CoroUtil/ai/tasks/EntityAINearestAttackablePlayerOmniscience
+     895: bipush        10
+     897: iconst_1
+     898: invokestatic  #509                // Method CoroUtil/difficulty/UtilEntityBuffs.addTask:(Lnet/minecraft/entity/EntityCreature;Ljava/lang/Class;IZ)Z
+     901: pop
+     902: aload         18
+     904: ldc_w         #511                // class CoroUtil/ai/tasks/EntityAIChaseFromFar
+     907: iconst_0
+     908: invokestatic  #505                // Method CoroUtil/difficulty/UtilEntityBuffs.hasTask:(Lnet/minecraft/entity/EntityCreature;Ljava/lang/Class;Z)Z
+     911: ifne          925
+     914: aload         18
+     916: ldc_w         #511                // class CoroUtil/ai/tasks/EntityAIChaseFromFar
+     919: iconst_4
+     920: iconst_0
+     921: invokestatic  #509                // Method CoroUtil/difficulty/UtilEntityBuffs.addTask:(Lnet/minecraft/entity/EntityCreature;Ljava/lang/Class;IZ)Z
+     924: pop
+     925: goto          768
+     928: aload_1
+     929: invokevirtual #188                // Method net/minecraft/world/World.func_82737_E:()J
+     932: getstatic     #514                // Field com/corosus/inv/config/ConfigAdvancedOptions.aiTickRateSpawning:I
+     935: i2l
+     936: lrem
+     937: lconst_0
+     938: lcmp
+     939: ifne          949
+     942: aload_0
+     943: fload         4
+     945: invokestatic  #518                // Method spawnNewMobFromProfile:(Lnet/minecraft/entity/EntityLivingBase;F)Z
+     948: pop
+     949: goto          957
+     952: astore_1
+     953: aload_1
+     954: invokevirtual #521                // Method java/lang/Exception.printStackTrace:()V
+     957: return
+    Exception table:
+       from    to  target type
+           0   949   952   Class java/lang/Exception
+
+  public static void tickSpawning(net.minecraft.entity.player.EntityPlayer, float);
+    Code:
+       0: return
+
+  public static void invasionStart(net.minecraft.entity.player.EntityPlayer, float);
+    Code:
+       0: aload_0
+       1: getstatic     #148                // Field com/corosus/inv/Invasion.PLAYER_DATA_INSTANCE:Lnet/minecraftforge/common/capabilities/Capability;
+       4: aconst_null
+       5: invokevirtual #152                // Method net/minecraft/entity/player/EntityPlayer.getCapability:(Lnet/minecraftforge/common/capabilities/Capability;Lnet/minecraft/util/EnumFacing;)Ljava/lang/Object;
+       8: checkcast     #154                // class com/corosus/inv/capabilities/PlayerDataInstance
+      11: astore_2
+      12: ldc_w         #549                // String resetInvasion() for start
+      15: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+      18: aload_2
+      19: invokevirtual #552                // Method com/corosus/inv/capabilities/PlayerDataInstance.resetInvasion:()V
+      22: aload_2
+      23: iconst_1
+      24: putfield      #360                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionActive:Z
+      27: aload_2
+      28: fload_1
+      29: invokevirtual #556                // Method com/corosus/inv/capabilities/PlayerDataInstance.setDifficultyForInvasion:(F)V
+      32: aload_2
+      33: dup
+      34: getfield      #559                // Field com/corosus/inv/capabilities/PlayerDataInstance.lastWaveNumber:I
+      37: iconst_1
+      38: iadd
+      39: putfield      #559                // Field com/corosus/inv/capabilities/PlayerDataInstance.lastWaveNumber:I
+      42: getstatic     #286                // Field com/corosus/inv/config/ConfigInvasion.invasionCountingPerPlayer:Z
+      45: ifeq          56
+      48: aload_2
+      49: getfield      #559                // Field com/corosus/inv/capabilities/PlayerDataInstance.lastWaveNumber:I
+      52: istore_3
+      53: goto          64
+      56: aload_0
+      57: getfield      #22                 // Field net/minecraft/entity/player/EntityPlayer.field_70170_p:Lnet/minecraft/world/World;
+      60: invokestatic  #563                // Method getInvasionNumber:(Lnet/minecraft/world/World;)I
+      63: istore_3
+      64: aload_0
+      65: new           #565                // class CoroUtil/difficulty/DifficultyQueryContext
+      68: dup
+      69: getstatic     #570                // Field CoroUtil/difficulty/data/conditions/ConditionContext.TYPE_INVASION:Ljava/lang/String;
+      72: iload_3
+      73: fload_1
+      74: invokespecial #573                // Method CoroUtil/difficulty/DifficultyQueryContext."<init>":(Ljava/lang/String;IF)V
+      77: invokestatic  #577                // Method chooseInvasionProfile:(Lnet/minecraft/entity/player/EntityPlayer;LCoroUtil/difficulty/DifficultyQueryContext;)LCoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate;
+      80: astore        4
+      82: aload         4
+      84: ifnull        93
+      87: aload_2
+      88: aload         4
+      90: invokevirtual #581                // Method com/corosus/inv/capabilities/PlayerDataInstance.initNewInvasion:(LCoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate;)V
+      93: aload         4
+      95: ifnull        144
+      98: aload         4
+     100: getfield      #586                // Field CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.wave_message:Ljava/lang/String;
+     103: ldc_w         #588                // String <NULL>
+     106: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     109: ifne          144
+     112: aload         4
+     114: getfield      #586                // Field CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.wave_message:Ljava/lang/String;
+     117: ldc           #168                // String
+     119: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     122: ifne          158
+     125: aload_0
+     126: new           #81                 // class net/minecraft/util/text/TextComponentString
+     129: dup
+     130: aload         4
+     132: getfield      #586                // Field CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.wave_message:Ljava/lang/String;
+     135: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     138: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     141: goto          158
+     144: aload_0
+     145: new           #81                 // class net/minecraft/util/text/TextComponentString
+     148: dup
+     149: getstatic     #591                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_started:Ljava/lang/String;
+     152: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+     155: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+     158: ldc_w         #592                // float 0.5f
+     161: fstore        5
+     163: aload_0
+     164: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+     167: getstatic     #50                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipCount:Ljava/lang/String;
+     170: invokevirtual #54                 // Method net/minecraft/nbt/NBTTagCompound.func_74762_e:(Ljava/lang/String;)I
+     173: i2f
+     174: fstore        6
+     176: fload         5
+     178: fload         6
+     180: fmul
+     181: fstore        7
+     183: new           #177                // class java/lang/StringBuilder
+     186: dup
+     187: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     190: ldc_w         #594                // String buffing invasion, inv count:
+     193: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     196: fload         6
+     198: invokevirtual #597                // Method java/lang/StringBuilder.append:(F)Ljava/lang/StringBuilder;
+     201: ldc_w         #599                // String , actual buff:
+     204: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     207: fload         7
+     209: invokevirtual #597                // Method java/lang/StringBuilder.append:(F)Ljava/lang/StringBuilder;
+     212: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     215: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     218: aload_0
+     219: fload         7
+     221: invokestatic  #602                // Method CoroUtil/difficulty/DynamicDifficulty.setInvasionSkipBuff:(Lnet/minecraft/entity/player/EntityPlayer;F)V
+     224: return
+
+  public static CoroUtil.difficulty.data.spawns.DataMobSpawnsTemplate getInvasionTestData(net.minecraft.entity.player.EntityPlayer, CoroUtil.difficulty.DifficultyQueryContext);
+    Code:
+       0: aload_0
+       1: getstatic     #148                // Field com/corosus/inv/Invasion.PLAYER_DATA_INSTANCE:Lnet/minecraftforge/common/capabilities/Capability;
+       4: aconst_null
+       5: invokevirtual #152                // Method net/minecraft/entity/player/EntityPlayer.getCapability:(Lnet/minecraftforge/common/capabilities/Capability;Lnet/minecraft/util/EnumFacing;)Ljava/lang/Object;
+       8: checkcast     #154                // class com/corosus/inv/capabilities/PlayerDataInstance
+      11: astore_2
+      12: aload_0
+      13: aload_1
+      14: invokestatic  #577                // Method chooseInvasionProfile:(Lnet/minecraft/entity/player/EntityPlayer;LCoroUtil/difficulty/DifficultyQueryContext;)LCoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate;
+      17: astore_3
+      18: aload_3
+      19: areturn
+
+  public static void invasionStopReset(net.minecraft.entity.player.EntityPlayer);
+    Code:
+       0: aload_0
+       1: getstatic     #148                // Field com/corosus/inv/Invasion.PLAYER_DATA_INSTANCE:Lnet/minecraftforge/common/capabilities/Capability;
+       4: aconst_null
+       5: invokevirtual #152                // Method net/minecraft/entity/player/EntityPlayer.getCapability:(Lnet/minecraftforge/common/capabilities/Capability;Lnet/minecraft/util/EnumFacing;)Ljava/lang/Object;
+       8: checkcast     #154                // class com/corosus/inv/capabilities/PlayerDataInstance
+      11: astore_1
+      12: aload_0
+      13: invokestatic  #142                // Method isPlayerSkippingInvasion:(Lnet/minecraft/entity/player/EntityPlayer;)Z
+      16: ifne          60
+      19: getstatic     #613                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_ended:Ljava/lang/String;
+      22: ldc           #168                // String
+      24: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+      27: ifne          60
+      30: aload_0
+      31: new           #81                 // class net/minecraft/util/text/TextComponentString
+      34: dup
+      35: getstatic     #613                // Field com/corosus/inv/config/ConfigInvasion.Invasion_Message_ended:Ljava/lang/String;
+      38: iconst_1
+      39: anewarray     #4                  // class java/lang/Object
+      42: dup
+      43: iconst_0
+      44: getstatic     #616                // Field com/corosus/inv/config/ConfigInvasion.invadeEveryXDays:I
+      47: invokestatic  #90                 // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      50: aastore
+      51: invokestatic  #96                 // Method java/lang/String.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+      54: invokespecial #99                 // Method net/minecraft/util/text/TextComponentString."<init>":(Ljava/lang/String;)V
+      57: invokevirtual #103                // Method net/minecraft/entity/player/EntityPlayer.func_145747_a:(Lnet/minecraft/util/text/ITextComponent;)V
+      60: aload_1
+      61: iconst_0
+      62: putfield      #360                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionActive:Z
+      65: aload_1
+      66: iconst_0
+      67: putfield      #381                // Field com/corosus/inv/capabilities/PlayerDataInstance.dataPlayerInvasionWarned:Z
+      70: ldc_w         #618                // String resetInvasion() for stop reset
+      73: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+      76: aload_1
+      77: invokevirtual #552                // Method com/corosus/inv/capabilities/PlayerDataInstance.resetInvasion:()V
+      80: aload_0
+      81: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      84: getstatic     #32                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipping:Ljava/lang/String;
+      87: iconst_0
+      88: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+      91: aload_0
+      92: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      95: getstatic     #302                // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkippingTooSoon:Ljava/lang/String;
+      98: iconst_0
+      99: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+     102: aload_0
+     103: fconst_0
+     104: invokestatic  #602                // Method CoroUtil/difficulty/DynamicDifficulty.setInvasionSkipBuff:(Lnet/minecraft/entity/player/EntityPlayer;F)V
+     107: return
+
+  public static boolean spawnNewMobFromProfile(net.minecraft.entity.EntityLivingBase, float);
+    Code:
+       0: aload_0
+       1: getstatic     #148                // Field com/corosus/inv/Invasion.PLAYER_DATA_INSTANCE:Lnet/minecraftforge/common/capabilities/Capability;
+       4: aconst_null
+       5: invokevirtual #623                // Method net/minecraft/entity/EntityLivingBase.getCapability:(Lnet/minecraftforge/common/capabilities/Capability;Lnet/minecraft/util/EnumFacing;)Ljava/lang/Object;
+       8: checkcast     #154                // class com/corosus/inv/capabilities/PlayerDataInstance
+      11: astore_2
+      12: getstatic     #626                // Field com/corosus/inv/config/ConfigAdvancedOptions.spawnRangeMin:I
+      15: istore_3
+      16: getstatic     #629                // Field com/corosus/inv/config/ConfigAdvancedOptions.spawnRangeMax:I
+      19: istore        4
+      21: iload         4
+      23: iconst_2
+      24: imul
+      25: istore        5
+      27: aload_0
+      28: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+      31: getfield      #634                // Field net/minecraft/world/World.field_73012_v:Ljava/util/Random;
+      34: astore        6
+      36: aload_2
+      37: invokevirtual #638                // Method com/corosus/inv/capabilities/PlayerDataInstance.getRandomEntityClassToSpawn:()Lcom/corosus/inv/InvasionEntitySpawn;
+      40: astore        7
+      42: sipush        300
+      45: istore        8
+      47: sipush        300
+      50: istore        9
+      52: aload         7
+      54: ifnull        1565
+      57: iconst_0
+      58: istore        10
+      60: iload         10
+      62: getstatic     #645                // Field com/corosus/inv/config/ConfigAdvancedOptions.attemptsPerSpawn:I
+      65: if_icmpge     1565
+      68: aload_2
+      69: dup
+      70: getfield      #648                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingAnySpawn:I
+      73: iconst_1
+      74: iadd
+      75: putfield      #648                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingAnySpawn:I
+      78: aload_0
+      79: getfield      #649                // Field net/minecraft/entity/EntityLivingBase.field_70165_t:D
+      82: invokestatic  #341                // Method net/minecraft/util/math/MathHelper.func_76128_c:(D)I
+      85: iload         5
+      87: iconst_2
+      88: idiv
+      89: isub
+      90: aload         6
+      92: iload         5
+      94: invokevirtual #653                // Method java/util/Random.nextInt:(I)I
+      97: iadd
+      98: istore        11
+     100: aload_0
+     101: getfield      #654                // Field net/minecraft/entity/EntityLivingBase.field_70161_v:D
+     104: invokestatic  #341                // Method net/minecraft/util/math/MathHelper.func_76128_c:(D)I
+     107: iload         5
+     109: iconst_2
+     110: idiv
+     111: isub
+     112: aload         6
+     114: iload         5
+     116: invokevirtual #653                // Method java/util/Random.nextInt:(I)I
+     119: iadd
+     120: istore        12
+     122: aload_0
+     123: getfield      #655                // Field net/minecraft/entity/EntityLivingBase.field_70163_u:D
+     126: invokestatic  #341                // Method net/minecraft/util/math/MathHelper.func_76128_c:(D)I
+     129: iload         5
+     131: iconst_2
+     132: idiv
+     133: isub
+     134: aload         6
+     136: iload         5
+     138: invokevirtual #653                // Method java/util/Random.nextInt:(I)I
+     141: iadd
+     142: istore        13
+     144: aload_0
+     145: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     148: new           #237                // class net/minecraft/util/math/BlockPos
+     151: dup
+     152: iload         11
+     154: iconst_0
+     155: iload         12
+     157: invokespecial #656                // Method net/minecraft/util/math/BlockPos."<init>":(III)V
+     160: invokevirtual #660                // Method net/minecraft/world/World.func_175645_m:(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/BlockPos;
+     163: invokevirtual #261                // Method net/minecraft/util/math/BlockPos.func_177956_o:()I
+     166: istore        14
+     168: iinc          14, -1
+     171: aload_0
+     172: iload         11
+     174: i2d
+     175: aload_0
+     176: getfield      #655                // Field net/minecraft/entity/EntityLivingBase.field_70163_u:D
+     179: iload         12
+     181: i2d
+     182: invokevirtual #664                // Method net/minecraft/entity/EntityLivingBase.func_70011_f:(DDD)D
+     185: dstore        15
+     187: dload         15
+     189: iload_3
+     190: i2d
+     191: dcmpg
+     192: iflt          1559
+     195: dload         15
+     197: iload         4
+     199: i2d
+     200: dcmpl
+     201: ifle          207
+     204: goto          1559
+     207: iconst_1
+     208: istore        17
+     210: iconst_0
+     211: istore        18
+     213: aload         7
+     215: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     218: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+     221: getstatic     #679                // Field CoroUtil/util/EnumSpawnPlacementType.WATER:LCoroUtil/util/EnumSpawnPlacementType;
+     224: if_acmpeq     241
+     227: aload         7
+     229: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     232: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+     235: getstatic     #682                // Field CoroUtil/util/EnumSpawnPlacementType.AIR:LCoroUtil/util/EnumSpawnPlacementType;
+     238: if_acmpne     244
+     241: iconst_0
+     242: istore        17
+     244: iload         14
+     246: istore        19
+     248: iconst_0
+     249: istore        20
+     251: aload         7
+     253: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     256: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+     259: getstatic     #685                // Field CoroUtil/util/EnumSpawnPlacementType.GROUND:LCoroUtil/util/EnumSpawnPlacementType;
+     262: if_acmpne     297
+     265: aload_0
+     266: getfield      #655                // Field net/minecraft/entity/EntityLivingBase.field_70163_u:D
+     269: ldc2_w        #686                // double 10.0d
+     272: dadd
+     273: iload         14
+     275: i2d
+     276: dcmpl
+     277: ifle          287
+     280: iload         14
+     282: istore        19
+     284: goto          514
+     287: iload         13
+     289: istore        19
+     291: iconst_1
+     292: istore        20
+     294: goto          514
+     297: aload         7
+     299: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     302: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+     305: getstatic     #690                // Field CoroUtil/util/EnumSpawnPlacementType.CAVE:LCoroUtil/util/EnumSpawnPlacementType;
+     308: if_acmpne     321
+     311: iconst_1
+     312: istore        20
+     314: iload         13
+     316: istore        19
+     318: goto          514
+     321: aload         7
+     323: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     326: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+     329: getstatic     #693                // Field CoroUtil/util/EnumSpawnPlacementType.SURFACE:LCoroUtil/util/EnumSpawnPlacementType;
+     332: if_acmpne     345
+     335: iconst_0
+     336: istore        20
+     338: iload         14
+     340: istore        19
+     342: goto          514
+     345: aload         7
+     347: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     350: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+     353: getstatic     #679                // Field CoroUtil/util/EnumSpawnPlacementType.WATER:LCoroUtil/util/EnumSpawnPlacementType;
+     356: if_acmpne     451
+     359: iload         13
+     361: istore        19
+     363: new           #237                // class net/minecraft/util/math/BlockPos
+     366: dup
+     367: iload         11
+     369: iload         19
+     371: iload         12
+     373: invokespecial #656                // Method net/minecraft/util/math/BlockPos."<init>":(III)V
+     376: astore        21
+     378: aload_0
+     379: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     382: aload         21
+     384: invokevirtual #697                // Method net/minecraft/world/World.func_180495_p:(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;
+     387: astore        22
+     389: aload         22
+     391: invokeinterface #703,  1          // InterfaceMethod net/minecraft/block/state/IBlockState.func_185904_a:()Lnet/minecraft/block/material/Material;
+     396: getstatic     #709                // Field net/minecraft/block/material/Material.field_151586_h:Lnet/minecraft/block/material/Material;
+     399: if_acmpne     1559
+     402: aload_0
+     403: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     406: aload         21
+     408: invokevirtual #712                // Method net/minecraft/util/math/BlockPos.func_177977_b:()Lnet/minecraft/util/math/BlockPos;
+     411: invokevirtual #697                // Method net/minecraft/world/World.func_180495_p:(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;
+     414: invokeinterface #703,  1          // InterfaceMethod net/minecraft/block/state/IBlockState.func_185904_a:()Lnet/minecraft/block/material/Material;
+     419: getstatic     #709                // Field net/minecraft/block/material/Material.field_151586_h:Lnet/minecraft/block/material/Material;
+     422: if_acmpne     1559
+     425: aload_0
+     426: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     429: aload         21
+     431: invokevirtual #715                // Method net/minecraft/util/math/BlockPos.func_177984_a:()Lnet/minecraft/util/math/BlockPos;
+     434: invokevirtual #697                // Method net/minecraft/world/World.func_180495_p:(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;
+     437: invokeinterface #718,  1          // InterfaceMethod net/minecraft/block/state/IBlockState.func_185915_l:()Z
+     442: ifeq          448
+     445: goto          1559
+     448: goto          514
+     451: aload         7
+     453: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     456: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+     459: getstatic     #682                // Field CoroUtil/util/EnumSpawnPlacementType.AIR:LCoroUtil/util/EnumSpawnPlacementType;
+     462: if_acmpne     514
+     465: iload         13
+     467: istore        19
+     469: new           #237                // class net/minecraft/util/math/BlockPos
+     472: dup
+     473: iload         11
+     475: iload         19
+     477: iload         12
+     479: invokespecial #656                // Method net/minecraft/util/math/BlockPos."<init>":(III)V
+     482: astore        21
+     484: aload_0
+     485: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     488: aload         21
+     490: invokevirtual #722                // Method net/minecraft/world/World.func_175623_d:(Lnet/minecraft/util/math/BlockPos;)Z
+     493: ifeq          1559
+     496: aload_0
+     497: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     500: aload         21
+     502: invokevirtual #715                // Method net/minecraft/util/math/BlockPos.func_177984_a:()Lnet/minecraft/util/math/BlockPos;
+     505: invokevirtual #722                // Method net/minecraft/world/World.func_175623_d:(Lnet/minecraft/util/math/BlockPos;)Z
+     508: ifne          514
+     511: goto          1559
+     514: iload         20
+     516: ifeq          597
+     519: aload_2
+     520: getfield      #725                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingCaveSpawn:I
+     523: iload         8
+     525: if_icmple     597
+     528: aload_2
+     529: getfield      #728                // Field com/corosus/inv/capabilities/PlayerDataInstance.listGoodCavePositions:Ljava/util/List;
+     532: invokeinterface #731,  1          // InterfaceMethod java/util/List.size:()I
+     537: ifle          597
+     540: ldc_w         #733                // String trying cached cave spot to spawn with
+     543: invokestatic  #205                // Method CoroUtil/forge/CULog.dbg:(Ljava/lang/String;)V
+     546: aload_2
+     547: getfield      #728                // Field com/corosus/inv/capabilities/PlayerDataInstance.listGoodCavePositions:Ljava/util/List;
+     550: aload         6
+     552: aload_2
+     553: getfield      #728                // Field com/corosus/inv/capabilities/PlayerDataInstance.listGoodCavePositions:Ljava/util/List;
+     556: invokeinterface #731,  1          // InterfaceMethod java/util/List.size:()I
+     561: iconst_1
+     562: isub
+     563: invokevirtual #653                // Method java/util/Random.nextInt:(I)I
+     566: invokeinterface #737,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     571: checkcast     #237                // class net/minecraft/util/math/BlockPos
+     574: astore        21
+     576: aload         21
+     578: invokevirtual #258                // Method net/minecraft/util/math/BlockPos.func_177958_n:()I
+     581: istore        11
+     583: aload         21
+     585: invokevirtual #261                // Method net/minecraft/util/math/BlockPos.func_177956_o:()I
+     588: istore        19
+     590: aload         21
+     592: invokevirtual #264                // Method net/minecraft/util/math/BlockPos.func_177952_p:()I
+     595: istore        12
+     597: iload         20
+     599: ifne          614
+     602: aload_2
+     603: getfield      #740                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingSolidGroundSpawn:I
+     606: iload         9
+     608: if_icmple     614
+     611: iconst_1
+     612: istore        18
+     614: iconst_0
+     615: istore        21
+     617: iload         17
+     619: ifeq          737
+     622: aload_2
+     623: dup
+     624: getfield      #740                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingSolidGroundSpawn:I
+     627: iconst_1
+     628: iadd
+     629: putfield      #740                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingSolidGroundSpawn:I
+     632: aload_0
+     633: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     636: iload         11
+     638: iload         19
+     640: iload         12
+     642: invokestatic  #746                // Method CoroUtil/util/CoroUtilEntity.canSpawnMobOnGround:(Lnet/minecraft/world/World;III)Z
+     645: ifne          737
+     648: iload         18
+     650: ifeq          1559
+     653: ldc_w         #748                // String trying surface water to spawn with
+     656: invokestatic  #205                // Method CoroUtil/forge/CULog.dbg:(Ljava/lang/String;)V
+     659: new           #237                // class net/minecraft/util/math/BlockPos
+     662: dup
+     663: iload         11
+     665: iload         14
+     667: iload         12
+     669: invokespecial #656                // Method net/minecraft/util/math/BlockPos."<init>":(III)V
+     672: astore        22
+     674: aload_0
+     675: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     678: aload         22
+     680: invokevirtual #697                // Method net/minecraft/world/World.func_180495_p:(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;
+     683: astore        23
+     685: aload         23
+     687: invokeinterface #703,  1          // InterfaceMethod net/minecraft/block/state/IBlockState.func_185904_a:()Lnet/minecraft/block/material/Material;
+     692: getstatic     #709                // Field net/minecraft/block/material/Material.field_151586_h:Lnet/minecraft/block/material/Material;
+     695: if_acmpne     1559
+     698: aload_0
+     699: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     702: aload         22
+     704: invokevirtual #715                // Method net/minecraft/util/math/BlockPos.func_177984_a:()Lnet/minecraft/util/math/BlockPos;
+     707: invokevirtual #697                // Method net/minecraft/world/World.func_180495_p:(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;
+     710: invokeinterface #752,  1          // InterfaceMethod net/minecraft/block/state/IBlockState.func_177230_c:()Lnet/minecraft/block/Block;
+     715: invokestatic  #758                // Method CoroUtil/util/CoroUtilBlock.isAir:(Lnet/minecraft/block/Block;)Z
+     718: ifne          724
+     721: goto          1559
+     724: iconst_1
+     725: istore        21
+     727: aload_2
+     728: dup
+     729: getfield      #740                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingSolidGroundSpawn:I
+     732: iconst_1
+     733: isub
+     734: putfield      #740                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingSolidGroundSpawn:I
+     737: getstatic     #761                // Field com/corosus/inv/config/ConfigAdvancedOptions.failedTriesBeforeAllowingSpawnInLitAreas:I
+     740: iconst_m1
+     741: if_icmpeq     797
+     744: aload_2
+     745: getfield      #764                // Field com/corosus/inv/capabilities/PlayerDataInstance.allowSpawnInLitAreas:Z
+     748: ifne          797
+     751: aload_2
+     752: getfield      #648                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingAnySpawn:I
+     755: getstatic     #761                // Field com/corosus/inv/config/ConfigAdvancedOptions.failedTriesBeforeAllowingSpawnInLitAreas:I
+     758: if_icmple     797
+     761: new           #177                // class java/lang/StringBuilder
+     764: dup
+     765: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     768: ldc_w         #766                // String couldnt find a dark area to spawn for
+     771: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     774: getstatic     #761                // Field com/corosus/inv/config/ConfigAdvancedOptions.failedTriesBeforeAllowingSpawnInLitAreas:I
+     777: invokevirtual #196                // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     780: ldc_w         #768                // String  tries, allowing spawning in lit areas now
+     783: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     786: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     789: invokestatic  #205                // Method CoroUtil/forge/CULog.dbg:(Ljava/lang/String;)V
+     792: aload_2
+     793: iconst_1
+     794: putfield      #764                // Field com/corosus/inv/capabilities/PlayerDataInstance.allowSpawnInLitAreas:Z
+     797: aload_2
+     798: getfield      #764                // Field com/corosus/inv/capabilities/PlayerDataInstance.allowSpawnInLitAreas:Z
+     801: ifne          810
+     804: getstatic     #771                // Field com/corosus/inv/config/ConfigAdvancedOptions.mobsMustSpawnInDarkness:Z
+     807: ifne          814
+     810: iconst_1
+     811: goto          815
+     814: iconst_0
+     815: istore        22
+     817: iload         20
+     819: ifeq          854
+     822: aload_2
+     823: dup
+     824: getfield      #725                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingCaveSpawn:I
+     827: iconst_1
+     828: iadd
+     829: putfield      #725                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingCaveSpawn:I
+     832: aload_0
+     833: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     836: iload         11
+     838: iload         19
+     840: iload         12
+     842: iconst_1
+     843: iload         22
+     845: invokestatic  #775                // Method CoroUtil/util/CoroUtilEntity.isInDarkCave:(Lnet/minecraft/world/World;IIIZZ)Z
+     848: ifne          889
+     851: goto          1559
+     854: iload         22
+     856: ifne          889
+     859: aload_0
+     860: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+     863: new           #237                // class net/minecraft/util/math/BlockPos
+     866: dup
+     867: iload         11
+     869: iload         19
+     871: iconst_1
+     872: iadd
+     873: iload         12
+     875: invokespecial #656                // Method net/minecraft/util/math/BlockPos."<init>":(III)V
+     878: invokevirtual #779                // Method net/minecraft/world/World.func_175671_l:(Lnet/minecraft/util/math/BlockPos;)I
+     881: bipush        6
+     883: if_icmplt     889
+     886: goto          1559
+     889: aload         7
+     891: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     894: getfield      #782                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.entities:Ljava/util/List;
+     897: aload         6
+     899: aload         7
+     901: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+     904: getfield      #782                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.entities:Ljava/util/List;
+     907: invokeinterface #731,  1          // InterfaceMethod java/util/List.size:()I
+     912: invokevirtual #653                // Method java/util/Random.nextInt:(I)I
+     915: invokeinterface #737,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     920: checkcast     #92                 // class java/lang/String
+     923: astore        23
+     925: aload         23
+     927: invokestatic  #786                // Method CoroUtil/util/CoroUtilEntity.getEntityNameStringFromNBTLoadedName:(Ljava/lang/String;)Ljava/lang/String;
+     930: astore        24
+     932: aload         23
+     934: invokestatic  #789                // Method CoroUtil/util/CoroUtilEntity.getEntityNBTStringFromNBTLoadedName:(Ljava/lang/String;)Ljava/lang/String;
+     937: astore        25
+     939: aload         24
+     941: ldc_w         #791                // String minecraft:bat
+     944: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     947: ifeq          955
+     950: ldc_w         #793                // String coroutil:bat_smart
+     953: astore        24
+     955: aload         24
+     957: invokestatic  #797                // Method CoroUtil/util/CoroUtilEntity.getClassFromRegistry:(Ljava/lang/String;)Ljava/lang/Class;
+     960: astore        26
+     962: aload         26
+     964: ifnull        1517
+     967: ldc_w         #429                // class net/minecraft/entity/EntityCreature
+     970: aload         26
+     972: invokevirtual #803                // Method java/lang/Class.isAssignableFrom:(Ljava/lang/Class;)Z
+     975: ifeq          1490
+     978: aconst_null
+     979: astore        27
+     981: aconst_null
+     982: astore        28
+     984: iconst_1
+     985: istore        29
+     987: aload         25
+     989: ldc           #168                // String
+     991: if_acmpeq     1080
+     994: iconst_0
+     995: istore        29
+     997: aload         25
+     999: invokestatic  #809                // Method net/minecraft/nbt/JsonToNBT.func_180713_a:(Ljava/lang/String;)Lnet/minecraft/nbt/NBTTagCompound;
+    1002: astore        28
+    1004: aload         28
+    1006: ldc_w         #811                // String id
+    1009: aload         24
+    1011: invokevirtual #815                // Method net/minecraft/nbt/NBTTagCompound.func_74778_a:(Ljava/lang/String;Ljava/lang/String;)V
+    1014: aload         28
+    1016: getstatic     #818                // Field CoroUtil/difficulty/UtilEntityBuffs.dataEntityInitialSpawn:Ljava/lang/String;
+    1019: iconst_1
+    1020: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+    1023: goto          1051
+    1026: astore        30
+    1028: new           #820                // class net/minecraft/command/CommandException
+    1031: dup
+    1032: ldc_w         #822                // String commands.summon.tagError
+    1035: iconst_1
+    1036: anewarray     #4                  // class java/lang/Object
+    1039: dup
+    1040: iconst_0
+    1041: aload         30
+    1043: invokevirtual #825                // Method net/minecraft/nbt/NBTException.getMessage:()Ljava/lang/String;
+    1046: aastore
+    1047: invokespecial #828                // Method net/minecraft/command/CommandException."<init>":(Ljava/lang/String;[Ljava/lang/Object;)V
+    1050: athrow
+    1051: aload         28
+    1053: aload_0
+    1054: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+    1057: iload         11
+    1059: i2d
+    1060: iload         19
+    1062: iconst_1
+    1063: iadd
+    1064: i2d
+    1065: iload         12
+    1067: i2d
+    1068: iconst_1
+    1069: invokestatic  #834                // Method net/minecraft/world/chunk/storage/AnvilChunkLoader.func_186054_a:(Lnet/minecraft/nbt/NBTTagCompound;Lnet/minecraft/world/World;DDDZ)Lnet/minecraft/entity/Entity;
+    1072: checkcast     #429                // class net/minecraft/entity/EntityCreature
+    1075: astore        27
+    1077: goto          1113
+    1080: aload         26
+    1082: iconst_1
+    1083: anewarray     #799                // class java/lang/Class
+    1086: dup
+    1087: iconst_0
+    1088: ldc           #62                 // class net/minecraft/world/World
+    1090: aastore
+    1091: invokevirtual #838                // Method java/lang/Class.getConstructor:([Ljava/lang/Class;)Ljava/lang/reflect/Constructor;
+    1094: iconst_1
+    1095: anewarray     #4                  // class java/lang/Object
+    1098: dup
+    1099: iconst_0
+    1100: aload_0
+    1101: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+    1104: aastore
+    1105: invokevirtual #844                // Method java/lang/reflect/Constructor.newInstance:([Ljava/lang/Object;)Ljava/lang/Object;
+    1108: checkcast     #429                // class net/minecraft/entity/EntityCreature
+    1111: astore        27
+    1113: aload         27
+    1115: iload         11
+    1117: i2d
+    1118: iload         19
+    1120: iconst_1
+    1121: iadd
+    1122: i2d
+    1123: iload         12
+    1125: i2d
+    1126: invokevirtual #847                // Method net/minecraft/entity/EntityCreature.func_70107_b:(DDD)V
+    1129: aload         27
+    1131: aload         27
+    1133: getfield      #492                // Field net/minecraft/entity/EntityCreature.field_70170_p:Lnet/minecraft/world/World;
+    1136: new           #237                // class net/minecraft/util/math/BlockPos
+    1139: dup
+    1140: aload         27
+    1142: invokespecial #850                // Method net/minecraft/util/math/BlockPos."<init>":(Lnet/minecraft/entity/Entity;)V
+    1145: invokevirtual #854                // Method net/minecraft/world/World.func_175649_E:(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/world/DifficultyInstance;
+    1148: aconst_null
+    1149: checkcast     #856                // class net/minecraft/entity/IEntityLivingData
+    1152: invokevirtual #860                // Method net/minecraft/entity/EntityCreature.func_180482_a:(Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/entity/IEntityLivingData;)Lnet/minecraft/entity/IEntityLivingData;
+    1155: pop
+    1156: aload         27
+    1158: invokevirtual #480                // Method net/minecraft/entity/EntityCreature.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+    1161: getstatic     #863                // Field CoroUtil/difficulty/UtilEntityBuffs.dataEntityWaveSpawned:Ljava/lang/String;
+    1164: iconst_1
+    1165: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+    1168: aload         27
+    1170: invokevirtual #480                // Method net/minecraft/entity/EntityCreature.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+    1173: getstatic     #868                // Field CoroUtil/ai/tasks/TaskDigTowardsTarget.dataUseInvasionRules:Ljava/lang/String;
+    1176: iconst_1
+    1177: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+    1180: aload         27
+    1182: invokevirtual #480                // Method net/minecraft/entity/EntityCreature.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+    1185: getstatic     #871                // Field CoroUtil/difficulty/UtilEntityBuffs.dataEntityBuffed_PlayerSpawnedFor:Ljava/lang/String;
+    1188: aload_0
+    1189: invokevirtual #872                // Method net/minecraft/entity/EntityLivingBase.func_70005_c_:()Ljava/lang/String;
+    1192: invokevirtual #815                // Method net/minecraft/nbt/NBTTagCompound.func_74778_a:(Ljava/lang/String;Ljava/lang/String;)V
+    1195: aload         27
+    1197: aload         7
+    1199: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+    1202: getfield      #875                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.cmods:Ljava/util/List;
+    1205: fload_1
+    1206: invokestatic  #879                // Method CoroUtil/difficulty/UtilEntityBuffs.registerAndApplyCmods:(Lnet/minecraft/entity/EntityCreature;Ljava/util/List;F)V
+    1209: iload         29
+    1211: ifeq          1236
+    1214: aload         27
+    1216: invokevirtual #480                // Method net/minecraft/entity/EntityCreature.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+    1219: getstatic     #818                // Field CoroUtil/difficulty/UtilEntityBuffs.dataEntityInitialSpawn:Ljava/lang/String;
+    1222: iconst_1
+    1223: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+    1226: aload_0
+    1227: getfield      #630                // Field net/minecraft/entity/EntityLivingBase.field_70170_p:Lnet/minecraft/world/World;
+    1230: aload         27
+    1232: invokevirtual #883                // Method net/minecraft/world/World.func_72838_d:(Lnet/minecraft/entity/Entity;)Z
+    1235: pop
+    1236: aload         27
+    1238: invokevirtual #480                // Method net/minecraft/entity/EntityCreature.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+    1241: getstatic     #818                // Field CoroUtil/difficulty/UtilEntityBuffs.dataEntityInitialSpawn:Ljava/lang/String;
+    1244: iconst_0
+    1245: invokevirtual #72                 // Method net/minecraft/nbt/NBTTagCompound.func_74757_a:(Ljava/lang/String;Z)V
+    1248: aload         27
+    1250: instanceof    #885                // class net/minecraft/entity/monster/EntityZombie
+    1253: ifeq          1265
+    1256: aload         27
+    1258: checkcast     #885                // class net/minecraft/entity/monster/EntityZombie
+    1261: iconst_0
+    1262: invokevirtual #889                // Method net/minecraft/entity/monster/EntityZombie.func_82227_f:(Z)V
+    1265: aload         7
+    1267: dup
+    1268: getfield      #892                // Field com/corosus/inv/InvasionEntitySpawn.spawnCountCurrent:I
+    1271: iconst_1
+    1272: iadd
+    1273: putfield      #892                // Field com/corosus/inv/InvasionEntitySpawn.spawnCountCurrent:I
+    1276: aload_2
+    1277: iconst_0
+    1278: putfield      #648                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingAnySpawn:I
+    1281: iload         20
+    1283: ifeq          1356
+    1286: aload_2
+    1287: iconst_0
+    1288: putfield      #725                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingCaveSpawn:I
+    1291: new           #237                // class net/minecraft/util/math/BlockPos
+    1294: dup
+    1295: iload         11
+    1297: iload         19
+    1299: iload         12
+    1301: invokespecial #656                // Method net/minecraft/util/math/BlockPos."<init>":(III)V
+    1304: astore        30
+    1306: aload_2
+    1307: getfield      #728                // Field com/corosus/inv/capabilities/PlayerDataInstance.listGoodCavePositions:Ljava/util/List;
+    1310: aload         30
+    1312: invokeinterface #477,  2          // InterfaceMethod java/util/List.contains:(Ljava/lang/Object;)Z
+    1317: ifne          1356
+    1320: new           #177                // class java/lang/StringBuilder
+    1323: dup
+    1324: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+    1327: ldc_w         #894                // String found good cave spot, adding:
+    1330: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1333: aload         30
+    1335: invokevirtual #254                // Method java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    1338: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+    1341: invokestatic  #205                // Method CoroUtil/forge/CULog.dbg:(Ljava/lang/String;)V
+    1344: aload_2
+    1345: getfield      #728                // Field com/corosus/inv/capabilities/PlayerDataInstance.listGoodCavePositions:Ljava/util/List;
+    1348: aload         30
+    1350: invokeinterface #897,  2          // InterfaceMethod java/util/List.add:(Ljava/lang/Object;)Z
+    1355: pop
+    1356: iload         17
+    1358: ifeq          1371
+    1361: iload         21
+    1363: ifne          1371
+    1366: aload_2
+    1367: iconst_0
+    1368: putfield      #740                // Field com/corosus/inv/capabilities/PlayerDataInstance.triesSinceWorkingSolidGroundSpawn:I
+    1371: new           #177                // class java/lang/StringBuilder
+    1374: dup
+    1375: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+    1378: ldc_w         #899                // String Spawned
+    1381: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1384: aload         7
+    1386: getfield      #892                // Field com/corosus/inv/InvasionEntitySpawn.spawnCountCurrent:I
+    1389: invokevirtual #196                // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+    1392: ldc_w         #901                // String  at
+    1395: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1398: new           #237                // class net/minecraft/util/math/BlockPos
+    1401: dup
+    1402: iload         11
+    1404: iload         19
+    1406: iload         12
+    1408: invokespecial #656                // Method net/minecraft/util/math/BlockPos."<init>":(III)V
+    1411: invokevirtual #254                // Method java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    1414: ldc_w         #903                // String  mobs now:
+    1417: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1420: aload         27
+    1422: invokevirtual #904                // Method net/minecraft/entity/EntityCreature.func_70005_c_:()Ljava/lang/String;
+    1425: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1428: aload         7
+    1430: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+    1433: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+    1436: getstatic     #685                // Field CoroUtil/util/EnumSpawnPlacementType.GROUND:LCoroUtil/util/EnumSpawnPlacementType;
+    1439: if_acmpne     1459
+    1442: iload         20
+    1444: ifeq          1453
+    1447: ldc_w         #906                // String  cavespawned
+    1450: goto          1461
+    1453: ldc_w         #908                // String  surfacespawned
+    1456: goto          1461
+    1459: ldc           #168                // String
+    1461: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1464: ldc_w         #910                // String
+    1467: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1470: aload         7
+    1472: getfield      #668                // Field com/corosus/inv/InvasionEntitySpawn.spawnProfile:LCoroUtil/difficulty/data/spawns/DataActionMobSpawns;
+    1475: getfield      #674                // Field CoroUtil/difficulty/data/spawns/DataActionMobSpawns.spawnType:LCoroUtil/util/EnumSpawnPlacementType;
+    1478: invokevirtual #254                // Method java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    1481: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+    1484: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+    1487: goto          1541
+    1490: new           #177                // class java/lang/StringBuilder
+    1493: dup
+    1494: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+    1497: ldc_w         #912                // String only EntityCreature extended entities are supported, couldnt spawn:
+    1500: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1503: aload         24
+    1505: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1508: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+    1511: invokestatic  #915                // Method com/corosus/inv/InvLog.err:(Ljava/lang/String;)V
+    1514: goto          1541
+    1517: new           #177                // class java/lang/StringBuilder
+    1520: dup
+    1521: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+    1524: ldc_w         #917                // String could not find registered class for entity name:
+    1527: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1530: aload         24
+    1532: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1535: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+    1538: invokestatic  #915                // Method com/corosus/inv/InvLog.err:(Ljava/lang/String;)V
+    1541: goto          1557
+    1544: astore        23
+    1546: ldc_w         #919                // String HW_Invasions: error spawning invasion entity:
+    1549: invokestatic  #915                // Method com/corosus/inv/InvLog.err:(Ljava/lang/String;)V
+    1552: aload         23
+    1554: invokevirtual #521                // Method java/lang/Exception.printStackTrace:()V
+    1557: iconst_1
+    1558: ireturn
+    1559: iinc          10, 1
+    1562: goto          60
+    1565: iconst_0
+    1566: ireturn
+    Exception table:
+       from    to  target type
+         997  1023  1026   Class net/minecraft/nbt/NBTException
+         889  1541  1544   Class java/lang/Exception
+
+  public static boolean isInvasionTonight(net.minecraft.world.World);
+    Code:
+       0: iconst_0
+       1: istore_1
+       2: getstatic     #286                // Field com/corosus/inv/config/ConfigInvasion.invasionCountingPerPlayer:Z
+       5: ifne          12
+       8: getstatic     #299                // Field com/corosus/inv/config/ConfigInvasion.firstInvasionNight:I
+      11: istore_1
+      12: aload_0
+      13: invokevirtual #357                // Method net/minecraft/world/World.func_72820_D:()J
+      16: invokestatic  #296                // Method CoroUtil/util/CoroUtilWorldTime.getDayLength:()I
+      19: i2l
+      20: ldiv
+      21: l2i
+      22: iconst_1
+      23: iadd
+      24: istore_2
+      25: iload_2
+      26: iload_1
+      27: isub
+      28: istore_3
+      29: getstatic     #286                // Field com/corosus/inv/config/ConfigInvasion.invasionCountingPerPlayer:Z
+      32: ifne          41
+      35: iload_3
+      36: ifge          41
+      39: iconst_0
+      40: ireturn
+      41: iload_3
+      42: i2f
+      43: getstatic     #616                // Field com/corosus/inv/config/ConfigInvasion.invadeEveryXDays:I
+      46: i2f
+      47: frem
+      48: fconst_0
+      49: fcmpl
+      50: ifne          57
+      53: iconst_1
+      54: goto          58
+      57: iconst_0
+      58: ireturn
+
+  public static int getInvasionNumber(net.minecraft.world.World);
+    Code:
+       0: getstatic     #299                // Field com/corosus/inv/config/ConfigInvasion.firstInvasionNight:I
+       3: istore_1
+       4: aload_0
+       5: invokevirtual #357                // Method net/minecraft/world/World.func_72820_D:()J
+       8: invokestatic  #296                // Method CoroUtil/util/CoroUtilWorldTime.getDayLength:()I
+      11: i2l
+      12: ldiv
+      13: l2i
+      14: iconst_1
+      15: iadd
+      16: istore_2
+      17: iload_2
+      18: iload_1
+      19: isub
+      20: istore_3
+      21: iload_3
+      22: ifge          27
+      25: iconst_1
+      26: ireturn
+      27: iload_3
+      28: getstatic     #616                // Field com/corosus/inv/config/ConfigInvasion.invadeEveryXDays:I
+      31: idiv
+      32: istore        4
+      34: iload         4
+      36: iconst_1
+      37: iadd
+      38: ireturn
+
+  public static CoroUtil.difficulty.data.spawns.DataMobSpawnsTemplate chooseInvasionProfile(net.minecraft.entity.player.EntityPlayer, CoroUtil.difficulty.DifficultyQueryContext);
+    Code:
+       0: new           #956                // class java/util/ArrayList
+       3: dup
+       4: invokespecial #957                // Method java/util/ArrayList."<init>":()V
+       7: astore_2
+       8: new           #177                // class java/lang/StringBuilder
+      11: dup
+      12: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+      15: ldc_w         #959                // String choosing invasion profile for player:
+      18: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      21: aload_0
+      22: invokevirtual #398                // Method net/minecraft/entity/player/EntityPlayer.func_70005_c_:()Ljava/lang/String;
+      25: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      28: ldc_w         #961                // String , difficulty:
+      31: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      34: aload_1
+      35: invokevirtual #964                // Method CoroUtil/difficulty/DifficultyQueryContext.getDifficulty:()F
+      38: invokevirtual #597                // Method java/lang/StringBuilder.append:(F)Ljava/lang/StringBuilder;
+      41: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      44: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+      47: getstatic     #969                // Field CoroUtil/config/ConfigCoroUtil.mobSpawnsWaveToForceUse:Ljava/lang/String;
+      50: ldc           #168                // String
+      52: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+      55: ifne          135
+      58: invokestatic  #975                // Method CoroUtil/difficulty/data/DifficultyDataReader.getData:()LCoroUtil/difficulty/data/DifficultyData;
+      61: getfield      #980                // Field CoroUtil/difficulty/data/DifficultyData.listMobSpawnTemplates:Ljava/util/List;
+      64: invokeinterface #461,  1          // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+      69: astore_3
+      70: aload_3
+      71: invokeinterface #466,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+      76: ifeq          110
+      79: aload_3
+      80: invokeinterface #470,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      85: checkcast     #583                // class CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate
+      88: astore        4
+      90: aload         4
+      92: getfield      #983                // Field CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.name:Ljava/lang/String;
+      95: getstatic     #969                // Field CoroUtil/config/ConfigCoroUtil.mobSpawnsWaveToForceUse:Ljava/lang/String;
+      98: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     101: ifeq          107
+     104: aload         4
+     106: areturn
+     107: goto          70
+     110: new           #177                // class java/lang/StringBuilder
+     113: dup
+     114: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     117: ldc_w         #985                // String Couldnt find mob spawn profile:
+     120: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     123: getstatic     #969                // Field CoroUtil/config/ConfigCoroUtil.mobSpawnsWaveToForceUse:Ljava/lang/String;
+     126: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     129: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     132: invokestatic  #915                // Method com/corosus/inv/InvLog.err:(Ljava/lang/String;)V
+     135: invokestatic  #975                // Method CoroUtil/difficulty/data/DifficultyDataReader.getData:()LCoroUtil/difficulty/data/DifficultyData;
+     138: getfield      #980                // Field CoroUtil/difficulty/data/DifficultyData.listMobSpawnTemplates:Ljava/util/List;
+     141: invokeinterface #461,  1          // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+     146: astore_3
+     147: aload_3
+     148: invokeinterface #466,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     153: ifeq          381
+     156: aload_3
+     157: invokeinterface #470,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     162: checkcast     #583                // class CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate
+     165: astore        4
+     167: iconst_0
+     168: istore        5
+     170: new           #177                // class java/lang/StringBuilder
+     173: dup
+     174: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     177: ldc_w         #987                // String evaluating conditions for spawn template:
+     180: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     183: aload         4
+     185: invokevirtual #988                // Method CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.toString:()Ljava/lang/String;
+     188: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     191: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     194: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     197: aload         4
+     199: getfield      #991                // Field CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.conditions:Ljava/util/List;
+     202: invokestatic  #997                // Method CoroUtil/difficulty/data/DeserializerAllJson.getConditionsFlattened:(Ljava/util/List;)Ljava/util/List;
+     205: invokeinterface #461,  1          // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+     210: astore        6
+     212: aload         6
+     214: invokeinterface #466,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     219: ifeq          337
+     222: aload         6
+     224: invokeinterface #470,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     229: checkcast     #999                // class CoroUtil/difficulty/data/DataCondition
+     232: astore        7
+     234: aload         7
+     236: instanceof    #1001               // class CoroUtil/difficulty/data/conditions/ConditionRandom
+     239: ifne          334
+     242: aload_0
+     243: aload         7
+     245: aload_1
+     246: invokestatic  #1005               // Method evaluateCondition:(Lnet/minecraft/entity/player/EntityPlayer;LCoroUtil/difficulty/data/DataCondition;LCoroUtil/difficulty/DifficultyQueryContext;)Z
+     249: ifne          296
+     252: new           #177                // class java/lang/StringBuilder
+     255: dup
+     256: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     259: ldc_w         #1007               // String evaluating failed for condition:
+     262: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     265: aload         7
+     267: invokevirtual #254                // Method java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+     270: ldc_w         #1009               // String , dbg:
+     273: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     276: aload         7
+     278: invokevirtual #1010               // Method CoroUtil/difficulty/data/DataCondition.toString:()Ljava/lang/String;
+     281: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     284: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     287: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     290: iconst_1
+     291: istore        5
+     293: goto          337
+     296: new           #177                // class java/lang/StringBuilder
+     299: dup
+     300: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     303: ldc_w         #1012               // String evaluating passed for condition:
+     306: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     309: aload         7
+     311: invokevirtual #254                // Method java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+     314: ldc_w         #1009               // String , dbg:
+     317: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     320: aload         7
+     322: invokevirtual #1010               // Method CoroUtil/difficulty/data/DataCondition.toString:()Ljava/lang/String;
+     325: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     328: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     331: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     334: goto          212
+     337: iload         5
+     339: ifne          378
+     342: new           #177                // class java/lang/StringBuilder
+     345: dup
+     346: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     349: ldc_w         #1014               // String adding spawn template:
+     352: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     355: aload         4
+     357: getfield      #983                // Field CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.name:Ljava/lang/String;
+     360: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     363: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     366: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     369: aload_2
+     370: aload         4
+     372: invokeinterface #897,  2          // InterfaceMethod java/util/List.add:(Ljava/lang/Object;)Z
+     377: pop
+     378: goto          147
+     381: iconst_0
+     382: istore_3
+     383: new           #956                // class java/util/ArrayList
+     386: dup
+     387: invokespecial #957                // Method java/util/ArrayList."<init>":()V
+     390: astore        4
+     392: aload_2
+     393: invokeinterface #461,  1          // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+     398: astore        5
+     400: aload         5
+     402: invokeinterface #466,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     407: ifeq          507
+     410: aload         5
+     412: invokeinterface #470,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     417: checkcast     #583                // class CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate
+     420: astore        6
+     422: iconst_1
+     423: istore        7
+     425: aload         6
+     427: getfield      #991                // Field CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.conditions:Ljava/util/List;
+     430: invokestatic  #997                // Method CoroUtil/difficulty/data/DeserializerAllJson.getConditionsFlattened:(Ljava/util/List;)Ljava/util/List;
+     433: invokeinterface #461,  1          // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+     438: astore        8
+     440: aload         8
+     442: invokeinterface #466,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     447: ifeq          486
+     450: aload         8
+     452: invokeinterface #470,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     457: checkcast     #999                // class CoroUtil/difficulty/data/DataCondition
+     460: astore        9
+     462: aload         9
+     464: instanceof    #1001               // class CoroUtil/difficulty/data/conditions/ConditionRandom
+     467: ifeq          483
+     470: aload         9
+     472: checkcast     #1001               // class CoroUtil/difficulty/data/conditions/ConditionRandom
+     475: getfield      #1017               // Field CoroUtil/difficulty/data/conditions/ConditionRandom.weight:I
+     478: istore        7
+     480: goto          486
+     483: goto          440
+     486: aload         4
+     488: iload         7
+     490: invokestatic  #90                 // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     493: invokeinterface #897,  2          // InterfaceMethod java/util/List.add:(Ljava/lang/Object;)Z
+     498: pop
+     499: iload_3
+     500: iload         7
+     502: iadd
+     503: istore_3
+     504: goto          400
+     507: iconst_m1
+     508: istore        5
+     510: new           #640                // class java/util/Random
+     513: dup
+     514: invokespecial #1018               // Method java/util/Random."<init>":()V
+     517: astore        6
+     519: iload_3
+     520: ifle          599
+     523: aload         6
+     525: iload_3
+     526: invokevirtual #653                // Method java/util/Random.nextInt:(I)I
+     529: istore        7
+     531: iconst_0
+     532: istore        8
+     534: iload         8
+     536: aload         4
+     538: invokeinterface #731,  1          // InterfaceMethod java/util/List.size:()I
+     543: if_icmpge     599
+     546: iload         7
+     548: aload         4
+     550: iload         8
+     552: invokeinterface #737,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     557: checkcast     #86                 // class java/lang/Integer
+     560: invokevirtual #1021               // Method java/lang/Integer.intValue:()I
+     563: if_icmpge     573
+     566: iload         8
+     568: istore        5
+     570: goto          599
+     573: iload         7
+     575: aload         4
+     577: iload         8
+     579: invokeinterface #737,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     584: checkcast     #86                 // class java/lang/Integer
+     587: invokevirtual #1021               // Method java/lang/Integer.intValue:()I
+     590: isub
+     591: istore        7
+     593: iinc          8, 1
+     596: goto          534
+     599: iload         5
+     601: iconst_m1
+     602: if_icmpeq     666
+     605: new           #177                // class java/lang/StringBuilder
+     608: dup
+     609: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     612: ldc_w         #1023               // String chooseInvasionProfile() for:
+     615: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     618: aload_0
+     619: invokevirtual #398                // Method net/minecraft/entity/player/EntityPlayer.func_70005_c_:()Ljava/lang/String;
+     622: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     625: ldc_w         #1025               // String ,
+     628: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     631: aload_2
+     632: iload         5
+     634: invokeinterface #737,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     639: checkcast     #583                // class CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate
+     642: invokevirtual #988                // Method CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate.toString:()Ljava/lang/String;
+     645: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     648: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     651: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     654: aload_2
+     655: iload         5
+     657: invokeinterface #737,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     662: checkcast     #583                // class CoroUtil/difficulty/data/spawns/DataMobSpawnsTemplate
+     665: areturn
+     666: new           #177                // class java/lang/StringBuilder
+     669: dup
+     670: invokespecial #178                // Method java/lang/StringBuilder."<init>":()V
+     673: ldc_w         #1027               // String chooseInvasionProfile() returned no invasion profile for:
+     676: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     679: aload_0
+     680: invokevirtual #398                // Method net/minecraft/entity/player/EntityPlayer.func_70005_c_:()Ljava/lang/String;
+     683: invokevirtual #184                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     686: invokevirtual #200                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     689: invokestatic  #370                // Method com/corosus/inv/InvLog.dbg:(Ljava/lang/String;)V
+     692: aconst_null
+     693: areturn
+
+  public static boolean evaluateCondition(net.minecraft.entity.player.EntityPlayer, CoroUtil.difficulty.data.DataCondition, CoroUtil.difficulty.DifficultyQueryContext);
+    Code:
+       0: aload_1
+       1: instanceof    #567                // class CoroUtil/difficulty/data/conditions/ConditionContext
+       4: ifeq          22
+       7: aload_2
+       8: invokevirtual #1042               // Method CoroUtil/difficulty/DifficultyQueryContext.getContext:()Ljava/lang/String;
+      11: aload_1
+      12: checkcast     #567                // class CoroUtil/difficulty/data/conditions/ConditionContext
+      15: getfield      #1045               // Field CoroUtil/difficulty/data/conditions/ConditionContext.type:Ljava/lang/String;
+      18: invokevirtual #172                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+      21: ireturn
+      22: aload_1
+      23: instanceof    #1047               // class CoroUtil/difficulty/data/conditions/ConditionDifficulty
+      26: ifeq          67
+      29: aload_2
+      30: invokevirtual #964                // Method CoroUtil/difficulty/DifficultyQueryContext.getDifficulty:()F
+      33: f2d
+      34: aload_1
+      35: checkcast     #1047               // class CoroUtil/difficulty/data/conditions/ConditionDifficulty
+      38: getfield      #1050               // Field CoroUtil/difficulty/data/conditions/ConditionDifficulty.min:D
+      41: dcmpl
+      42: iflt          65
+      45: aload_2
+      46: invokevirtual #964                // Method CoroUtil/difficulty/DifficultyQueryContext.getDifficulty:()F
+      49: f2d
+      50: aload_1
+      51: checkcast     #1047               // class CoroUtil/difficulty/data/conditions/ConditionDifficulty
+      54: getfield      #1053               // Field CoroUtil/difficulty/data/conditions/ConditionDifficulty.max:D
+      57: dcmpg
+      58: ifgt          65
+      61: iconst_1
+      62: goto          66
+      65: iconst_0
+      66: ireturn
+      67: aload_1
+      68: instanceof    #1055               // class CoroUtil/difficulty/data/conditions/ConditionInvasionNumber
+      71: ifeq          123
+      74: aload_1
+      75: checkcast     #1055               // class CoroUtil/difficulty/data/conditions/ConditionInvasionNumber
+      78: astore_3
+      79: aload_3
+      80: getfield      #1057               // Field CoroUtil/difficulty/data/conditions/ConditionInvasionNumber.min:I
+      83: iconst_m1
+      84: if_icmpeq     98
+      87: aload_2
+      88: invokevirtual #1059               // Method CoroUtil/difficulty/DifficultyQueryContext.getInvasionNumber:()I
+      91: aload_3
+      92: getfield      #1057               // Field CoroUtil/difficulty/data/conditions/ConditionInvasionNumber.min:I
+      95: if_icmplt     121
+      98: aload_3
+      99: getfield      #1061               // Field CoroUtil/difficulty/data/conditions/ConditionInvasionNumber.max:I
+     102: iconst_m1
+     103: if_icmpeq     117
+     106: aload_2
+     107: invokevirtual #1059               // Method CoroUtil/difficulty/DifficultyQueryContext.getInvasionNumber:()I
+     110: aload_3
+     111: getfield      #1061               // Field CoroUtil/difficulty/data/conditions/ConditionInvasionNumber.max:I
+     114: if_icmpgt     121
+     117: iconst_1
+     118: goto          122
+     121: iconst_0
+     122: ireturn
+     123: aload_1
+     124: instanceof    #1063               // class CoroUtil/difficulty/data/conditions/ConditionInvasionRate
+     127: ifeq          151
+     130: aload_2
+     131: invokevirtual #1059               // Method CoroUtil/difficulty/DifficultyQueryContext.getInvasionNumber:()I
+     134: aload_1
+     135: checkcast     #1063               // class CoroUtil/difficulty/data/conditions/ConditionInvasionRate
+     138: getfield      #1066               // Field CoroUtil/difficulty/data/conditions/ConditionInvasionRate.rate:I
+     141: irem
+     142: ifne          149
+     145: iconst_1
+     146: goto          150
+     149: iconst_0
+     150: ireturn
+     151: aload_1
+     152: instanceof    #1068               // class CoroUtil/difficulty/data/conditions/ConditionModLoaded
+     155: ifeq          198
+     158: aload_1
+     159: checkcast     #1068               // class CoroUtil/difficulty/data/conditions/ConditionModLoaded
+     162: invokevirtual #1071               // Method CoroUtil/difficulty/data/conditions/ConditionModLoaded.isInverted:()Z
+     165: ifeq          187
+     168: aload_1
+     169: checkcast     #1068               // class CoroUtil/difficulty/data/conditions/ConditionModLoaded
+     172: getfield      #1074               // Field CoroUtil/difficulty/data/conditions/ConditionModLoaded.mod_id:Ljava/lang/String;
+     175: invokestatic  #1079               // Method net/minecraftforge/fml/common/Loader.isModLoaded:(Ljava/lang/String;)Z
+     178: ifne          185
+     181: iconst_1
+     182: goto          186
+     185: iconst_0
+     186: ireturn
+     187: aload_1
+     188: checkcast     #1068               // class CoroUtil/difficulty/data/conditions/ConditionModLoaded
+     191: getfield      #1074               // Field CoroUtil/difficulty/data/conditions/ConditionModLoaded.mod_id:Ljava/lang/String;
+     194: invokestatic  #1079               // Method net/minecraftforge/fml/common/Loader.isModLoaded:(Ljava/lang/String;)Z
+     197: ireturn
+     198: aload_1
+     199: instanceof    #1081               // class CoroUtil/difficulty/data/conditions/ConditionGameStages
+     202: ifeq          224
+     205: aload_0
+     206: aload_1
+     207: checkcast     #1081               // class CoroUtil/difficulty/data/conditions/ConditionGameStages
+     210: getfield      #1084               // Field CoroUtil/difficulty/data/conditions/ConditionGameStages.game_stages:Ljava/util/List;
+     213: aload_1
+     214: checkcast     #1081               // class CoroUtil/difficulty/data/conditions/ConditionGameStages
+     217: invokevirtual #1087               // Method CoroUtil/difficulty/data/conditions/ConditionGameStages.matchAll:()Z
+     220: invokestatic  #1093               // Method CoroUtil/util/CoroUtilCrossMod.gameStages_hasStages:(Lnet/minecraft/entity/player/EntityPlayer;Ljava/util/List;Z)Z
+     223: ireturn
+     224: iconst_0
+     225: ireturn
+
+  public static boolean isAnyoneBeingInvadedTonight(net.minecraft.world.World);
+    Code:
+       0: iconst_0
+       1: istore_1
+       2: aload_0
+       3: getfield      #1098               // Field net/minecraft/world/World.field_73010_i:Ljava/util/List;
+       6: invokeinterface #461,  1          // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+      11: astore_2
+      12: aload_2
+      13: invokeinterface #466,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+      18: ifeq          46
+      21: aload_2
+      22: invokeinterface #470,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      27: checkcast     #18                 // class net/minecraft/entity/player/EntityPlayer
+      30: astore_3
+      31: aload_3
+      32: invokestatic  #142                // Method isPlayerSkippingInvasion:(Lnet/minecraft/entity/player/EntityPlayer;)Z
+      35: ifne          43
+      38: iconst_1
+      39: istore_1
+      40: goto          46
+      43: goto          12
+      46: iload_1
+      47: ireturn
+
+  public static boolean isPlayerSkippingInvasion(net.minecraft.entity.player.EntityPlayer);
+    Code:
+       0: aload_0
+       1: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+       4: getstatic     #32                 // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkipping:Ljava/lang/String;
+       7: invokevirtual #38                 // Method net/minecraft/nbt/NBTTagCompound.func_74767_n:(Ljava/lang/String;)Z
+      10: ifne          26
+      13: aload_0
+      14: invokevirtual #26                 // Method net/minecraft/entity/player/EntityPlayer.getEntityData:()Lnet/minecraft/nbt/NBTTagCompound;
+      17: getstatic     #302                // Field CoroUtil/difficulty/DynamicDifficulty.dataPlayerInvasionSkippingTooSoon:Ljava/lang/String;
+      20: invokevirtual #38                 // Method net/minecraft/nbt/NBTTagCompound.func_74767_n:(Ljava/lang/String;)Z
+      23: ifeq          30
+      26: iconst_1
+      27: goto          31
+      30: iconst_0
+      31: ireturn
+
+  public static boolean shouldLockOutFeaturesForPossibleActiveInvasion(net.minecraft.world.World);
+    Code:
+       0: aload_0
+       1: invokestatic  #47                 // Method CoroUtil/util/CoroUtilWorldTime.isNightPadded:(Lnet/minecraft/world/World;)Z
+       4: ifeq          23
+       7: aload_0
+       8: invokestatic  #42                 // Method isInvasionTonight:(Lnet/minecraft/world/World;)Z
+      11: ifeq          23
+      14: aload_0
+      15: invokestatic  #387                // Method isAnyoneBeingInvadedTonight:(Lnet/minecraft/world/World;)Z
+      18: ifeq          23
+      21: iconst_1
+      22: ireturn
+      23: iconst_0
+      24: ireturn
+
+  static {};
+    Code:
+       0: iconst_0
+       1: putstatic     #362                // Field invasionOnThisNight_Last:Z
+       4: iconst_0
+       5: putstatic     #372                // Field isDayLast:Z
+       8: return
+}

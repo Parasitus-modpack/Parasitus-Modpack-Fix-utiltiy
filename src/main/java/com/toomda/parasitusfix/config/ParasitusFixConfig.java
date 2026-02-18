@@ -15,6 +15,9 @@ public final class ParasitusFixConfig {
     @Config.Name("Bleeding")
     public static final Bleeding BLEEDING = new Bleeding();
 
+    @Config.Name("Hostile Worlds Invasions")
+    public static final HostileWorldsInvasions HOSTILE_WORLDS_INVASIONS = new HostileWorldsInvasions();
+
     public final static class SevenDaysTools {
 
         @Config.Comment("Scrap pickaxe base damage")
@@ -124,5 +127,41 @@ public final class ParasitusFixConfig {
 
         @Config.Comment("Bleeding potion amplifier")
         public int amplifier = 0;
+    }
+
+    public static final class HostileWorldsInvasions {
+
+        @Config.Comment("Enable anti-skybase warning and air-wave fallback logic for Hostile Worlds Invasions")
+        public boolean enableAntiSkybase = true;
+
+        @Config.Comment("Enable forced air-wave fallback when player is too high and no valid ground/water spawn area is found")
+        public boolean enableAirInvasionFallback = true;
+
+        @Config.Comment("Y level threshold for anti-skybase checks")
+        public int skyYLevel = 163;
+
+        @Config.Comment("Message shown when player goes above Y threshold")
+        public String warningMessage = "Parasites become MORE dangerous if you build a home too far in the sky.";
+
+        @Config.Comment("Maximum number of times the warning message can be shown per player")
+        public int maxWarningMessages = 3;
+
+        @Config.Comment("Primary air invasion template name to force")
+        public String airInvasionTemplateName = "invasion_stage_air";
+
+        @Config.Comment("Fallback air invasion template names tried if primary template is missing")
+        public String[] airInvasionTemplateFallbackNames = new String[] { "invasion_stage_3_air" };
+
+        @Config.Comment("Fail-count threshold before forcing air-wave fallback (uses HW invasion runtime spawn-failure counters)")
+        public int failedSpawnTriesForAirFallback = 320;
+
+        @Config.Comment("Spawn-scan step size used for initial ground/water availability check (lower = more accurate)")
+        public int scanStep = 8;
+
+        @Config.Comment("Fallback min spawn range used only if HW invasion config reflection is unavailable")
+        public int scanRangeMinFallback = 24;
+
+        @Config.Comment("Fallback max spawn range used only if HW invasion config reflection is unavailable")
+        public int scanRangeMaxFallback = 64;
     }
 }

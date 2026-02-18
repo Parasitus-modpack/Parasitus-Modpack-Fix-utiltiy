@@ -2,6 +2,7 @@ package com.toomda.parasitusfix;
 
 import com.toomda.parasitusfix.commands.ParasitusFixCommand;
 import com.toomda.parasitusfix.general.MoltenMetalFluids;
+import com.toomda.parasitusfix.hostileworlds.HostileWorldsAntiSkybase;
 import com.toomda.parasitusfix.sevendaystomine.BandageInstantUse;
 import com.toomda.parasitusfix.sevendaystomine.BarbedWireDurabilityFix;
 import com.toomda.parasitusfix.sevendaystomine.BleedDamageLimiter;
@@ -89,6 +90,10 @@ public class ParasitusFix
             MinecraftForge.EVENT_BUS.register(new TechgunsAttackHelicopterNoDespawn());
             MinecraftForge.EVENT_BUS.register(new TechgunsSoldierZombieTargetFix());
             MinecraftForge.EVENT_BUS.register(new TechgunsZombieEndSpawnRestrict());
+        }
+        if (Loader.isModLoaded("hw_inv")) {
+            MinecraftForge.EVENT_BUS.register(new HostileWorldsAntiSkybase());
+            logger.info("Registered Hostile Worlds anti-skybase compatibility.");
         }
         logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
     }
