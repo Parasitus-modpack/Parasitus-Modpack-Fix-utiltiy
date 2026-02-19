@@ -1,12 +1,12 @@
 package com.toomda.parasitusfix.client.gui;
 
-import com.toomda.parasitusfix.ParasitusFix;
 import java.io.IOException;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 
 public class GuiFirstJoinIntro extends GuiScreen {
+    private static final String INTRO_LANG_PREFIX = "gui.parasitus-core.intro.";
     private static final int FADE_IN_TICKS = 40;
     private static final int FADE_OUT_TICKS = 16;
     private static final int LETTERBOX_IN_TICKS = 26;
@@ -32,8 +32,8 @@ public class GuiFirstJoinIntro extends GuiScreen {
         openTicks = 0;
         closeTicks = 0;
         closing = false;
-        line1 = I18n.format("gui." + ParasitusFix.MODID + ".intro.line1");
-        line2 = I18n.format("gui." + ParasitusFix.MODID + ".intro.line2");
+        line1 = I18n.format(INTRO_LANG_PREFIX + "line1");
+        line2 = I18n.format(INTRO_LANG_PREFIX + "line2");
         line2StartTick = LINE_1_START_TICK + line1.length() + LINE_2_GAP_TICKS;
         letterboxTargetHeight = Math.max(20, Math.min(48, height / 6));
         updateVisibleText();
@@ -44,7 +44,7 @@ public class GuiFirstJoinIntro extends GuiScreen {
                 buttonY,
                 120,
                 20,
-                I18n.format("gui." + ParasitusFix.MODID + ".intro.survive")
+                I18n.format(INTRO_LANG_PREFIX + "survive")
         ));
     }
 
@@ -146,5 +146,6 @@ public class GuiFirstJoinIntro extends GuiScreen {
         if (closing) {
             alpha = Math.max(alpha, Math.min(255, closeTicks * 255 / FADE_OUT_TICKS));
         }
-        if (alpha > 0) drawRect(0, 0, width, height, alpha << 24);    }
+        if (alpha > 0) drawRect(0, 0, width, height, alpha << 24);
+    }
 }
