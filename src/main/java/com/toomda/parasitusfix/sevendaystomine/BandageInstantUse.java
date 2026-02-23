@@ -1,5 +1,6 @@
 package com.toomda.parasitusfix.sevendaystomine;
 
+import com.toomda.parasitusfix.config.ParasitusFixConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,6 @@ public final class BandageInstantUse {
     private static final String BANDAGE = "bandage";
     private static final String ADV_BANDAGE = "advancedbandage";
     private static final String ADV_BANDAGE_ALT = "advanced_bandage";
-    private static final int COOLDOWN_TICKS = 30;
     private static final Map<UUID, Integer> LAST_USE_TICK = new HashMap<>();
 
     public BandageInstantUse() {}
@@ -84,7 +84,7 @@ public final class BandageInstantUse {
         if (player == null) return true;
         int now = ws.getMinecraftServer().getTickCounter();
         Integer last = LAST_USE_TICK.get(player.getUniqueID());
-        return last != null && now - last < COOLDOWN_TICKS;
+        return last != null && now - last < ParasitusFixConfig.BANDAGE.cooldownTicks;
     }
 
     private static void markUsed(EntityPlayer player, WorldServer ws) {

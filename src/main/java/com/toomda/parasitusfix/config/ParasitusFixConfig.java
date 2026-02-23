@@ -9,6 +9,9 @@ public final class ParasitusFixConfig {
     @Config.Name("7DTM Tools")
     public static final SevenDaysTools TOOLS = new SevenDaysTools();
 
+    @Config.Name("Bandage")
+    public static final BandageSettings BANDAGE = new BandageSettings();
+
     @Config.Name("7DTM Combat")
     public static final SevenDaysCombat COMBAT = new SevenDaysCombat();
 
@@ -61,6 +64,18 @@ public final class ParasitusFixConfig {
 
         @Config.Comment("Bronze sword base damage")
         public float bronzeSwordDamage = 5.5F;
+
+        @Config.Comment("Army knife base damage (20 hearts = 40 damage)")
+        public float armyKnifeDamage = 40.0F;
+
+        @Config.Comment("Kitchen knife base damage (20 hearts = 40 damage)")
+        public float kitchenKnifeDamage = 40.0F;
+    }
+
+    public final static class BandageSettings {
+
+        @Config.Comment("Cooldown between bandage uses in ticks (20 ticks = 1 second)")
+        public int cooldownTicks = 20;
     }
 
     public final static class SevenDaysCombat {
@@ -96,7 +111,7 @@ public final class ParasitusFixConfig {
         public int windowTicks = 40;
 
         @Config.Comment("Total accumulated damage needed to trigger bleeding")
-        public float sumThreshold = 8.0F;
+        public float sumThreshold = 7.0F;
 
         @Config.Comment("Number of hits in window needed to trigger bleeding")
         public int hitsThreshold = 3;
@@ -114,7 +129,7 @@ public final class ParasitusFixConfig {
         public float maxDurationDamage = 10.0F;
 
         @Config.Comment("Minimum ticks between bleeding damage applications (1 = no throttling)")
-        public int damageIntervalTicks = 20;
+        public int damageIntervalTicks = 40;
 
         @Config.Comment("Use a random interval between min/max for bleeding damage ticks")
         public boolean nondeterministicBleedingRate = false;

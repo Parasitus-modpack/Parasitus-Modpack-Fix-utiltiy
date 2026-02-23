@@ -51,6 +51,10 @@ public final class SevenDaysDamagePatches {
         setSwordDamage("bronze_sword", cfg.bronzeSwordDamage);
         setToolDamage("auger", ParasitusFixConfig.COMBAT.augerDamage);
 
+        // Army knife and kitchen knife - 20 hearts = 40 damage
+        setToolDamage("armyknife", cfg.armyKnifeDamage);
+        setToolDamage("kitchenknife", cfg.kitchenKnifeDamage);
+
         Map<String, Float> clubBase = new HashMap<>();
         clubBase.put("woodenclub", 4.0F);
         clubBase.put("crudeclub", 3.5F);
