@@ -87,13 +87,16 @@ public final class ParasitusFixConfig {
         public float metalSpikesDamage = 3.5F;
 
         @Config.Comment("Barbed wire (razor wire) contact damage")
-        public float barbedWireDamage = 2.5F;
+        public float barbedWireDamage = 2.9F;
 
         @Config.Comment("Flamethrower trap burn duration in seconds")
         public int flameTurretFireSeconds = 4;
 
         @Config.Comment("Auger base melee damage")
         public float augerDamage = 6.0F;
+
+        @Config.Comment("Barbed club base damage")
+        public float barbedClubDamage = 15.0F;
     }
 
     public final static class Bleeding {

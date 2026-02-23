@@ -59,7 +59,7 @@ public final class SevenDaysDamagePatches {
         clubBase.put("woodenclub", 4.0F);
         clubBase.put("crudeclub", 3.5F);
         clubBase.put("ironreinforcedclub", 5.0F);
-        clubBase.put("barbedclub", 6.0F);
+        clubBase.put("barbedclub", ParasitusFixConfig.COMBAT.barbedClubDamage);
         clubBase.put("spikedclub", 7.0F);
 
         for (Item it : ForgeRegistries.ITEMS.getValuesCollection()) {
