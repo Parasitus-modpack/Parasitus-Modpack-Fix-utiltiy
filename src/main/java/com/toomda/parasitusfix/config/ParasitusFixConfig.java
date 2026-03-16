@@ -170,6 +170,9 @@ public final class ParasitusFixConfig {
         @Config.Comment("Fallback air invasion template names tried if primary template is missing")
         public String[] airInvasionTemplateFallbackNames = new String[] { "invasion_stage_3_air" };
 
+        @Config.Comment("Force-replace any active invasion with the air template whenever player is above Y threshold")
+        public boolean forceAirTemplateAboveY = true;
+
         @Config.Comment("Fail-count threshold before forcing air-wave fallback (uses HW invasion runtime spawn-failure counters)")
         public int failedSpawnTriesForAirFallback = 320;
 

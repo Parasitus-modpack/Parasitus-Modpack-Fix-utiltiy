@@ -4,7 +4,9 @@ import com.toomda.parasitusfix.ParasitusFix;
 import com.toomda.parasitusfix.config.ParasitusFixConfig;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -71,8 +73,8 @@ public class HostileWorldsAntiSkybase {
 
         if (persisted.getInteger(NBT_KEY_LAST_AIR_WAVE) == wave) return;
 
-        boolean shouldSwitch = false;
-        if (!wasActive) {
+        boolean shouldSwitch = cfg.forceAirTemplateAboveY;
+        if (!shouldSwitch && !wasActive) {
             int rangeMin = HW_INV.getSpawnRangeMinOr(cfg.scanRangeMinFallback);
             int rangeMax = HW_INV.getSpawnRangeMaxOr(cfg.scanRangeMaxFallback);
             shouldSwitch = !hasAnyGroundOrWaterSpawnSurface(player.world, player.getPosition(), rangeMin, rangeMax, cfg.scanStep);
@@ -225,6 +227,13 @@ public class HostileWorldsAntiSkybase {
                         if (match != null) return match;
                     }
                 }
+
+                ParasitusFix.getLogger().warn(
+                        "[HW_INV] Air template not found. Requested '{}' (+ {} fallbacks). Available templates: {}",
+                        primaryName,
+                        fallbackNames == null ? 0 : fallbackNames.length,
+                        getTemplateNames(templates)
+                );
             } catch (Throwable t) {
                 disable("[HW_INV] Failed to read invasion templates.", t);
             }
@@ -312,10 +321,41 @@ public class HostileWorldsAntiSkybase {
             if (rawName == null) return null;
             String name = rawName.trim();
             if (name.isEmpty()) return null;
+
+            String normalizedTarget = normalizeTemplateName(name);
+
             for (Object template : templates) {
-                if (name.equals(String.valueOf(fieldTemplateName.get(template)))) return template;
+                String templateName = String.valueOf(fieldTemplateName.get(template));
+                String normalizedTemplate = normalizeTemplateName(templateName);
+                if (normalizedTarget.equals(normalizedTemplate)) return template;
             }
+
+            for (Object template : templates) {
+                String templateName = String.valueOf(fieldTemplateName.get(template));
+                String normalizedTemplate = normalizeTemplateName(templateName);
+                if (normalizedTemplate.endsWith(normalizedTarget) || normalizedTarget.endsWith(normalizedTemplate)) return template;
+            }
+
             return null;
+        }
+
+        private String getTemplateNames(List<Object> templates) {
+            List<String> names = new ArrayList<String>();
+            for (Object template : templates) {
+                try {
+                    names.add(String.valueOf(fieldTemplateName.get(template)));
+                } catch (Throwable ignored) {
+                }
+            }
+            return names.toString();
+        }
+
+        private static String normalizeTemplateName(String input) {
+            String normalized = input == null ? "" : input.trim().toLowerCase(Locale.ROOT);
+            if (normalized.startsWith("\"") && normalized.endsWith("\"") && normalized.length() > 1) {
+                normalized = normalized.substring(1, normalized.length() - 1).trim();
+            }
+            return normalized;
         }
 
         private int getStaticInt(Field field, int fallback) {
