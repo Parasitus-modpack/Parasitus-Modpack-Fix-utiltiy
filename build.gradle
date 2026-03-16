@@ -21,7 +21,7 @@ repositories {
     }
 }
 
-version = '1.4'
+version = project.findProperty('modVersion') ?: System.getenv('MOD_VERSION') ?: '1.4.0'
 group = 'com.toomda.parasitusfix'
 archivesBaseName = 'Parasitus-Core'
 
