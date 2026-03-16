@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java 8
         uses: actions/setup-java@v4
@@ -22,12 +24,43 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x gradlew
 
+      - name: Compute next version
+        id: versioning
+        shell: bash
+        run: |
+          git fetch --force --tags
+
+          latest_tag=$(git tag -l 'v*' --sort=-v:refname | head -n 1)
+
+          if [ -z "$latest_tag" ]; then
+            next_version="1.4.0"
+          else
+            clean_version="${latest_tag#v}"
+            IFS='.' read -r major minor patch <<< "$clean_version"
+
+            if [ -z "$major" ] || [ -z "$minor" ] || [ -z "$patch" ]; then
+              echo "Latest tag '$latest_tag' is not in expected v<major>.<minor>.<patch> format"
+              exit 1
+            fi
+
+            if [ "$patch" -ge 9 ]; then
+              minor=$((minor + 1))
+              patch=0
+            else
+              patch=$((patch + 1))
+            fi
+
+            next_version="${major}.${minor}.${patch}"
+          fi
+
+          echo "next_version=$next_version" >> "$GITHUB_OUTPUT"
+
       - name: Build
-        run: ./gradlew -Dorg.gradle.java.home="$JAVA_HOME" clean build --no-daemon
+        run: ./gradlew -Dorg.gradle.java.home="$JAVA_HOME" -PmodVersion="${{ steps.versioning.outputs.next_version }}" clean build --no-daemon
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: parasitusfix-${{ github.sha }}
+          name: parasitusfix-v${{ steps.versioning.outputs.next_version }}-${{ github.sha }}
           path: build/libs/*.jar
           if-no-files-found: error
