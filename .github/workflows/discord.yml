@@ -1,36 +1,36 @@
 name: Discord Notifications
 
 on:
-  push:
+  release:
+    types:
+      - published
   workflow_dispatch:
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send push notification to Discord
+      - name: Send release notification to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          ACTOR: ${{ github.actor }}
-          BRANCH: ${{ github.ref_name }}
+          ACTOR: ${{ github.event.release.author.login || github.actor }}
           SHA: ${{ github.sha }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Manual workflow run' }}
+          RELEASE_NAME: ${{ github.event.release.name || 'Manual workflow run' }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || '' }}
+          DOWNLOAD_URL: ${{ github.event.release.html_url || '' }}
         run: |
           if [ -z "$DISCORD_WEBHOOK" ]; then
             echo "DISCORD_WEBHOOK secret is not set"
             exit 1
           fi
 
-          RELEASES_API_URL="https://api.github.com/repos/$REPO/releases?per_page=1"
-          DOWNLOAD_URL=$(curl -fsSL \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "$RELEASES_API_URL" | jq -r '.[0].html_url // empty') || true
-
           if [ -z "$DOWNLOAD_URL" ]; then
             DOWNLOAD_URL="https://github.com/$REPO/releases/latest"
+          fi
+
+          if [ -z "$RELEASE_TAG" ]; then
+            RELEASE_TAG="latest"
           fi
 
           SHORT_SHA="${SHA:0:7}"
@@ -38,11 +38,11 @@ jobs:
           CONTENT=$(jq -n \
             --arg repo "$REPO" \
             --arg actor "$ACTOR" \
-            --arg branch "$BRANCH" \
             --arg sha "$SHORT_SHA" \
-            --arg commit_message "$COMMIT_MESSAGE" \
+            --arg release_name "$RELEASE_NAME" \
+            --arg release_tag "$RELEASE_TAG" \
             --arg download_url "$DOWNLOAD_URL" \
-            '"New push in **\($repo)** (\($branch)) by **\($actor)**\nCommit message: \($commit_message)\nLinks: [download](\($download_url)) | `\($sha)`"')
+            '"New release in **\($repo)** by **\($actor)**\nRelease: **\($release_name)** (\($release_tag))\nLinks: [download](\($download_url)) | commit: \($sha)"')
 
           curl -sS -X POST \
             -H "Content-Type: application/json" \
