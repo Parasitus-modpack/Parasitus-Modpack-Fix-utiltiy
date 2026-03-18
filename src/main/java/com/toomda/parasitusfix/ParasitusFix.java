@@ -23,6 +23,7 @@ import com.toomda.parasitusfix.sevendaystomine.SevenDaysHazardDamageRebalance;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysSoldierSurvivorNoDespawn;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysDamagePatches;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysZombieEndSpawnRestrict;
+import com.toomda.parasitusfix.srparasites.SRPVanillaUndeadSpawnWeight;
 import com.toomda.parasitusfix.techguns.TechgunsAttackHelicopterTargetFix;
 import com.toomda.parasitusfix.techguns.TechgunsAttackHelicopterNoDespawn;
 import com.toomda.parasitusfix.techguns.TechgunsSoldierZombieTargetFix;
@@ -110,6 +111,10 @@ public class ParasitusFix
         if (Loader.isModLoaded("hw_inv")) {
             MinecraftForge.EVENT_BUS.register(new HostileWorldsAntiSkybase());
             logger.info("Registered Hostile Worlds anti-skybase compatibility.");
+        }
+        if (Loader.isModLoaded("srparasites")) {
+            MinecraftForge.EVENT_BUS.register(new SRPVanillaUndeadSpawnWeight());
+            logger.info("Registered SRP phase-aware vanilla undead spawn weight compatibility.");
         }
         logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
     }

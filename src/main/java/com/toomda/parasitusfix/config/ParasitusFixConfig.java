@@ -21,6 +21,9 @@ public final class ParasitusFixConfig {
     @Config.Name("Hostile Worlds Invasions")
     public static final HostileWorldsInvasions HOSTILE_WORLDS_INVASIONS = new HostileWorldsInvasions();
 
+    @Config.Name("SRP Vanilla Undead Spawns")
+    public static final SRPVanillaUndeadSpawns SRP_VANILLA_UNDEAD_SPAWNS = new SRPVanillaUndeadSpawns();
+
     public final static class SevenDaysTools {
 
         @Config.Comment("Scrap pickaxe base damage")
@@ -184,5 +187,23 @@ public final class ParasitusFixConfig {
 
         @Config.Comment("Fallback max spawn range used only if HW invasion config reflection is unavailable")
         public int scanRangeMaxFallback = 64;
+    }
+
+    public static final class SRPVanillaUndeadSpawns {
+
+        @Config.Comment("Enable SRP phase-aware boost for vanilla Zombie and Husk spawn weights")
+        public boolean enable = true;
+
+        @Config.Comment("Additional spawn weight added to vanilla Zombie before SRP reaches phase threshold")
+        public int zombieWeightBonus = 25;
+
+        @Config.Comment("Additional spawn weight added to vanilla Husk before SRP reaches phase threshold")
+        public int huskWeightBonus = 18;
+
+        @Config.Comment("SRP phase where boosted weights stop and normal vanilla weights are restored")
+        public int revertAtPhase = 4;
+
+        @Config.Comment("How often (ticks) to re-evaluate SRP phase and enforce weights")
+        public int checkIntervalTicks = 200;
     }
 }
