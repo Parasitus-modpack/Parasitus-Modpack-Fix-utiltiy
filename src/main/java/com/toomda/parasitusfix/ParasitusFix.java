@@ -18,6 +18,7 @@ import com.toomda.parasitusfix.sevendaystomine.FlamethrowerTrapFuelSwap;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysBlockPatches;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysChanceConfigGuard;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysBanditNoDespawn;
+import com.toomda.parasitusfix.sevendaystomine.SevenDaysThermometerCrashGuard;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysHazardDamageRebalance;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysSoldierSurvivorNoDespawn;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysDamagePatches;
@@ -93,6 +94,7 @@ public class ParasitusFix
             MinecraftForge.EVENT_BUS.register(new SevenDaysBanditNoDespawn());
             MinecraftForge.EVENT_BUS.register(new SevenDaysSoldierSurvivorNoDespawn());
             MinecraftForge.EVENT_BUS.register(new SevenDaysHazardDamageRebalance());
+            MinecraftForge.EVENT_BUS.register(new SevenDaysThermometerCrashGuard());
             MinecraftForge.EVENT_BUS.register(new DoorSeatClickGuard());
             if (Loader.isModLoaded("buildcraftenergy")) {
                 MinecraftForge.EVENT_BUS.register(new FlamethrowerTrapFuelSwap());
