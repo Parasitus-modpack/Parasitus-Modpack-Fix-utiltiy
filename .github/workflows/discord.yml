@@ -11,16 +11,26 @@ jobs:
       - name: Send push notification to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           ACTOR: ${{ github.actor }}
           BRANCH: ${{ github.ref_name }}
           SHA: ${{ github.sha }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Manual workflow run' }}
-          DOWNLOAD_URL: https://github.com/Parasitus-modpack/Parasitus-Modpack-Fix-utiltiy/releases/tag/latest
         run: |
           if [ -z "$DISCORD_WEBHOOK" ]; then
             echo "DISCORD_WEBHOOK secret is not set"
             exit 1
+          fi
+
+          RELEASES_API_URL="https://api.github.com/repos/$REPO/releases?per_page=1"
+          DOWNLOAD_URL=$(curl -fsSL \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "$RELEASES_API_URL" | jq -r '.[0].html_url // empty') || true
+
+          if [ -z "$DOWNLOAD_URL" ]; then
+            DOWNLOAD_URL="https://github.com/$REPO/releases/latest"
           fi
 
           SHORT_SHA="${SHA:0:7}"
