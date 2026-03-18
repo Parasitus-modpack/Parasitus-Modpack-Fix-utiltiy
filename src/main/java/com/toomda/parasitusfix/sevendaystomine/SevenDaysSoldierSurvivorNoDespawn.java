@@ -1,5 +1,6 @@
 package com.toomda.parasitusfix.sevendaystomine;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import nuparu.sevendaystomine.entity.EntitySoldier;
@@ -11,7 +12,8 @@ public class SevenDaysSoldierSurvivorNoDespawn {
         if (event.getWorld().isRemote) return;
 
         if (event.getEntity() instanceof EntitySoldier || event.getEntity() instanceof EntitySurvivor) {
-            event.getEntity().enablePersistence();
+            EntityLiving entity = (EntityLiving) event.getEntity();
+            entity.enablePersistence();
         }
     }
 }
