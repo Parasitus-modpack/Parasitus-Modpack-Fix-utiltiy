@@ -30,9 +30,6 @@ public final class ParasitusFixConfig {
     @Config.Name("Techguns Spawns")
     public static final TechgunsSpawns TECHGUNS_SPAWNS = new TechgunsSpawns();
 
-    @Config.Name("BuildCraft Transport")
-    public static final BuildCraftTransport BUILDCRAFT_TRANSPORT = new BuildCraftTransport();
-
     public final static class SevenDaysTools {
 
         @Config.Comment("Scrap pickaxe base damage")
@@ -248,11 +245,5 @@ public final class ParasitusFixConfig {
 
         @Config.Comment("Forced spawn weight for techguns:zombiesoldier (Techguns default is 100)")
         public int zombieSoldierSpawnWeight = 10;
-    }
-
-    public static final class BuildCraftTransport {
-
-        @Config.Comment("Enable the boosted RF transfer-cap removal for all BuildCraft RF kinesis pipes")
-        public boolean enableBoostedRfKinesisPipes = true;
     }
 }

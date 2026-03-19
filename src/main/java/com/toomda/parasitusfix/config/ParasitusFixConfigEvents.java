@@ -1,7 +1,6 @@
 package com.toomda.parasitusfix.config;
 
 import com.toomda.parasitusfix.ParasitusFix;
-import com.toomda.parasitusfix.buildcraft.QuartzKinesisPipeCapRemoval;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysBlockPatches;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysChanceConfigGuard;
 import com.toomda.parasitusfix.sevendaystomine.SevenDaysDamagePatches;
@@ -27,9 +26,6 @@ public final class ParasitusFixConfigEvents {
         SevenDaysBlockPatches.apply();
         if (Loader.isModLoaded("techguns")) {
             TechgunsZombieSoldierSpawnWeightPatch.apply();
-        }
-        if (Loader.isModLoaded("buildcrafttransport")) {
-            QuartzKinesisPipeCapRemoval.apply();
         }
     }
 }
