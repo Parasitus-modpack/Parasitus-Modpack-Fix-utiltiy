@@ -6,12 +6,13 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 
 public class GuiFirstJoinIntro extends GuiScreen {
-    private static final String INTRO_LANG_PREFIX = "gui.parasitus-core.intro.";
-    private static final int FADE_IN_TICKS = 40;
-    private static final int FADE_OUT_TICKS = 16;
-    private static final int LETTERBOX_IN_TICKS = 26;
-    private static final int LINE_1_START_TICK = 12;
-    private static final int LINE_2_GAP_TICKS = 8;
+    private static final String INTRO_LANG_PREFIX = "gui.parasitusfix.intro.";
+    private static final int FADE_IN_TICKS = 16;
+    private static final int FADE_OUT_TICKS = 10;
+    private static final int LETTERBOX_IN_TICKS = 12;
+    private static final int LINE_1_START_TICK = 4;
+    private static final int LINE_2_GAP_TICKS = 4;
+    private static final int CHARS_PER_TICK = 3;
 
     private int openTicks;
     private int closeTicks;
@@ -34,7 +35,7 @@ public class GuiFirstJoinIntro extends GuiScreen {
         closing = false;
         line1 = I18n.format(INTRO_LANG_PREFIX + "line1");
         line2 = I18n.format(INTRO_LANG_PREFIX + "line2");
-        line2StartTick = LINE_1_START_TICK + line1.length() + LINE_2_GAP_TICKS;
+        line2StartTick = LINE_1_START_TICK + ticksToReveal(line1) + LINE_2_GAP_TICKS;
         letterboxTargetHeight = Math.max(20, Math.min(48, height / 6));
         updateVisibleText();
         int buttonY = (height / 2) + 22;
@@ -65,15 +66,25 @@ public class GuiFirstJoinIntro extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id != 0 || closing) return;
-        closing = true;
-        closeTicks = 0;
-        button.enabled = false;
+        startClosing();
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         if (keyCode == 1) return;
+        if (keyCode == 28 || keyCode == 57) {
+            startClosing();
+            return;
+        }
         super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        if (!closing) {
+            startClosing();
+        }
     }
 
     @Override
@@ -122,9 +133,23 @@ public class GuiFirstJoinIntro extends GuiScreen {
 
     private int visibleChars(String text, int startTick) {
         if (text == null || text.isEmpty()) return 0;
-        int visible = openTicks - startTick;
+        int visible = (openTicks - startTick) * CHARS_PER_TICK;
         if (visible <= 0) return 0;
         return Math.min(visible, text.length());
+    }
+
+    private int ticksToReveal(String text) {
+        if (text == null || text.isEmpty()) return 0;
+        return (text.length() + CHARS_PER_TICK - 1) / CHARS_PER_TICK;
+    }
+
+    private void startClosing() {
+        if (closing) return;
+        closing = true;
+        closeTicks = 0;
+        if (!buttonList.isEmpty()) {
+            buttonList.get(0).enabled = false;
+        }
     }
 
     private void drawLetterboxBars() {

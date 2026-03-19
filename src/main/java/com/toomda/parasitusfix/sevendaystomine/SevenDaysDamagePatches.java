@@ -25,35 +25,34 @@ public final class SevenDaysDamagePatches {
     public static void apply() {
         if (!Loader.isModLoaded("sevendaystomine")) return;
 
-        setToolDamage("wrench",       3.0F);
-        setToolDamage("clawhammer",   5.5F);
-        setToolDamage("iron_pickaxe", 5.5F);
-        setToolDamage("iron_axe",     5.5F);
-        setToolDamage("iron_shovel",  4.5F);
-        setToolDamage("iron_hoe",     3.5F);
+        setMeleeDamage("wrench", 3.0F);
+        setMeleeDamage("clawhammer", 5.5F);
+        setMeleeDamage("iron_pickaxe", 5.5F);
+        setMeleeDamage("iron_axe", 5.5F);
+        setMeleeDamage("iron_shovel", 4.5F);
+        setMeleeDamage("iron_hoe", 3.5F);
 
         ParasitusFixConfig.SevenDaysTools cfg = ParasitusFixConfig.TOOLS;
-        setToolDamage("scrap_pickaxe", cfg.scrapPickaxeDamage);
-        setToolDamage("scrap_axe", cfg.scrapAxeDamage);
-        setToolDamage("scrap_shovel", cfg.scrapShovelDamage);
-        setToolDamage("scrap_hoe", cfg.scrapHoeDamage);
+        setMeleeDamage("scrap_pickaxe", cfg.scrapPickaxeDamage);
+        setMeleeDamage("scrap_axe", cfg.scrapAxeDamage);
+        setMeleeDamage("scrap_shovel", cfg.scrapShovelDamage);
+        setMeleeDamage("scrap_hoe", cfg.scrapHoeDamage);
 
-        setToolDamage("copper_pickaxe", cfg.copperPickaxeDamage);
-        setToolDamage("copper_axe", cfg.copperAxeDamage);
-        setToolDamage("copper_shovel", cfg.copperShovelDamage);
-        setToolDamage("copper_hoe", cfg.copperHoeDamage);
-        setSwordDamage("copper_sword", cfg.copperSwordDamage);
+        setMeleeDamage("copper_pickaxe", cfg.copperPickaxeDamage);
+        setMeleeDamage("copper_axe", cfg.copperAxeDamage);
+        setMeleeDamage("copper_shovel", cfg.copperShovelDamage);
+        setMeleeDamage("copper_hoe", cfg.copperHoeDamage);
+        setMeleeDamage("copper_sword", cfg.copperSwordDamage);
 
-        setToolDamage("bronze_pickaxe", cfg.bronzePickaxeDamage);
-        setToolDamage("bronze_axe", cfg.bronzeAxeDamage);
-        setToolDamage("bronze_shovel", cfg.bronzeShovelDamage);
-        setToolDamage("bronze_hoe", cfg.bronzeHoeDamage);
-        setSwordDamage("bronze_sword", cfg.bronzeSwordDamage);
-        setToolDamage("auger", ParasitusFixConfig.COMBAT.augerDamage);
+        setMeleeDamage("bronze_pickaxe", cfg.bronzePickaxeDamage);
+        setMeleeDamage("bronze_axe", cfg.bronzeAxeDamage);
+        setMeleeDamage("bronze_shovel", cfg.bronzeShovelDamage);
+        setMeleeDamage("bronze_hoe", cfg.bronzeHoeDamage);
+        setMeleeDamage("bronze_sword", cfg.bronzeSwordDamage);
+        setMeleeDamage("auger", ParasitusFixConfig.COMBAT.augerDamage);
 
-        // Army knife and kitchen knife - 20 hearts = 40 damage
-        setToolDamage("armyknife", cfg.armyKnifeDamage);
-        setToolDamage("kitchenknife", cfg.kitchenKnifeDamage);
+        setMeleeDamage("armyknife", cfg.armyKnifeDamage);
+        setMeleeDamage("kitchenknife", cfg.kitchenKnifeDamage);
 
         Map<String, Float> clubBase = new HashMap<>();
         clubBase.put("woodenclub", 4.0F);
@@ -76,24 +75,19 @@ public final class SevenDaysDamagePatches {
         }
     }
 
-    private static void setToolDamage(String path, float value) {
-        Item it = ForgeRegistries.ITEMS.getValue(new ResourceLocation("sevendaystomine", path));
-        if (it instanceof ItemQualityTool) {
-            ((ItemQualityTool) it).setAttackDamage(value);
-            System.out.println("[ParasitusFix] Tool patch " + path + " -> " + value);
-        } else {
-            System.out.println("[ParasitusFix] Tool NOT patched (not ItemQualityTool?): " + path + " -> " + it);
-        }
-    }
-
-    private static void setSwordDamage(String path, float value) {
-        Item it = ForgeRegistries.ITEMS.getValue(new ResourceLocation("sevendaystomine", path));
+    private static void setMeleeDamage(String path, float value) {
+        Item it = findSevenDaysItem(path);
         if (it instanceof ItemQualitySword) {
             boolean ok = patchSwordBase((ItemQualitySword) it, value);
             Float after = readSwordBase((ItemQualitySword) it);
             System.out.println("[ParasitusFix] Sword patch " + path + " -> ok=" + ok + " baseNow=" + after);
+            return;
+        }
+        if (it instanceof ItemQualityTool) {
+            ((ItemQualityTool) it).setAttackDamage(value);
+            System.out.println("[ParasitusFix] Tool patch " + path + " -> " + value);
         } else {
-            System.out.println("[ParasitusFix] Sword NOT patched (not ItemQualitySword?): " + path + " -> " + it);
+            System.out.println("[ParasitusFix] Item NOT patched (unsupported melee item?): " + path + " -> " + it);
         }
     }
 
@@ -146,5 +140,20 @@ public final class SevenDaysDamagePatches {
         Field mods = Field.class.getDeclaredField("modifiers");
         mods.setAccessible(true);
         mods.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+    }
+
+    private static Item findSevenDaysItem(String path) {
+        ResourceLocation exactId = new ResourceLocation("sevendaystomine", path);
+        Item exact = ForgeRegistries.ITEMS.getValue(exactId);
+        if (exact != null) return exact;
+
+        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
+            ResourceLocation id = item.getRegistryName();
+            if (id == null || !"sevendaystomine".equals(id.getResourceDomain())) continue;
+            if (path.equalsIgnoreCase(id.getResourcePath())) {
+                return item;
+            }
+        }
+        return null;
     }
 }

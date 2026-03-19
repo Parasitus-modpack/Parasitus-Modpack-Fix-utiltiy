@@ -12,6 +12,9 @@ public final class ParasitusFixConfig {
     @Config.Name("Bandage")
     public static final BandageSettings BANDAGE = new BandageSettings();
 
+    @Config.Name("Door Opening")
+    public static final DoorOpening DOOR_OPENING = new DoorOpening();
+
     @Config.Name("7DTM Combat")
     public static final SevenDaysCombat COMBAT = new SevenDaysCombat();
 
@@ -23,6 +26,9 @@ public final class ParasitusFixConfig {
 
     @Config.Name("SRP Vanilla Undead Spawns")
     public static final SRPVanillaUndeadSpawns SRP_VANILLA_UNDEAD_SPAWNS = new SRPVanillaUndeadSpawns();
+
+    @Config.Name("Techguns Spawns")
+    public static final TechgunsSpawns TECHGUNS_SPAWNS = new TechgunsSpawns();
 
     public final static class SevenDaysTools {
 
@@ -79,6 +85,31 @@ public final class ParasitusFixConfig {
 
         @Config.Comment("Cooldown between bandage uses in ticks (20 ticks = 1 second)")
         public int cooldownTicks = 20;
+    }
+
+    public final static class DoorOpening {
+
+        @Config.Comment({
+                "Only these mobs get forced vanilla door-opening AI.",
+                "Entries can be entity registry ids (modid:name), fully-qualified class names, or simple class names."
+        })
+        public String[] allowedMobs = new String[] {
+                "minecraft:zombie",
+                "minecraft:zombie_villager",
+                "minecraft:husk",
+                "techguns:zombiesoldier",
+                "techguns.entities.npcs.ZombieSoldier",
+                "EntityZombieSoldier",
+                "EntityFeralZombie",
+                "EntityBipedalZombie",
+                "EntityBlindZombie",
+                "EntityBloatedZombie",
+                "EntityBurntZombie",
+                "EntityInfectedSurvivor",
+                "EntityBandit",
+                "EntitySoldier",
+                "EntitySurvivor"
+        };
     }
 
     public final static class SevenDaysCombat {
@@ -205,5 +236,14 @@ public final class ParasitusFixConfig {
 
         @Config.Comment("How often (ticks) to re-evaluate SRP phase and enforce weights")
         public int checkIntervalTicks = 200;
+    }
+
+    public static final class TechgunsSpawns {
+
+        @Config.Comment("Override Techguns Zombie Soldier spawn weight after Techguns registers its spawn tables")
+        public boolean overrideZombieSoldierSpawnWeight = true;
+
+        @Config.Comment("Forced spawn weight for techguns:zombiesoldier (Techguns default is 100)")
+        public int zombieSoldierSpawnWeight = 10;
     }
 }
