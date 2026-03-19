@@ -70,6 +70,7 @@ jobs:
         run: ./gradlew -Dorg.gradle.java.home="$JAVA_HOME" -PmodVersion="${{ steps.versioning.outputs.next_version }}" clean build --no-daemon
 
       - name: Publish release
+        id: publish_release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.versioning.outputs.next_tag }}
@@ -80,3 +81,30 @@ jobs:
           replacesArtifacts: false
           prerelease: false
           artifactErrorsFailBuild: true
+
+      - name: Send release notification to Discord
+        if: ${{ success() && secrets.DISCORD_WEBHOOK != '' }}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+          SHA: ${{ github.sha }}
+          RELEASE_NAME: Release ${{ steps.versioning.outputs.next_tag }}
+          RELEASE_TAG: ${{ steps.versioning.outputs.next_tag }}
+          DOWNLOAD_URL: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.versioning.outputs.next_tag }}
+        run: |
+          SHORT_SHA="${SHA:0:7}"
+
+          CONTENT=$(jq -n \
+            --arg repo "$REPO" \
+            --arg actor "$ACTOR" \
+            --arg sha "$SHORT_SHA" \
+            --arg release_name "$RELEASE_NAME" \
+            --arg release_tag "$RELEASE_TAG" \
+            --arg download_url "$DOWNLOAD_URL" \
+            '"New release in **\($repo)** by **\($actor)**\nRelease: **\($release_name)** (\($release_tag))\nLinks: [download](\($download_url)) | commit: \($sha)"')
+
+          curl --fail-with-body -sS -X POST \
+            -H "Content-Type: application/json" \
+            -d "{\"content\":$CONTENT}" \
+            "$DISCORD_WEBHOOK"
