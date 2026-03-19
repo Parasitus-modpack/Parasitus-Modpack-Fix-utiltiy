@@ -4,7 +4,6 @@ import com.toomda.parasitusfix.ParasitusFix;
 import com.toomda.parasitusfix.config.ParasitusFixConfig;
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Locale;
 import java.util.Map;

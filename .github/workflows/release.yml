@@ -17,6 +17,8 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
     steps:
       - name: Checkout
@@ -83,9 +85,8 @@ jobs:
           artifactErrorsFailBuild: true
 
       - name: Send release notification to Discord
-        if: ${{ success() && secrets.DISCORD_WEBHOOK != '' }}
+        if: success() && env.DISCORD_WEBHOOK != ''
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           REPO: ${{ github.repository }}
           ACTOR: ${{ github.actor }}
           SHA: ${{ github.sha }}
