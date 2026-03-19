@@ -42,6 +42,11 @@ public class HostileWorldsAntiSkybase {
     }
 
     private void handleHeightWarning(EntityPlayer player, ParasitusFixConfig.HostileWorldsInvasions cfg, NBTTagCompound runtime, NBTTagCompound persisted) {
+        if (player.dimension != 0) {
+            if (runtime.getBoolean(NBT_KEY_WAS_ABOVE)) runtime.setBoolean(NBT_KEY_WAS_ABOVE, false);
+            return;
+        }
+
         boolean above = player.posY > cfg.skyYLevel;
         boolean wasAbove = runtime.getBoolean(NBT_KEY_WAS_ABOVE);
         if (!above) {
