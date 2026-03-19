@@ -1,6 +1,10 @@
 package com.toomda.parasitusfix.buildcraft;
 
 import com.toomda.parasitusfix.ParasitusFix;
+import com.toomda.parasitusfix.config.ParasitusFixConfig;
+import buildcraft.api.transport.pipe.PipeApi;
+import buildcraft.api.transport.pipe.PipeDefinition;
+import buildcraft.transport.BCTransportPipes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -13,21 +17,144 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public final class QuartzKinesisPipeCapRemoval {
-    private static final String TARGET_PIPE_CLASS = "buildcraft.transport.pipe.PipePowerQuartz";
-    private static final int UNLIMITED_TRANSFER = Integer.MAX_VALUE / 2;
+    private static final String LEGACY_TARGET_PIPE_CLASS = "buildcraft.transport.pipe.PipePowerQuartz";
+    private static final int BOOSTED_TRANSFER = Integer.MAX_VALUE / 2;
+    private static final Map<PipeDefinition, PipeApi.RedstoneFluxTransferInfo> ORIGINAL_RF_TRANSFER_INFO =
+            new IdentityHashMap<>();
+    private static final Set<PipeDefinition> CAPTURED_RF_PIPE_DEFINITIONS =
+            Collections.newSetFromMap(new IdentityHashMap<PipeDefinition, Boolean>());
+    private static Integer originalLegacyTransfer;
 
     private QuartzKinesisPipeCapRemoval() {}
 
     public static void apply() {
+        if (ParasitusFixConfig.BUILDCRAFT_TRANSPORT.enableBoostedRfKinesisPipes) {
+            if (applyRfPipePatch()) {
+                return;
+            }
+            applyLegacyQuartzPowerPatch();
+            return;
+        }
+
+        if (restoreRfPipePatch()) {
+            return;
+        }
+        restoreLegacyQuartzPowerPatch();
+    }
+
+    private static boolean applyRfPipePatch() {
         try {
-            Class<?> pipeClass = Class.forName(TARGET_PIPE_CLASS);
-            
-            ParasitusFix.getLogger().info("Found BuildCraft PipePowerQuartz class: {}", pipeClass.getName());
-            
+            Map<String, PipeDefinition> rfPipes = new LinkedHashMap<>();
+            addPipe(rfPipes, "buildcrafttransport:pipe_quartz_rf", BCTransportPipes.quartzRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_wood_rf", BCTransportPipes.woodRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_stone_rf", BCTransportPipes.stoneRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_cobblestone_rf", BCTransportPipes.cobbleRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_gold_rf", BCTransportPipes.goldRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_sandstone_rf", BCTransportPipes.sandstoneRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_iron_rf", BCTransportPipes.ironRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_diamond_rf", BCTransportPipes.diamondRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_diamond_wood_rf", BCTransportPipes.diaWoodRf);
+
+            if (rfPipes.isEmpty()) {
+                ParasitusFix.getLogger().info("No BuildCraft RF pipe definitions were available to patch.");
+                return false;
+            }
+
+            PipeApi.RedstoneFluxTransferInfo boostedInfo =
+                    new PipeApi.RedstoneFluxTransferInfo(BOOSTED_TRANSFER, false);
+
+            for (Map.Entry<String, PipeDefinition> entry : rfPipes.entrySet()) {
+                PipeDefinition definition = entry.getValue();
+                captureOriginalRfTransferInfo(definition);
+                PipeApi.rfTransferData.put(definition, boostedInfo);
+            }
+
+            ParasitusFix.getLogger().info(
+                    "Boosted BuildCraft RF pipe transfer for {} variants to {} RF/t: {}",
+                    rfPipes.size(),
+                    BOOSTED_TRANSFER,
+                    rfPipes.keySet());
+            return true;
+        } catch (Throwable t) {
+            if (t instanceof NoClassDefFoundError || t instanceof ExceptionInInitializerError) {
+                ParasitusFix.getLogger().info(
+                    "BuildCraft RF pipe definitions not found - " +
+                    "falling back to legacy quartz power pipe patch."
+                );
+                return false;
+            }
+            ParasitusFix.getLogger().error("Failed to boost BuildCraft RF pipe transfer limits", t);
+            return false;
+        }
+    }
+
+    private static boolean restoreRfPipePatch() {
+        try {
+            Map<String, PipeDefinition> rfPipes = new LinkedHashMap<>();
+            addPipe(rfPipes, "buildcrafttransport:pipe_quartz_rf", BCTransportPipes.quartzRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_wood_rf", BCTransportPipes.woodRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_stone_rf", BCTransportPipes.stoneRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_cobblestone_rf", BCTransportPipes.cobbleRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_gold_rf", BCTransportPipes.goldRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_sandstone_rf", BCTransportPipes.sandstoneRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_iron_rf", BCTransportPipes.ironRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_diamond_rf", BCTransportPipes.diamondRf);
+            addPipe(rfPipes, "buildcrafttransport:pipe_diamond_wood_rf", BCTransportPipes.diaWoodRf);
+
+            if (rfPipes.isEmpty()) {
+                ParasitusFix.getLogger().info("No BuildCraft RF pipe definitions were available to restore.");
+                return false;
+            }
+
+            int restored = 0;
+            for (Map.Entry<String, PipeDefinition> entry : rfPipes.entrySet()) {
+                PipeDefinition definition = entry.getValue();
+                if (!CAPTURED_RF_PIPE_DEFINITIONS.contains(definition)) {
+                    continue;
+                }
+
+                PipeApi.RedstoneFluxTransferInfo original = ORIGINAL_RF_TRANSFER_INFO.get(definition);
+                if (original == null) {
+                    PipeApi.rfTransferData.remove(definition);
+                } else {
+                    PipeApi.rfTransferData.put(definition, original);
+                }
+                restored++;
+            }
+
+            ParasitusFix.getLogger().info(
+                    "Restored BuildCraft RF pipe transfer limits for {} variants: {}",
+                    restored,
+                    rfPipes.keySet());
+            return restored > 0;
+        } catch (Throwable t) {
+            if (t instanceof NoClassDefFoundError || t instanceof ExceptionInInitializerError) {
+                ParasitusFix.getLogger().info(
+                    "BuildCraft RF pipe definitions not found while restoring - " +
+                    "falling back to legacy quartz power pipe restore."
+                );
+                return false;
+            }
+            ParasitusFix.getLogger().error("Failed to restore BuildCraft RF pipe transfer limits", t);
+            return false;
+        }
+    }
+
+    private static void applyLegacyQuartzPowerPatch() {
+        try {
+            Class<?> pipeClass = Class.forName(LEGACY_TARGET_PIPE_CLASS);
+
+            ParasitusFix.getLogger().info("Found legacy BuildCraft PipePowerQuartz class: {}", pipeClass.getName());
+
             Field maxPowerField = findMaxPowerField(pipeClass);
             if (maxPowerField == null) {
                 ParasitusFix.getLogger().warn("Could not find power limit field in PipePowerQuartz");
@@ -36,52 +163,81 @@ public final class QuartzKinesisPipeCapRemoval {
 
             Class<?> declaringClass = maxPowerField.getDeclaringClass();
             String fieldName = maxPowerField.getName();
-            
-            if (!declaringClass.getName().equals(TARGET_PIPE_CLASS)) {
+
+            if (!declaringClass.getName().equals(LEGACY_TARGET_PIPE_CLASS)) {
                 ParasitusFix.getLogger().warn(
                     "Field '{}' is declared in parent class '{}' instead of '{}'. " +
                     "Modifying it would affect all power pipes! Aborting for safety.",
-                    fieldName, declaringClass.getName(), TARGET_PIPE_CLASS
+                    fieldName, declaringClass.getName(), LEGACY_TARGET_PIPE_CLASS
                 );
                 return;
             }
 
             maxPowerField.setAccessible(true);
             removeFinal(maxPowerField);
-            
+
             int oldValue = maxPowerField.getInt(null);
-            
+            if (originalLegacyTransfer == null) {
+                originalLegacyTransfer = oldValue;
+            }
+
             if (oldValue != 10240 && oldValue != 1024 && oldValue > 0 && oldValue < 1000000) {
                 ParasitusFix.getLogger().warn(
                     "Unexpected power limit value: {} (expected 10240 for Quartz Kinesis Pipe). " +
                     "Proceeding with caution...", oldValue
                 );
             }
-            
-            // Set the new unlimited value
-            maxPowerField.setInt(null, UNLIMITED_TRANSFER);
-            
-            // Verify the change
+
+            maxPowerField.setInt(null, BOOSTED_TRANSFER);
+
             int newValue = maxPowerField.getInt(null);
-            if (newValue == UNLIMITED_TRANSFER) {
+            if (newValue == BOOSTED_TRANSFER) {
                 ParasitusFix.getLogger().info(
-                    "Successfully removed Quartz Kinesis Pipe power limit: {} RF/t -> {} RF/t (unlimited)", 
+                    "Successfully removed legacy Quartz Kinesis Pipe power limit: {} RF/t -> {} RF/t",
                     oldValue, newValue
                 );
             } else {
                 ParasitusFix.getLogger().error(
-                    "Failed to update power limit! Expected: {}, Got: {}", 
-                    UNLIMITED_TRANSFER, newValue
+                    "Failed to update legacy power limit! Expected: {}, Got: {}",
+                    BOOSTED_TRANSFER, newValue
                 );
             }
-            
         } catch (ClassNotFoundException e) {
             ParasitusFix.getLogger().info(
-                "BuildCraft PipePowerQuartz not found - " +
-                "this is normal in development environment. Fix will apply in production."
+                "Legacy BuildCraft PipePowerQuartz not found - no legacy quartz power patch applied."
             );
         } catch (Throwable t) {
-            ParasitusFix.getLogger().error("Failed to remove Quartz Kinesis Pipe power limit", t);
+            ParasitusFix.getLogger().error("Failed to remove legacy Quartz Kinesis Pipe power limit", t);
+        }
+    }
+
+    private static void restoreLegacyQuartzPowerPatch() {
+        if (originalLegacyTransfer == null) {
+            ParasitusFix.getLogger().info("Legacy BuildCraft quartz power pipe limit was never overridden; nothing to restore.");
+            return;
+        }
+
+        try {
+            Class<?> pipeClass = Class.forName(LEGACY_TARGET_PIPE_CLASS);
+            Field maxPowerField = findMaxPowerField(pipeClass);
+            if (maxPowerField == null) {
+                ParasitusFix.getLogger().warn("Could not find power limit field in PipePowerQuartz while restoring.");
+                return;
+            }
+
+            maxPowerField.setAccessible(true);
+            removeFinal(maxPowerField);
+            maxPowerField.setInt(null, originalLegacyTransfer);
+            ParasitusFix.getLogger().info(
+                "Restored legacy Quartz Kinesis Pipe power limit to {} RF/t",
+                originalLegacyTransfer
+            );
+        } catch (ClassNotFoundException e) {
+            ParasitusFix.getLogger().info(
+                "Legacy BuildCraft PipePowerQuartz not found while restoring - nothing to do."
+            );
+        } catch (Throwable t) {
+            ParasitusFix.getLogger().error("Failed to restore legacy Quartz Kinesis Pipe power limit", t);
         }
     }
 
@@ -120,10 +276,20 @@ public final class QuartzKinesisPipeCapRemoval {
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
     }
 
+    private static void addPipe(Map<String, PipeDefinition> pipes, String itemId, PipeDefinition definition) {
+        if (definition != null) {
+            pipes.put(itemId, definition);
+        }
+    }
+
+    private static void captureOriginalRfTransferInfo(PipeDefinition definition) {
+        if (CAPTURED_RF_PIPE_DEFINITIONS.add(definition)) {
+            ORIGINAL_RF_TRANSFER_INFO.put(definition, PipeApi.rfTransferData.get(definition));
+        }
+    }
+
     @Mod.EventBusSubscriber(modid = ParasitusFix.MODID, value = Side.CLIENT)
     public static class TooltipHandler {
-        private static final String QUARTZ_PIPE_ITEM = "buildcrafttransport:pipe_quartz_power";
-
         @SideOnly(Side.CLIENT)
         @SubscribeEvent(priority = EventPriority.LOW)
         public static void onTooltip(ItemTooltipEvent event) {
@@ -134,7 +300,7 @@ public final class QuartzKinesisPipeCapRemoval {
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) return;
 
-            if (QUARTZ_PIPE_ITEM.equals(itemId.toString())) {
+            if (isBoostedRfPipe(itemId)) {
                 List<String> tooltip = event.getToolTip();
                 
                 Iterator<String> iterator = tooltip.iterator();
@@ -159,6 +325,13 @@ public final class QuartzKinesisPipeCapRemoval {
 
                 tooltip.add("No limit in redstone flux sent");
             }
+        }
+
+        private static boolean isBoostedRfPipe(ResourceLocation itemId) {
+            if (!ParasitusFixConfig.BUILDCRAFT_TRANSPORT.enableBoostedRfKinesisPipes) return false;
+            if (!"buildcrafttransport".equals(itemId.getResourceDomain())) return false;
+            String path = itemId.getResourcePath();
+            return path.startsWith("pipe_") && path.endsWith("_rf");
         }
     }
 }
