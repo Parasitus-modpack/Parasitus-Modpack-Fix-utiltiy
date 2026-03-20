@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,7 +43,7 @@ public class HostileWorldsAntiSkybase {
     }
 
     private void handleHeightWarning(EntityPlayer player, ParasitusFixConfig.HostileWorldsInvasions cfg, NBTTagCompound runtime, NBTTagCompound persisted) {
-        if (player.dimension != 0) {
+        if (player.world.provider.getDimensionType() != DimensionType.OVERWORLD) {
             if (runtime.getBoolean(NBT_KEY_WAS_ABOVE)) runtime.setBoolean(NBT_KEY_WAS_ABOVE, false);
             return;
         }
