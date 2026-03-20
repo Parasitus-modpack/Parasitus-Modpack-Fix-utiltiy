@@ -95,15 +95,17 @@ jobs:
           DOWNLOAD_URL: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.versioning.outputs.next_tag }}
         run: |
           SHORT_SHA="${SHA:0:7}"
+          COMMIT_MESSAGE="$(git log -1 --pretty=%s "$SHA" | tr '\n' ' ' | sed 's/[[:space:]]\+/ /g' | sed 's/^ //; s/ $//')"
 
           CONTENT=$(jq -n \
             --arg repo "$REPO" \
             --arg actor "$ACTOR" \
             --arg sha "$SHORT_SHA" \
+            --arg commit_message "$COMMIT_MESSAGE" \
             --arg release_name "$RELEASE_NAME" \
             --arg release_tag "$RELEASE_TAG" \
             --arg download_url "$DOWNLOAD_URL" \
-            '"New release in **\($repo)** by **\($actor)**\nRelease: **\($release_name)** (\($release_tag))\nLinks: [download](\($download_url)) | commit: \($sha)"')
+            '"New release in **\($repo)** by **\($actor)**\nRelease: **\($release_name)** (\($release_tag))\nCommit: `\($sha)` - \($commit_message)\nLinks: [download](\($download_url))"')
 
           curl --fail-with-body -sS -X POST \
             -H "Content-Type: application/json" \
