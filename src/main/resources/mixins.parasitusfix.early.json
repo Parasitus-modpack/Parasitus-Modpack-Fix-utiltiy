@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.toomda.parasitusfix.mixin",
+  "refmap": "mixins.parasitusfix.refmap.json",
+  "target": "@env(CLIENT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinSPacketSpawnPainting"
+  ]
+}
