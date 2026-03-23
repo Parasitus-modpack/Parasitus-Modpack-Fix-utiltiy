@@ -1,18 +1,20 @@
 package com.toomda.parasitusfix.mixin;
 
-import buildcraft.factory.tile.TileFloodGate;
 import buildcraft.lib.fluid.Tank;
 import buildcraft.lib.misc.BlockUtil;
 import buildcraft.lib.misc.FluidUtilBC;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(value = TileFloodGate.class, remap = false)
+@Pseudo
+@Mixin(targets = "buildcraft.factory.tile.TileFloodGate", remap = false)
 public abstract class MixinTileFloodGate {
 
     @Shadow(remap = false)
@@ -25,7 +27,7 @@ public abstract class MixinTileFloodGate {
      */
     @Overwrite(remap = false)
     private boolean canFill(BlockPos pos) {
-        TileFloodGate self = (TileFloodGate) (Object) this;
+        TileEntity self = (TileEntity) (Object) this;
         World world = self.getWorld();
 
         if (world.isAirBlock(pos)) {
@@ -35,7 +37,7 @@ public abstract class MixinTileFloodGate {
         Fluid fluid = BlockUtil.getFluidWithFlowing(world, pos);
         return fluid != null
                 && FluidUtilBC.areFluidsEqual(fluid, this.tank.getFluidType())
-                && BlockUtil.getFluidWithoutFlowing(self.getLocalState(pos)) == null;
+                && BlockUtil.getFluidWithoutFlowing(world.getBlockState(pos)) == null;
     }
 
     /**
@@ -44,7 +46,7 @@ public abstract class MixinTileFloodGate {
      */
     @Overwrite(remap = false)
     private boolean canSearch(BlockPos pos) {
-        TileFloodGate self = (TileFloodGate) (Object) this;
+        TileEntity self = (TileEntity) (Object) this;
         if (this.canFill(pos)) {
             return true;
         }
@@ -59,7 +61,7 @@ public abstract class MixinTileFloodGate {
      */
     @Overwrite(remap = false)
     private boolean canFillThrough(BlockPos pos) {
-        World world = ((TileFloodGate) (Object) this).getWorld();
+        World world = ((TileEntity) (Object) this).getWorld();
         if (world.isAirBlock(pos)) {
             return false;
         }
