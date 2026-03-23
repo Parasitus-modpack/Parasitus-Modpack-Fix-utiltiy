@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.toomda.parasitusfix.mixin",
+  "plugin": "com.toomda.parasitusfix.mixin.ParasitusFixCommonMixinPlugin",
+  "refmap": "mixins.parasitusfix.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinTileFloodGate"
+  ]
+}

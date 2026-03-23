@@ -4,6 +4,7 @@ import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import zone.rong.mixinbooter.IEarlyMixinLoader;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +14,17 @@ import java.util.Map;
 @IFMLLoadingPlugin.TransformerExclusions({"com.toomda.parasitusfix.mixin"})
 public class ParasitusFixMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
+    private static final String COMMON_MIXIN_CONFIG = "mixins.parasitusfix.common.json";
     private static final String MIXIN_CONFIG = "mixins.parasitusfix.early.json";
 
     @Override
     public List<String> getMixinConfigs() {
-        return FMLLaunchHandler.side() != null && FMLLaunchHandler.side().isClient()
-                ? Collections.singletonList(MIXIN_CONFIG)
-                : Collections.emptyList();
+        List<String> configs = new ArrayList<>();
+        configs.add(COMMON_MIXIN_CONFIG);
+        if (FMLLaunchHandler.side() != null && FMLLaunchHandler.side().isClient()) {
+            configs.add(MIXIN_CONFIG);
+        }
+        return configs;
     }
 
     @Override

@@ -3,6 +3,7 @@ Set-StrictMode -Version Latest
 
 $repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $gradleWrapper = Join-Path $repoRoot "gradlew.bat"
+$gradleHome = Join-Path $repoRoot ".gradle-local"
 
 if (-not (Test-Path $gradleWrapper)) {
     throw "Could not find gradlew.bat at $gradleWrapper"
@@ -10,6 +11,7 @@ if (-not (Test-Path $gradleWrapper)) {
 
 Push-Location $repoRoot
 try {
+    $env:GRADLE_USER_HOME = $gradleHome
     & $gradleWrapper build
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE

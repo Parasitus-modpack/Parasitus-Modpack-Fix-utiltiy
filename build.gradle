@@ -77,11 +77,17 @@ dependencies {
     annotationProcessor 'org.ow2.asm:asm-debug-all:5.2'
     annotationProcessor 'com.google.guava:guava:32.1.2-jre'
     annotationProcessor 'com.google.code.gson:gson:2.8.9'
-    implementation ('zone.rong:mixinbooter:10.7') {
-        transitive = false
-    }
-    annotationProcessor ('zone.rong:mixinbooter:10.7') {
-        transitive = false
+    def localMixinBooterJar = file('libs/!mixinbooter-10.7.jar')
+    if (localMixinBooterJar.exists()) {
+        implementation files(localMixinBooterJar)
+        annotationProcessor files(localMixinBooterJar)
+    } else {
+        implementation ('zone.rong:mixinbooter:10.7') {
+            transitive = false
+        }
+        annotationProcessor ('zone.rong:mixinbooter:10.7') {
+            transitive = false
+        }
     }
     
     compile files('libs/sevendaystomine-1.12.2-1.0.2.10.jar')
